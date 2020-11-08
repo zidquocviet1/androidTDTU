@@ -91,27 +91,24 @@ public class LoginActivity extends Activity {
     private void handleLogin(String username, String password){
         RequestQueue queue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.POST,
-                "http://192.168.42.65:8080/user/login.php",
+                "http://192.168.42.65:5000/api/toeic/login?username="+username+"&password="+password,
                 response -> {
                     try {
                         JSONObject object = new JSONObject(response);
-                        if (object.getJSONArray("data").length() == 0){
-                            Toast.makeText(LoginActivity.this, "Invalid username or password", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
+
                         if (object.getBoolean("status")){
-                            JSONArray jsonArray = object.getJSONArray("data");
-                            JSONObject user = jsonArray.getJSONObject(0);
+                            String data = object.getString("data");
+                            JSONObject user = new JSONObject(data);
 
                             String id = user.getString("id");
-                            String newUsername = user.getString("username");
-                            String newPassword = user.getString("password");
                             String type = user.getString("type");
 
-                            saveUserInfo(new User(id, newUsername, newPassword, type, true));
+                            saveUserInfo(new User(id, "", "", type, true));
                             navigateHome();
                         }else{
-                            Toast.makeText(LoginActivity.this, "Invalid username or password", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, "Tài khoản hoặc mật khẩu không hợp lệ.", Toast.LENGTH_SHORT).show();
+                            binding.layoutUsername.getEditText().requestFocus();
+                            return;
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -119,17 +116,9 @@ public class LoginActivity extends Activity {
                     }
                 },
                 error -> {
+                    Toast.makeText(LoginActivity.this, "Không thể kết nối đến server!", Toast.LENGTH_SHORT).show();
                     Log.e("TAG", "Login failed. Error: " + error.getMessage());
-                }){
-
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                params.put("username", username);
-                params.put("password", password);
-                return params;
-            }
-        };
+                });
 
         queue.add(stringRequest);
     }
@@ -154,12 +143,13 @@ public class LoginActivity extends Activity {
         }
     }
     private void checkLogin(){
-        User user = MyDatabase.getInstance(this).getUserDAO().getUser();
+        User user = MyDatabase.getInstance(this).getUserDAO().getUser().get(0);
         if (user != null && user.isLogin()){
             navigateHome();
         }
     }
     private void navigateHome(){
+        this.finish();
         startActivity(new Intent(this, HomeActivity.class));
     }
     private void setupLoginFacebook(){
