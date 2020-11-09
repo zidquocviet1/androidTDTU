@@ -1,8 +1,12 @@
 package com.example.finalproject.models;
 
+import android.content.Context;
+
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+
+import com.google.firebase.auth.FirebaseUser;
 
 @Entity
 public class User {
@@ -64,5 +68,24 @@ public class User {
 
     public void setLogin(boolean login) {
         isLogin = login;
+    }
+
+    public static void saveUserInfo(FirebaseUser user, Context context) {
+        User newUser = new User(user.getUid(), user.getEmail(), "", "facebook", true);
+        UserDAO dao = MyDatabase.getInstance(context).getUserDAO();
+
+        if (dao.getUser().size() != 0)
+            dao.deleteAll();
+        dao.addUser(newUser);
+    }
+
+    public static void saveUserInfo(User user, Context context) {
+        User newUser = new User(user.getId(), user.getUsername(), user.getPassword(), user.getType(), true);
+        UserDAO dao = MyDatabase.getInstance(context).getUserDAO();
+
+        if (dao.getUser().size() != 0)
+            dao.deleteAll();
+
+        dao.addUser(newUser);
     }
 }
