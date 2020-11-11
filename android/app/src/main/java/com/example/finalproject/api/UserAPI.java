@@ -40,9 +40,11 @@ public class UserAPI {
                                 context.navigateHome();
                             }, 2000);
                         } else {
+                            String message = object.getString("message");
+
                             new Handler().postDelayed(() -> {
                                 context.dismissLoadingDialog();
-                                Toast.makeText(context, "Tài khoản hoặc mật khẩu không hợp lệ.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
                                 context.getBinding().layoutUsername.getEditText().requestFocus();
                             }, 2000);
                         }
