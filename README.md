@@ -18,7 +18,7 @@ _Các bước chạy chương trình_
 > Scaffold-DbContext "Server=YOUR_SERVER;Database=Toeic;user=YOUR_USER;password=YOUR_PASSWORD" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models
 
 `
-
-4. Sau khi đã tạo được Models và DbContext lúc này khởi chạy project (không được chạy bằng IIS). Lúc này có thể sử dụng phần mềm Post Man để test thử một số api.
-5. Server lúc này đã được connect, vào project android và mở package api và chỉnh BASE_URL (chỉnh lại IP).
-6. App lúc này đã có thể chạy toàn bộ tính năng.
+4. Thêm file DAO.cs vào thư mục Models vừa khởi tạo và file ToeicController vào thư mực Controllers.
+5. Sau khi đã tạo được Models và DbContext lúc này khởi chạy project (không được chạy bằng IIS). Lúc này có thể sử dụng phần mềm Post Man để test thử một số api.
+6. Server lúc này đã được connect, vào project android và mở package api và chỉnh BASE_URL (chỉnh lại IP).
+7. App lúc này đã có thể chạy toàn bộ tính năng.
