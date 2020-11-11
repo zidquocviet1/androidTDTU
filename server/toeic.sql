@@ -114,4 +114,4 @@ select * from course
 select * from category
 select * from question
 
-select * from account where password = 'quocviet'
+select * from account where username = 'maiquocviet' and password = 'Quocviet'

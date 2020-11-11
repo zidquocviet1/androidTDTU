@@ -8458,11 +8458,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\ComputerSience_TDT\\Advanced Software Engineering\\ToeicAPI\\ToeicAPI\\ToeicAPI.csproj",
+      "projectUniqueName": "E:\\ComputerSience_TDT\\AndroidDevelopment\\AndroidProject\\FinalProject\\server\\ToeicAPI\\ToeicAPI.csproj",
       "projectName": "ToeicAPI",
-      "projectPath": "E:\\ComputerSience_TDT\\Advanced Software Engineering\\ToeicAPI\\ToeicAPI\\ToeicAPI.csproj",
+      "projectPath": "E:\\ComputerSience_TDT\\AndroidDevelopment\\AndroidProject\\FinalProject\\server\\ToeicAPI\\ToeicAPI.csproj",
       "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-      "outputPath": "E:\\ComputerSience_TDT\\Advanced Software Engineering\\ToeicAPI\\ToeicAPI\\obj\\",
+      "outputPath": "E:\\ComputerSience_TDT\\AndroidDevelopment\\AndroidProject\\FinalProject\\server\\ToeicAPI\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
