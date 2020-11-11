@@ -22,6 +22,7 @@ import com.example.finalproject.api.UserAPI;
 import com.example.finalproject.databinding.ActivityLoginBinding;
 import com.example.finalproject.models.MyDatabase;
 import com.example.finalproject.models.User;
+import com.example.finalproject.view.LoadingDialog;
 import com.example.finalproject.viewmodel.ToeicViewModel;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -37,7 +38,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Arrays;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private CallbackManager fbCallback;
     private ActivityLoginBinding binding;
@@ -67,34 +68,8 @@ public class LoginActivity extends AppCompatActivity {
         handleLogoutFacebook();
         registerReceiver(receiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
-        binding.btnLogin.setOnClickListener((view) -> {
-            String username = binding.layoutUsername.getEditText().getText().toString();
-            String password = binding.layoutPassword.getEditText().getText().toString();
-
-            if (!toeicViewModel.getNetworkState().getValue()) {
-                Toast.makeText(this, "Không có kết nối internet. Vui lòng kiểm tra lại",
-                        Toast.LENGTH_SHORT).show();
-            } else if (!toeicViewModel.getServerState().getValue()) {
-                Toast.makeText(this, "Server không phản hồi ngay bây giờ. Vui lòng thử lại sau!",
-                        Toast.LENGTH_SHORT).show();
-            } else {
-                if (username.length() < 8){
-                    binding.layoutUsername.setError("Username must has at least 8 digits");
-                    binding.layoutUsername.getEditText().requestFocus();
-                    binding.layoutPassword.setErrorEnabled(false);
-                    return;
-                }
-                if (password.length() < 8){
-                    binding.layoutPassword.setError("Password must has at least 8 digits");
-                    binding.layoutPassword.getEditText().requestFocus();
-                    binding.layoutUsername.setErrorEnabled(false);
-                    return;
-                }
-                binding.layoutUsername.setErrorEnabled(false);
-                binding.layoutPassword.setErrorEnabled(false);
-                UserAPI.handleLogin(this, username, password);
-            }
-        });
+        binding.btnLogin.setOnClickListener(this);
+        binding.txtSignup.setOnClickListener(this);
     }
 
     @Override
@@ -111,20 +86,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private void initViewModel() {
         toeicViewModel = new ViewModelProvider(this).get(ToeicViewModel.class);
-    }
-
-    public void showLoadingDialog() {
-        loadingDialog = new Dialog(this, R.style.LoadingDialog);
-
-        loadingDialog.setContentView(R.layout.loading);
-        loadingDialog.show();
-        loadingDialog.setCanceledOnTouchOutside(false);
-        loadingDialog.setCancelable(false);
-        loadingDialog.findViewById(R.id.loading_icon).startAnimation(AnimationUtils.loadAnimation(this, R.anim.rotate360));
-    }
-
-    public void dismissLoadingDialog() {
-        loadingDialog.dismiss();
     }
 
     private void handleLogoutFacebook() {
@@ -159,7 +120,7 @@ public class LoginActivity extends AppCompatActivity {
     private void checkLogin() {
         User user = MyDatabase.getInstance(this).getUserDAO().getUser().get(0);
         if (user != null && user.isLogin()) {
-            showLoadingDialog();
+            LoadingDialog.showLoadingDialog(this);
             new Handler().postDelayed(() -> {
                 navigateHome();
             }, 2000);
@@ -192,5 +153,42 @@ public class LoginActivity extends AppCompatActivity {
                 Log.e("TAG", "Login fails. Error: " + error);
             }
         });
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.btnLogin:
+                String username = binding.layoutUsername.getEditText().getText().toString();
+                String password = binding.layoutPassword.getEditText().getText().toString();
+
+                if (!toeicViewModel.getNetworkState().getValue()) {
+                    Toast.makeText(this, "Không có kết nối internet. Vui lòng kiểm tra lại",
+                            Toast.LENGTH_SHORT).show();
+                } else if (!toeicViewModel.getServerState().getValue()) {
+                    Toast.makeText(this, "Server không phản hồi ngay bây giờ. Vui lòng thử lại sau!",
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    if (username.length() < 8){
+                        binding.layoutUsername.setError("Username must has at least 8 digits");
+                        binding.layoutUsername.getEditText().requestFocus();
+                        binding.layoutPassword.setErrorEnabled(false);
+                        return;
+                    }
+                    if (password.length() < 8){
+                        binding.layoutPassword.setError("Password must has at least 8 digits");
+                        binding.layoutPassword.getEditText().requestFocus();
+                        binding.layoutUsername.setErrorEnabled(false);
+                        return;
+                    }
+                    binding.layoutUsername.setErrorEnabled(false);
+                    binding.layoutPassword.setErrorEnabled(false);
+                    UserAPI.handleLogin(this, username, password);
+                }
+                break;
+            case R.id.txtSignup:
+                startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
+                break;
+        }
     }
 }
