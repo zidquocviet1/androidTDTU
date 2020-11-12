@@ -14,6 +14,24 @@ create table account
 )
 go
 
+create table [user]
+(
+	id int identity(1,1) primary key,
+	name nvarchar(255) not null default '',
+	gender bit default 0,
+	birthday Date default CAST (GETDATE() as Date),
+	address nvarchar(255) default '',
+	email varchar(255) default '',
+	score int default 0,
+	account_id varchar(100),
+	
+	check (score <= 990 and score >= 0),
+	
+	constraint FK_User_Account foreign key (account_id)
+	references account(id)
+)
+go
+
 create table course
 (
 	id int identity(1,1) primary key,
@@ -102,16 +120,11 @@ insert into question values('Once you have your resume with references and ___ ,
 , 'qualified', 'qualifications', 'qualify', 'qualifying', 'qualifications', 1, 5)
 go
 
-
-insert into comment values('Khoa thi nay rat hay', 5,1, 'EgihKqXOydeeD6b5VptzPbiLfSo2')
-insert into comment values('hay lam', 5,3, 'EgihKqXOydeeD6b5VptzPbiLfSo2')
-insert into comment values('Rat ton nhung con nhieu thu chua co', 3,2, 'KqXOydeeD6b5VptzPb')
-go
-
 select * from account
+select * from dbo.[user]
 select * from comment
 select * from course
 select * from category
 select * from question
 
-select * from account where username = 'maiquocviet' and password = 'Quocviet'
+insert into [user](account_id) values('52d7773a-0ef5-41f9-9f85-921f2987c37e')
