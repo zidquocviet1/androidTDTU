@@ -4,17 +4,19 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.widget.Toast;
 
 import com.example.finalproject.api.UserAPI;
 import com.example.finalproject.databinding.ActivityRegisterBinding;
-import com.example.finalproject.models.User;
+import com.example.finalproject.models.Account;
 import com.example.finalproject.view.LoadingDialog;
-import com.example.finalproject.view.LoadingIndicator;
 
 import java.util.UUID;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity implements TextWatcher {
     private ActivityRegisterBinding binding;
 
     @Override
@@ -30,25 +32,74 @@ public class RegisterActivity extends AppCompatActivity {
 
             if (confirmPassword.equals(password)){
                 String id = UUID.randomUUID().toString();
-                User user = new User(id, username, password, "default", false);
-                UserAPI.register(this, user);
+                Account account = new Account(id, username, password, "default", false);
+                account.encryptPassword();
+
+                UserAPI.register(this, account);
             }else{
-                Toast.makeText(this, "Mật khẩu không trùng khớp. Vui lòng nhập lại!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getText(R.string.re_password), Toast.LENGTH_SHORT).show();
+                binding.txtLayoutPassword.getEditText().requestFocus();
             }
         });
+        binding.txtLayoutUsername.getEditText().addTextChangedListener(this);
+        binding.txtLayoutPassword.getEditText().addTextChangedListener(this);
+        binding.txtLayoutConfirm.getEditText().addTextChangedListener(this);
     }
 
-    public void navigate(String message){
-        new Handler().postDelayed(() -> {
-            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    public void navigate(){
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            Toast.makeText(this, getText(R.string.signup_success), Toast.LENGTH_SHORT).show();
             this.finish();
-        }, 2000);
+        }, 1500);
     }
 
-    public void onRegisterFail(String message){
-        new Handler().postDelayed(() -> {
+    public void onRegisterFail(){
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
             LoadingDialog.dismissDialog();
-            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-        }, 2000);
+            binding.txtLayoutUsername.setError(getText(R.string.signup_error));
+        }, 1500);
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+        if (binding.txtLayoutUsername.getEditText().getText().equals(s)){
+            if (s.length() == 0)
+                binding.txtLayoutUsername.setErrorEnabled(false);
+            else if (s.length() < 8)
+                binding.txtLayoutUsername.setError(getText(R.string.username_error));
+            else
+                binding.txtLayoutUsername.setErrorEnabled(false);
+        }else if (binding.txtLayoutPassword.getEditText().getText().equals(s)){
+            if (s.length() == 0)
+                binding.txtLayoutPassword.setErrorEnabled(false);
+            else if (s.length() < 8)
+                binding.txtLayoutPassword.setError(getText(R.string.password_error));
+            else
+                binding.txtLayoutPassword.setErrorEnabled(false);
+
+            if (!binding.txtLayoutConfirm.getEditText().getText().toString().equals(s.toString()))
+                binding.txtLayoutConfirm.setError(getText(R.string.re_password));
+            else
+                binding.txtLayoutConfirm.setErrorEnabled(false);
+        }else if (binding.txtLayoutConfirm.getEditText().getText().equals(s)){
+            if (s.length() == 0)
+                binding.txtLayoutConfirm.setErrorEnabled(false);
+            else if (s.length() < 8)
+                binding.txtLayoutConfirm.setError(getText(R.string.password_error));
+            else if (!binding.txtLayoutPassword.getEditText().getText().toString().equals(s.toString()))
+                binding.txtLayoutConfirm.setError(getText(R.string.re_password));
+            else
+                binding.txtLayoutConfirm.setErrorEnabled(false);
+        }
     }
 }

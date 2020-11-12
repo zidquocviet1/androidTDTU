@@ -3,26 +3,20 @@ package com.example.finalproject;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
-import android.os.Handler;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
 import com.example.finalproject.api.UserAPI;
 import com.example.finalproject.databinding.ActivityLoginBinding;
+import com.example.finalproject.models.Account;
 import com.example.finalproject.models.MyDatabase;
-import com.example.finalproject.models.User;
-import com.example.finalproject.view.LoadingDialog;
 import com.example.finalproject.viewmodel.ToeicViewModel;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -42,7 +36,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private CallbackManager fbCallback;
     private ActivityLoginBinding binding;
-    private Dialog loadingDialog;
     private ToeicViewModel toeicViewModel;
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
@@ -64,10 +57,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         initViewModel();
         setupLoginFacebook();
-        checkLogin();
         handleLogoutFacebook();
-        registerReceiver(receiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
+        registerReceiver(receiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         binding.btnLogin.setOnClickListener(this);
         binding.txtSignup.setOnClickListener(this);
     }
@@ -89,8 +81,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void handleLogoutFacebook() {
-        User user = MyDatabase.getInstance(this).getUserDAO().getUser().get(0);
-        if (user.getType().equals("facebook") && !user.isLogin())
+        Account account = MyDatabase.getInstance(this).userDAO().getFirstAccount();
+        if (account != null && account.getType().equals("facebook") && !account.isLogin())
             LoginManager.getInstance().logOut();
     }
 
@@ -100,7 +92,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         FirebaseUser user = firebaseAuth.getCurrentUser();
-                        User.saveUserInfo(user, this);
+                        Account.saveAccountInfo(user, this);
                         navigateHome();
                         Log.e("TAG", "Sign in with credential successfully! " + user.getUid());
                     } else {
@@ -115,16 +107,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     public ActivityLoginBinding getBinding() {
         return binding;
-    }
-
-    private void checkLogin() {
-        User user = MyDatabase.getInstance(this).getUserDAO().getUser().get(0);
-        if (user != null && user.isLogin()) {
-            LoadingDialog.showLoadingDialog(this);
-            new Handler().postDelayed(() -> {
-                navigateHome();
-            }, 2000);
-        }
     }
 
     public void navigateHome() {
@@ -163,27 +145,30 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 String password = binding.layoutPassword.getEditText().getText().toString();
 
                 if (!toeicViewModel.getNetworkState().getValue()) {
-                    Toast.makeText(this, "Không có kết nối internet. Vui lòng kiểm tra lại",
+                    Toast.makeText(this, getText(R.string.connection),
                             Toast.LENGTH_SHORT).show();
                 } else if (!toeicViewModel.getServerState().getValue()) {
-                    Toast.makeText(this, "Server không phản hồi ngay bây giờ. Vui lòng thử lại sau!",
+                    Toast.makeText(this, getText(R.string.server),
                             Toast.LENGTH_SHORT).show();
                 } else {
                     if (username.length() < 8){
-                        binding.layoutUsername.setError("Username must has at least 8 digits");
+                        binding.layoutUsername.setError(getText(R.string.username_error));
                         binding.layoutUsername.getEditText().requestFocus();
                         binding.layoutPassword.setErrorEnabled(false);
                         return;
                     }
                     if (password.length() < 8){
-                        binding.layoutPassword.setError("Password must has at least 8 digits");
+                        binding.layoutPassword.setError(getText(R.string.password_error));
                         binding.layoutPassword.getEditText().requestFocus();
                         binding.layoutUsername.setErrorEnabled(false);
                         return;
                     }
                     binding.layoutUsername.setErrorEnabled(false);
                     binding.layoutPassword.setErrorEnabled(false);
-                    UserAPI.handleLogin(this, username, password);
+                    Account account = new Account("abc", username, password, "default", false);
+                    account.encryptPassword();
+
+                    UserAPI.handleLogin(this, account);
                 }
                 break;
             case R.id.txtSignup:

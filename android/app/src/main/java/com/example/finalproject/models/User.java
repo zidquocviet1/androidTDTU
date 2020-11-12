@@ -1,91 +1,89 @@
 package com.example.finalproject.models;
 
-import android.content.Context;
+import java.util.Date;
 
-import androidx.annotation.NonNull;
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
-
-import com.google.firebase.auth.FirebaseUser;
-
-@Entity
 public class User {
-    @PrimaryKey
-    @NonNull
-    private String id;
-    @NonNull
-    private String username;
-    @NonNull
-    private String password;
-    @NonNull
-    private String type;
-    @NonNull
-    private boolean isLogin;
+    private int id;
+    private String name;
+    private boolean gender;
+    private Date birthday;
+    private String address;
+    private String email;
+    private int score;
+    private String accountID;
 
-    public User(String id, String username, String password, String type, boolean isLogin) {
+    public User(int id, String name, boolean gender, Date birthday, String address, String email, int score, String accountID) {
         this.id = id;
-        this.username = username;
-        this.password = password;
-        this.type = type;
-        this.isLogin = isLogin;
+        this.name = name;
+        this.gender = gender;
+        this.birthday = birthday;
+        this.address = address;
+        this.email = email;
+        this.score = score;
+        this.accountID = accountID;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getName() {
+        return name;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getPassword() {
-        return password;
+    public boolean isGender() {
+        return gender;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setGender(boolean gender) {
+        this.gender = gender;
     }
 
-    public String getType() {
-        return type;
+    public Date getBirthday() {
+        return birthday;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
     }
 
-    public boolean isLogin() {
-        return isLogin;
+    public String getAddress() {
+        return address;
     }
 
-    public void setLogin(boolean login) {
-        isLogin = login;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public static void saveUserInfo(FirebaseUser user, Context context) {
-        User newUser = new User(user.getUid(), user.getEmail(), "", "facebook", true);
-        UserDAO dao = MyDatabase.getInstance(context).getUserDAO();
-
-        if (dao.getUser().size() != 0)
-            dao.deleteAll();
-        dao.addUser(newUser);
+    public String getEmail() {
+        return email;
     }
 
-    public static void saveUserInfo(User user, Context context) {
-        User newUser = new User(user.getId(), user.getUsername(), user.getPassword(), user.getType(), true);
-        UserDAO dao = MyDatabase.getInstance(context).getUserDAO();
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-        if (dao.getUser().size() != 0)
-            dao.deleteAll();
+    public int getScore() {
+        return score;
+    }
 
-        dao.addUser(newUser);
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public String getAccountID() {
+        return accountID;
+    }
+
+    public void setAccountID(String accountID) {
+        this.accountID = accountID;
     }
 }

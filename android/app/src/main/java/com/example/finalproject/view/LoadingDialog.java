@@ -3,6 +3,7 @@ package com.example.finalproject.view;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Handler;
+import android.os.Looper;
 import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 

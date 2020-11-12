@@ -2,4 +2,22 @@
     <string name="app_name">Toeic Testing</string>
     <string name="facebook_app_id">1037347723373604</string>
     <string name="fb_login_protocol_scheme">fb1037347723373604</string>
+    <string name="hello">Xin Chào %1$s</string>
+    <string name="password_error">Mật khẩu phải có ít nhất 8 kí tự.</string>
+    <string name="username_error">Tài khoản phải có ít nhất 8 kí tự.</string>
+    <string name="re_password">Mật khẩu nhập lại không chính xác.</string>
+    <string name="server">Server không phản hồi ngay bây giờ. Vui lòng thử lại sau!</string>
+    <string name="server_error">Không thể kết nối đến server!</string>
+    <string name="connection">Không có kết nối internet. Vui lòng kiểm tra lại</string>
+    <string name="password">Mật khẩu</string>
+    <string name="confirm_password">Xác nhật mật khẩu</string>
+    <string name="username">Tài khoản</string>
+    <string name="login">Đăng nhập</string>
+    <string name="logout">Đăng xuất</string>
+    <string name="login_success">Đăng nhập thành công.</string>
+    <string name="login_error">Tài khoản hoặc mật khẩu không hợp lệ.</string>
+    <string name="signup">Đăng ký</string>
+    <string name="signup_error">Đăng ký thất bại. Tên tài khoản đã tồn tại!</string>
+    <string name="signup_success">Đăng ký tài khoản thành công.</string>
+    <string name="havAccount">Bạn chưa có tài khoản?</string>
 </resources>
