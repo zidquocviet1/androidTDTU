@@ -30,6 +30,7 @@ public class RegisterActivity extends AppCompatActivity implements TextWatcher {
             String password = binding.txtLayoutPassword.getEditText().getText().toString();
             String confirmPassword = binding.txtLayoutConfirm.getEditText().getText().toString();
 
+            if (!isValid(username, password, confirmPassword)) return;
             if (confirmPassword.equals(password)){
                 String id = UUID.randomUUID().toString();
                 Account account = new Account(id, username, password, "default", false);
@@ -38,7 +39,8 @@ public class RegisterActivity extends AppCompatActivity implements TextWatcher {
                 UserAPI.register(this, account);
             }else{
                 Toast.makeText(this, getText(R.string.re_password), Toast.LENGTH_SHORT).show();
-                binding.txtLayoutPassword.getEditText().requestFocus();
+                binding.txtLayoutConfirm.getEditText().requestFocus();
+                binding.txtLayoutConfirm.setError(getText(R.string.re_password));
             }
         });
         binding.txtLayoutUsername.getEditText().addTextChangedListener(this);
@@ -53,6 +55,26 @@ public class RegisterActivity extends AppCompatActivity implements TextWatcher {
         }, 1500);
     }
 
+    private boolean isValid(String username, String password, String confirm){
+        if (username.length() < 8){
+            binding.txtLayoutUsername.setError(getText(R.string.username_error));
+            return false;
+        }
+        if (password.length() < 8){
+            binding.txtLayoutPassword.setError(getText(R.string.password_error));
+            binding.txtLayoutUsername.setErrorEnabled(false);
+            return false;
+        }
+        if (confirm.length() < 8){
+            binding.txtLayoutUsername.setError(getText(R.string.username_error));
+            binding.txtLayoutPassword.setErrorEnabled(false);
+            return false;
+        }
+        binding.txtLayoutUsername.setErrorEnabled(false);
+        binding.txtLayoutPassword.setErrorEnabled(false);
+        binding.txtLayoutConfirm.setErrorEnabled(false);
+        return true;
+    }
     public void onRegisterFail(){
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
             LoadingDialog.dismissDialog();

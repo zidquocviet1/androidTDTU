@@ -33,7 +33,8 @@ import java.util.Locale;
 import java.util.Map;
 
 public class UserAPI {
-    private static final String BASE_URL = "http://192.168.42.65:5000/api/toeic/";
+    private static final String IP = "192.168.42.65";
+    private static final String BASE_URL = "http://" + IP + ":5000/api/toeic/";
 
     public static void handleLogin(@NotNull LoginActivity context, Account loginAccount) {
         LoadingDialog.showLoadingDialog(context);
@@ -109,7 +110,10 @@ public class UserAPI {
                     }
                 },
                 error -> {
-                    Toast.makeText(context, context.getText(R.string.server_error), Toast.LENGTH_SHORT).show();
+                    new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                        LoadingDialog.dismissDialog();
+                        Toast.makeText(context, context.getText(R.string.server_error), Toast.LENGTH_SHORT).show();
+                    }, 1500);
                 });
 
         queue.add(request);
@@ -124,7 +128,7 @@ public class UserAPI {
                 response -> {
                     try {
                         JSONObject object = new JSONObject(response);
-                        if (object.getBoolean("status")){
+                        if (object.getBoolean("status")) {
                             JSONObject data = object.getJSONObject("data");
 
                             int id = data.getInt("id");
@@ -148,7 +152,7 @@ public class UserAPI {
                                 home.getHomeViewModel().getUser().postValue(user);
                                 LoadingDialog.dismissDialog();
                             }, 1000);
-                        }else{
+                        } else {
                             new Handler(Looper.getMainLooper()).postDelayed(() -> {
                                 try {
                                     Toast.makeText(context, object.getString("message"), Toast.LENGTH_SHORT).show();

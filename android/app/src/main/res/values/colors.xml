@@ -7,4 +7,10 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="title">#0D1333</color>
+    <color name="description">#61688B</color>
+    <color name="content">#A0A5BD</color>
+    <color name="see_all">#6E8AFA</color>
+    <color name="ic_launcher_lv_toeic_background">#DC8F4B</color>
+    <color name="icon">#404870</color>
 </resources>

@@ -1,8 +1,8 @@
 <resources>
-    <string name="app_name">Toeic Testing</string>
+    <string name="app_name">LV Toeic</string>
     <string name="facebook_app_id">1037347723373604</string>
     <string name="fb_login_protocol_scheme">fb1037347723373604</string>
-    <string name="hello">Xin Chào %1$s</string>
+    <string name="hello">Xin Chào, %1$s</string>
     <string name="password_error">Mật khẩu phải có ít nhất 8 kí tự.</string>
     <string name="username_error">Tài khoản phải có ít nhất 8 kí tự.</string>
     <string name="re_password">Mật khẩu nhập lại không chính xác.</string>
@@ -20,4 +20,13 @@
     <string name="signup_error">Đăng ký thất bại. Tên tài khoản đã tồn tại!</string>
     <string name="signup_success">Đăng ký tài khoản thành công.</string>
     <string name="havAccount">Bạn chưa có tài khoản?</string>
+    <string name="account_title">Thông Báo</string>
+    <string name="account_message_login">Tài khoản của bạn hiện chưa đăng nhập. Bạn có muốn đăng nhập ngay bây giờ?</string>
+    <string name="account_message_logout">Bạn có chắc chắn muốn đăng xuất không?</string>
+    <string name="find">Tìm khóa thi bạn muốn thi thử</string>
+    <string name="search">Tìm kiếm khóa thi thử</string>
+    <string name="courses">Khóa thi</string>
+    <string name="vocabulary">Từ vựng</string>
+    <string name="see_all">Xem tất cả</string>
+    <string name="account_info">Thông tin tài khoản</string>
 </resources>

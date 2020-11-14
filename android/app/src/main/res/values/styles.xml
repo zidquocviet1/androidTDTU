@@ -7,5 +7,9 @@
     <style name="NoActionBar" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="colorPrimary">@color/title</item>
+        <item name="colorPrimaryVariant">@color/description</item>
+        <item name="colorOnPrimary">@color/content</item>
+        <item name="android:statusBarColor" >?attr/colorPrimaryVariant</item>
     </style>
 </resources>
