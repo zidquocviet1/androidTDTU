@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">LV Toeic</string>
+    <string name="facebook_app_id">1037347723373604</string>
+    <string name="fb_login_protocol_scheme">fb1037347723373604</string>
+    <string name="hello">Hey %1$s,</string>
+    <string name="password_error">Password must have at least 8 digits.</string>
+    <string name="username_error">Username must have at least 8 digits.</string>
+    <string name="re_password">Password was re-typing is incorrect.</string>
+    <string name="connection">The internet is not available right now. Please check the connection and try again!</string>
+    <string name="server">The server is not available right now. Please try later!</string>
+    <string name="server_error">Cannot connect to the server!</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="username">Username</string>
+    <string name="login">Login</string>
+    <string name="logout">Logout</string>
+    <string name="login_success">Login successfully.</string>
+    <string name="login_error">Username or password is incorrect.</string>
+    <string name="signup">Sign Up</string>
+    <string name="signup_success">Register account successfully.</string>
+    <string name="signup_error">Register failed. The username has already existed!</string>
+    <string name="havAccount">Don\'t have an account?</string>
+    <string name="account_title">Notification</string>
+    <string name="account_message_login">Your account isn\'t logged in. Do you want to login right now?</string>
+    <string name="account_message_logout">Are you sure you want to logout?</string>
+    <string name="find">Find a course you want to learn</string>
+    <string name="search">Search for anything</string>
+    <string name="courses">Courses</string>
+    <string name="vocabulary">Vocabulary</string>
+    <string name="see_all">See All</string>
+    <string name="account_info">Account Info</string>
+</resources>
