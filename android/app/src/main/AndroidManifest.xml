@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.finalproject">
 
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <uses-feature android:name="android.hardware.type.watch" />
+
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -12,9 +16,24 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FinalProject"
         android:usesCleartextTraffic="true">
-        <activity android:name=".RegisterActivity"
-            android:theme="@style/NoActionBar"></activity>
-        <activity android:name=".HomeActivity"
+        <activity android:name=".ExamActivity"></activity>
+
+        <uses-library
+            android:name="com.google.android.wearable"
+            android:required="true" />
+        <!--
+               Set to true if your app is Standalone, that is, it does not require the handheld
+               app to run.
+        -->
+        <meta-data
+            android:name="com.google.android.wearable.standalone"
+            android:value="true" />
+
+        <activity
+            android:name=".RegisterActivity"
+            android:theme="@style/NoActionBar" />
+        <activity
+            android:name=".HomeActivity"
             android:theme="@style/NoActionBar"
             android:windowSoftInputMode="adjustNothing">
             <intent-filter>
@@ -44,10 +63,9 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity"
-            android:theme="@style/NoActionBar">
-
-        </activity>
+        <activity
+            android:name=".LoginActivity"
+            android:theme="@style/NoActionBar" />
     </application>
 
 </manifest>
