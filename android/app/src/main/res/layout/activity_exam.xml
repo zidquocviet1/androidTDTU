@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/white">
+    <!--header-->
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="345dp"
+        android:layout_height="41dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="11dp">
+        <RelativeLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/quiz_detail"
+            android:layout_width="154dp"
+            android:layout_height="41dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="96dp"
+            android:layout_alignParentTop="true">
+            <TextView
+                android:id="@+id/molecular_b"
+                android:layout_width="153dp"
+                android:layout_height="21dp"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="1dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="1dp"
+                android:text="Toeic 750+"
+                android:textSize="18sp"
+                android:lineHeight="21sp"
+                android:textColor="@color/black"
+                android:gravity="center_horizontal|bottom"
+                android:fontFamily="@font/avenir_lt_pro_black"
+                />
+
+            <TextView
+                android:id="@+id/question_id"
+                android:layout_width="82dp"
+                android:layout_height="15dp"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="36dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="26dp"
+                android:text="Question 1"
+                android:lineHeight="15sp"
+                android:textSize="13sp"
+                android:textColor="@color/black"
+                android:gravity="center_horizontal|bottom"
+                android:alpha="0.5"
+                android:fontFamily="@font/avenir_lt_pro_light"
+                />
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="19.39dp"
+            android:layout_height="17.78dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="6dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/ic_back" />
+
+    </RelativeLayout>
+    <!--Scroll-->
+    <ScrollView
+        android:layout_width="345dp"
+        android:layout_marginTop="102dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true">
+
+        <LinearLayout
+            android:layout_width="345dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <!--Question-->
+            <TextView
+                android:id="@+id/question"
+                android:layout_width="345dp"
+                android:layout_height="wrap_content"
+                android:text="Which of the following enzymes convert glucose into glucose-6-p during glycolsis?"
+                android:lineSpacingExtra="8sp"
+                android:textColor="@color/black"
+                android:textSize="22sp"
+                android:fontFamily="@font/avenir_lt_pro_light"/>
+            <!--answer-->
+            <TextView
+                android:layout_width="305dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="50dp"
+                android:text="A"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_vertical"
+                android:textAlignment="center"
+                android:textSize="22sp"
+                tools:ignore="RtlCompat"
+                android:background="@drawable/answer_1"
+                android:fontFamily="@font/avenir_lt_pro_light"/>
+
+            <TextView
+                android:layout_width="305dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="6dp"
+                android:text="A"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_vertical"
+                android:textAlignment="center"
+                android:textSize="22sp"
+                tools:ignore="RtlCompat"
+                android:background="@drawable/answer_selected"
+                android:fontFamily="@font/avenir_lt_pro_light"/>
+            <TextView
+                android:layout_width="305dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="6dp"
+                android:text="A"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_vertical"
+                android:textAlignment="center"
+                android:textSize="22sp"
+                tools:ignore="RtlCompat"
+                android:background="@drawable/answer_1"
+                android:fontFamily="@font/avenir_lt_pro_light"/>
+
+            <TextView
+                android:layout_width="305dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="6dp"
+                android:text="A"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_vertical"
+                android:textAlignment="center"
+                android:textSize="22sp"
+                tools:ignore="RtlCompat"
+                android:background="@drawable/answer_1"
+                android:fontFamily="@font/avenir_lt_pro_light"/>
+        </LinearLayout>
+    </ScrollView>
+
+    <!--footer-->
+    <RelativeLayout
+        android:id="@+id/footer"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="87dp"
+
+        android:background="@drawable/footer_question"
+        android:alpha="0.5">
+        <ImageView
+            android:id="@+id/prev"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginLeft="16dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_previous_question"
+            />
+        <ImageView
+            android:id="@+id/next"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="16dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_next_question"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>
