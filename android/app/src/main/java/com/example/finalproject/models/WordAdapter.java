@@ -16,6 +16,7 @@ import java.util.List;
 public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordVH>{
     private Context context;
     private List<Word> data;
+    private ItemClickListener listener;
 
     public WordAdapter(Context context, List<Word> data) {
         this.context = context;
@@ -25,6 +26,9 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordVH>{
     public void setData(List<Word> data){
         this.data = data;
         notifyItemRangeInserted(0, data.size() -1);
+    }
+    public void setOnItemClickListener(ItemClickListener listener){
+        this.listener = listener;
     }
     public static class WordVH extends RecyclerView.ViewHolder{
         private TextView txtName, txtDes, txtPro;
@@ -49,6 +53,11 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordVH>{
         holder.txtName.setText(word.getName());
         holder.txtDes.setText(word.getDescription());
         holder.txtPro.setText(word.getPronounce());
+
+        holder.itemView.setOnClickListener((view) -> {
+            if (listener != null)
+                listener.onItemClick(this, position);
+        });
     }
 
     @Override

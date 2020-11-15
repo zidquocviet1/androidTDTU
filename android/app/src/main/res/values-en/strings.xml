@@ -13,7 +13,7 @@
     <string name="confirm_password">Confirm Password</string>
     <string name="username">Username</string>
     <string name="login">Login</string>
-    <string name="logout">Logout</string>
+    <string name="logout">Log out</string>
     <string name="login_success">Login successfully.</string>
     <string name="login_error">Username or password is incorrect.</string>
     <string name="signup">Sign Up</string>
@@ -28,5 +28,15 @@
     <string name="courses">Courses</string>
     <string name="vocabulary">Vocabulary</string>
     <string name="see_all">See All</string>
-    <string name="account_info">Account Info</string>
+    <string name="account_info">See your profile</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="home">Home</string>
+    <string name="rank">Rank</string>
+    <string name="profile">Profile</string>
+    <string name="account">Account</string>
+    <string name="communicate">Communicate</string>
+    <string name="share">Share</string>
+    <string name="rate_us">Rate Us</string>
+    <string name="about">About</string>
 </resources>

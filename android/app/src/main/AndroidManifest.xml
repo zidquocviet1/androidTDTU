@@ -10,11 +10,20 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_lv_toeic_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.FinalProject"
+        android:theme="@style/NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".RegisterActivity"
-            android:theme="@style/NoActionBar"></activity>
-        <activity android:name=".HomeActivity"
+        <activity android:name=".UserActivity" />
+        <activity android:name=".ExamActivity" />
+
+        <meta-data
+            android:name="com.google.android.wearable.standalone"
+            android:value="true" />
+
+        <activity
+            android:name=".RegisterActivity"
+            android:theme="@style/NoActionBar" />
+        <activity
+            android:name=".HomeActivity"
             android:theme="@style/NoActionBar"
             android:windowSoftInputMode="adjustNothing">
             <intent-filter>
@@ -44,10 +53,9 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity"
-            android:theme="@style/NoActionBar">
-
-        </activity>
+        <activity
+            android:name=".LoginActivity"
+            android:theme="@style/NoActionBar" />
     </application>
 
 </manifest>

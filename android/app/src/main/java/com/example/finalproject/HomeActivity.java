@@ -1,7 +1,10 @@
 package com.example.finalproject;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -18,6 +21,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.PopupMenu;
 import android.widget.Toast;
@@ -27,17 +31,19 @@ import com.example.finalproject.databinding.ActivityHomeBinding;
 import com.example.finalproject.models.Account;
 import com.example.finalproject.models.Course;
 import com.example.finalproject.models.CourseAdapter;
+import com.example.finalproject.models.ItemClickListener;
 import com.example.finalproject.models.MyDatabase;
 import com.example.finalproject.models.User;
 import com.example.finalproject.models.Word;
 import com.example.finalproject.models.WordAdapter;
 import com.example.finalproject.view.LoadingDialog;
 import com.example.finalproject.viewmodel.HomeViewModel;
+import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
+public class HomeActivity extends AppCompatActivity implements View.OnClickListener, ItemClickListener, NavigationView.OnNavigationItemSelectedListener {
     private ActivityHomeBinding binding;
     private boolean isLogin = false;
     private CourseAdapter courseAdapter;
@@ -66,17 +72,29 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         initViewModel();
         initRecyclerView();
 
+
         Account account = MyDatabase.getInstance(this).userDAO().getFirstAccount();
         if (account != null)
             homeViewModel.getAccount().postValue(account);
 
         binding.cvAvatar.setOnClickListener(this);
         registerReceiver(receiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        binding.txtSeall.setOnClickListener(this);
+        binding.imageView.setOnClickListener(this);
     }
-    @Override
-    protected void onDestroy() {
-        unregisterReceiver(receiver);
-        super.onDestroy();
+
+
+    private void initDrawerLayout(){
+        binding.navView.bringToFront();
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,
+                binding.drawerLayout,
+                null,
+                R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close);
+        binding.drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+        binding.drawerLayout.open();
+        binding.navView.setNavigationItemSelectedListener(this);
     }
     private void initRecyclerView(){
         courses = new ArrayList<>();
@@ -93,6 +111,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         binding.rvVocab.setHasFixedSize(true);
         binding.rvVocab.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         binding.rvVocab.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+
+        wordsAdapter.setOnItemClickListener(this);
+        courseAdapter.setOnItemClickListener(this);
     }
     private void initViewModel() {
         homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
@@ -157,9 +178,15 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     showPopUp(acc, false);
                 }
                 break;
+            case R.id.txtSeall:
+                Log.e("TAG", "Open vocabulary details activity");
+                break;
+            case R.id.imageView:
+                initDrawerLayout();
+                break;
         }
     }
-    private void showPopUp(Account acc,boolean isLogin){
+    private void showPopUp(Account acc ,boolean isLogin){
         PopupMenu popupMenu = new PopupMenu(this, binding.cvAvatar);
 
         if (isLogin){
@@ -167,7 +194,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             popupMenu.setOnMenuItemClickListener(item -> {
                 switch (item.getItemId()){
                     case R.id.mnInfo:
-                        getInfo(acc);
+//                        getInfo(acc);
+                        startActivity(new Intent(HomeActivity.this, UserActivity.class));
                         break;
                     case R.id.mnLogout:
                         showLogoutDialog();
@@ -217,12 +245,42 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.account_title))
                 .setMessage(getString(R.string.account_message_logout))
-                .setIcon(android.R.drawable.ic_dialog_info)
+                .setIcon(R.drawable.ic_baseline_info_24)
                 .setPositiveButton("Yes", ((dialog, which) -> {
                     logout();
                 }))
                 .setNegativeButton("No", ((dialog, which) -> dialog.dismiss()))
                 .setCancelable(false)
                 .create().show();
+    }
+
+    @Override
+    public void onItemClick(Object object, int position) {
+        if (object instanceof CourseAdapter){
+            Log.e("TAG", "Open course detail activity");
+        }else if (object instanceof WordAdapter){
+            Log.e("TAG", "Open word detail activity");
+        }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        binding.drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    @Override
+    protected void onDestroy() {
+        unregisterReceiver(receiver);
+        super.onDestroy();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)){
+            binding.drawerLayout.closeDrawer(GravityCompat.START);
+        }else{
+            super.onBackPressed();
+        }
     }
 }

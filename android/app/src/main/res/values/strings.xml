@@ -29,4 +29,14 @@
     <string name="vocabulary">Từ vựng</string>
     <string name="see_all">Xem tất cả</string>
     <string name="account_info">Thông tin tài khoản</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="home">Trang chủ</string>
+    <string name="rank">Xếp hạng</string>
+    <string name="profile">Thông tin</string>
+    <string name="account">Tài khoản</string>
+    <string name="communicate">Cộng đồng</string>
+    <string name="share">Chia sẻ</string>
+    <string name="rate_us">Đánh giá</string>
+    <string name="about">Giới thiệu</string>
 </resources>

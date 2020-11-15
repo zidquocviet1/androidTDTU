@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/mnHome"
-        android:title="Home"
-        android:icon="@android:drawable/ic_menu_manage"/>
+        android:title="@string/home"
+        android:icon="@drawable/ic_home_24"/>
     <item android:id="@+id/mnRank"
-        android:title="Rank"
-        android:icon="@android:drawable/ic_menu_add"/>
+        android:title="@string/rank"
+        android:icon="@drawable/ic_leaderboard_24"/>
     <item android:id="@+id/mnCourse"
-        android:title="Course"
-        android:icon="@android:drawable/ic_menu_manage"/>
+        android:title="@string/courses"
+        android:icon="@drawable/ic_menu_book_24"/>
 </menu>
