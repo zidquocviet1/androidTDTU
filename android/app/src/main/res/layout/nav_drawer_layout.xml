@@ -35,6 +35,6 @@
         android:textColor="@color/white"
         android:textStyle="italic"
         android:fontFamily="@font/avenir_lt_pro_light"
-        android:text="Mai Quốc Việt - 51800954 \nTrương Văn Long - 51800897"
+        android:text="@string/developer"
         android:textSize="18sp"/>
 </LinearLayout>

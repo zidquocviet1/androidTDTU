@@ -39,4 +39,5 @@
     <string name="share">Share</string>
     <string name="rate_us">Rate Us</string>
     <string name="about">About</string>
+    <string name="share_message">Thank you for your sharing.</string>
 </resources>

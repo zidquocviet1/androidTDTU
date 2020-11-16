@@ -12,4 +12,10 @@
         <item name="colorOnPrimary">@color/content</item>
         <item name="android:statusBarColor" >?attr/colorPrimaryVariant</item>
     </style>
+    <style name="RatingBar"
+        parent="android:style/Widget.Material.RatingBar.Small">
+        <item name="colorControlNormal">@color/content</item>
+        <item name="colorOnBackground">@color/description</item>
+        <item name="colorControlActivated">@color/description</item>
+    </style>
 </resources>
