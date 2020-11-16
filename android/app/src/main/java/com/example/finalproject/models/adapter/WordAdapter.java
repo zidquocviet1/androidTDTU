@@ -1,4 +1,4 @@
-package com.example.finalproject.models;
+package com.example.finalproject.models.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,10 +7,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.finalproject.R;
+import com.example.finalproject.models.ItemClickListener;
+import com.example.finalproject.models.Word;
 
 import java.util.List;
 
