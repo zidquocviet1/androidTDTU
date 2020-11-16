@@ -19,16 +19,26 @@ import com.example.finalproject.R;
 import com.example.finalproject.RegisterActivity;
 import com.example.finalproject.models.Account;
 import com.example.finalproject.models.User;
+import com.example.finalproject.models.Word;
 import com.example.finalproject.view.LoadingDialog;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.reflect.TypeToken;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
+import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -122,6 +132,7 @@ public class UserAPI {
     public static void loadUserInfo(Context context, Account acc) {
         LoadingDialog.showLoadingDialog(context);
         HomeActivity home = (HomeActivity) context;
+
         RequestQueue queue = Volley.newRequestQueue(context.getApplicationContext());
         StringRequest request = new StringRequest(Request.Method.GET,
                 BASE_URL + "user?id=" + acc.getId(),
@@ -147,11 +158,10 @@ public class UserAPI {
                             String accountID = data.getString("accountId");
 
                             Date finalDate = date;
-                            new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                                User user = new User(id, name, gender, finalDate, address, email, score, accountID);
-                                home.getHomeViewModel().getUser().postValue(user);
-                                LoadingDialog.dismissDialog();
-                            }, 1000);
+
+                            User user = new User(id, name, gender, finalDate, address, email, score, accountID);
+                            home.getHomeViewModel().getUser().postValue(user);
+                            home.navigateToUserInfo();
                         } else {
                             new Handler(Looper.getMainLooper()).postDelayed(() -> {
                                 try {
@@ -173,6 +183,47 @@ public class UserAPI {
                         LoadingDialog.dismissDialog();
                     }, 1000);
                 });
+        queue.add(request);
+    }
+
+    public static void getUserByScore(Context context) {
+        LoadingDialog.showLoadingDialog(context);
+        HomeActivity home = (HomeActivity) context;
+
+        RequestQueue queue = Volley.newRequestQueue(context.getApplicationContext());
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
+                BASE_URL + "rank", null,
+                response -> {
+                    try {
+                        if (response.getBoolean("status")) {
+
+                            JSONArray array = response.getJSONArray("data");
+
+                            GsonBuilder builder = new GsonBuilder();
+                            builder.setDateFormat("yyyy-MM-dd");
+
+                            Gson gson = builder.create();
+                            Type listWordType = new TypeToken<List<User>>(){ }.getType();
+                            List<User> users = gson.fromJson(array.toString(), listWordType);
+
+                            home.getHomeViewModel().getUsers().postValue(users);
+                            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                                LoadingDialog.dismissDialog();
+                            }, 1000);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                },
+                error -> {
+                    new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                        LoadingDialog.dismissDialog();
+                        Toast.makeText(context, context.getText(R.string.server_error), Toast.LENGTH_SHORT).show();
+                        home.getHomeViewModel().getServerState().postValue(false);
+                    }, 1500);
+                });
+
         queue.add(request);
     }
 }

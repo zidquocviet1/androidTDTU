@@ -17,6 +17,7 @@ public class HomeViewModel extends ViewModel {
     private MutableLiveData<User> userInfo;
     private MutableLiveData<List<Course>> courses;
     private MutableLiveData<List<Word>> words;
+    private MutableLiveData<List<User>> users;
 
     public HomeViewModel() {
         serverState = new MutableLiveData<>();
@@ -25,6 +26,7 @@ public class HomeViewModel extends ViewModel {
         userInfo = new MutableLiveData<>();
         courses = new MutableLiveData<>();
         words = new MutableLiveData<>();
+        users = new MutableLiveData<>();
 
         serverState.setValue(true);
         networkState.setValue(true);
@@ -54,5 +56,9 @@ public class HomeViewModel extends ViewModel {
 
     public MutableLiveData<List<Word>> getWords() {
         return words;
+    }
+
+    public MutableLiveData<List<User>> getUsers() {
+        return users;
     }
 }
