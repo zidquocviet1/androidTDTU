@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.finalproject.R;
@@ -53,7 +54,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseVH> 
     @NonNull
     @Override
     public CourseAdapter.CourseVH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.course_info, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.course_info, parent, false);
         return new CourseVH(view);
     }
 

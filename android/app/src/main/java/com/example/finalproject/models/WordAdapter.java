@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.finalproject.R;
@@ -22,7 +23,6 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordVH>{
         this.context = context;
         this.data = data;
     }
-
     public void setData(List<Word> data){
         this.data = data;
         notifyItemRangeInserted(0, data.size() -1);
@@ -43,7 +43,7 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordVH>{
     @NonNull
     @Override
     public WordAdapter.WordVH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.word_info, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.word_info, parent, false);
         return new WordVH(view);
     }
 
