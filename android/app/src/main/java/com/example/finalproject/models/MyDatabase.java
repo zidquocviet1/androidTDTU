@@ -1,32 +1,19 @@
 package com.example.finalproject.models;
 
 import android.content.Context;
-import android.renderscript.ScriptGroup;
-import android.util.Log;
 
-import androidx.core.content.ContextCompat;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-import com.example.finalproject.R;
+import com.example.finalproject.Utils;
 import com.example.finalproject.models.DAO.*;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
-import java.io.Writer;
-import java.util.Scanner;
+import java.lang.reflect.Type;
+import java.util.List;
 
 @Database(entities = {Account.class, Question.class, Course.class, Category.class, Word.class}, version = 1)
 public abstract class MyDatabase extends RoomDatabase {
@@ -35,8 +22,13 @@ public abstract class MyDatabase extends RoomDatabase {
     public static synchronized MyDatabase getInstance(Context context) {
         if (instance == null) {
             instance = create(context);
-            InputStream in = context.getResources().openRawResource(R.raw.vocab_csv);
-            instance.populateInitialData(in);
+            InputStream is = null;
+            try {
+                is = context.getAssets().open("vocab_json.json");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            instance.populateInitialData(is);
         }
         return instance;
     }
@@ -69,7 +61,7 @@ public abstract class MyDatabase extends RoomDatabase {
         }
         if (questionDAO().count() == 0) {
             runInTransaction(() -> {
-                for (Question q : Question.questions) {
+                for (Question q : Question.READING_QUESTIONS) {
                     questionDAO().insert(q);
                 }
             });
@@ -77,20 +69,13 @@ public abstract class MyDatabase extends RoomDatabase {
 
         if (wordDAO().count() == 0) {
             runInTransaction(() -> {
-                Scanner sc = new Scanner(in);
-                int i = 0;
-                while (sc.hasNext() && i <= 1000){
-                    String data = sc.nextLine();
-                    String[] vocab = data.split(",");
+                String jsonFileString = Utils.getJsonFromAssets(in);
 
-                    String name = vocab[0].replace("\"", "");
-                    String des = vocab[1].replace("\"", "");
-                    String pron = vocab[2].replace("\"", "");
+                Gson gson = new Gson();
+                Type listWordType = new TypeToken<List<Word>>(){ }.getType();
+                List<Word> words = gson.fromJson(jsonFileString, listWordType);
 
-                    Word word = new Word(0, name, des, pron);
-                    wordDAO().addWord(word);
-                    i++;
-                }
+                words.forEach(w -> wordDAO().addWord(w));
             });
         }
     }
