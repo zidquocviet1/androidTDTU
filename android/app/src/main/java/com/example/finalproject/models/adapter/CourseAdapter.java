@@ -1,4 +1,4 @@
-package com.example.finalproject.models;
+package com.example.finalproject.models.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,10 +9,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.finalproject.R;
+import com.example.finalproject.models.Course;
+import com.example.finalproject.models.ItemClickListener;
 
 import java.util.List;
 import java.util.Random;
@@ -61,7 +62,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseVH> 
     @Override
     public void onBindViewHolder(@NonNull CourseAdapter.CourseVH holder, int position) {
         Course c = data.get(position);
-        int image = new Random().nextInt(3);
+        int image = new Random().nextInt(4);
 
         holder.imageView.setImageDrawable(ContextCompat.getDrawable(context, images[image]));
         holder.txtName.setText(c.getName());

@@ -45,6 +45,9 @@
     <string name="share">Chia sẻ</string>
     <string name="rate_us">Đánh giá</string>
     <string name="about">Giới thiệu</string>
+    <string name="developer" translatable="false">Mai Quốc Việt - 5180095
+        Trương Văn Long - 51800897</string>
+    <string name="share_message">Cảm ơn vì bạn đã chia sẻ.</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

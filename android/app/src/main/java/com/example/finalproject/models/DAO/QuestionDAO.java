@@ -18,6 +18,4 @@ public interface QuestionDAO {
 
     @Query("select * from question")
     List<Question> getAllQuestions();
-
-
 }

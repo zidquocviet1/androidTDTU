@@ -5,7 +5,6 @@ import androidx.room.Insert;
 import androidx.room.Query;
 
 import com.example.finalproject.models.Category;
-import com.example.finalproject.models.Question;
 
 import java.util.List;
 

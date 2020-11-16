@@ -16,6 +16,6 @@ public interface WordDAO {
     @Insert
     long addWord(Word word);
 
-    @Query("select * from word limit 30")
+    @Query("select * from word order by random() limit 30")
     List<Word> getTop30();
 }
