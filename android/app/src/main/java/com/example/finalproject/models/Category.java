@@ -46,10 +46,10 @@ public class Category {
     }
 
     static final Category[] categories = {
-            new Category(0, "Statement", "Chon ra loi tuyen bo dung cua cau hoi"),
-            new Category(0,"Choice", "Chon ra cau dung"),
-            new Category(0, "Wh-question", "Cau hoi WH"),
-            new Category(0, "Yes/no/tag - question", "Cau hoi yes/no"),
-            new Category(0, "Word form", "Cau hoi ve tu loai")
+            new Category(0, "Tag question", "Câu hỏi đuôi"),
+            new Category(0,"Vocabulary", "Câu hỏi nghĩa của từ"),
+            new Category(0, "Wh-question", "Câu hỏi WH"),
+            new Category(0, "Yes/no/tag - question", "Câu hỏi Yes/No"),
+            new Category(0, "Word form", "Câu hỏi về từ loại")
     };
 }

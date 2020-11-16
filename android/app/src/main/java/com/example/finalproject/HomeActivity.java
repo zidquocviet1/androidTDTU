@@ -3,16 +3,11 @@ package com.example.finalproject;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.menu.MenuPopupHelper;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
@@ -31,24 +26,26 @@ import android.widget.Toast;
 
 import com.example.finalproject.api.UserAPI;
 import com.example.finalproject.databinding.ActivityHomeBinding;
+import com.example.finalproject.fragment.CourseFragment;
+import com.example.finalproject.fragment.HomeFragment;
+import com.example.finalproject.fragment.RankFragment;
 import com.example.finalproject.models.Account;
-import com.example.finalproject.models.Course;
-import com.example.finalproject.models.CourseAdapter;
+import com.example.finalproject.models.adapter.CourseAdapter;
 import com.example.finalproject.models.ItemClickListener;
 import com.example.finalproject.models.MyDatabase;
 import com.example.finalproject.models.User;
-import com.example.finalproject.models.Word;
-import com.example.finalproject.models.WordAdapter;
+import com.example.finalproject.models.adapter.WordAdapter;
 import com.example.finalproject.view.LoadingDialog;
 import com.example.finalproject.viewmodel.HomeViewModel;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
-import java.util.ArrayList;
-import java.util.List;
+public class HomeActivity extends AppCompatActivity
+        implements View.OnClickListener, ItemClickListener,
+        NavigationView.OnNavigationItemSelectedListener,
+        BottomNavigationView.OnNavigationItemSelectedListener {
 
-public class HomeActivity extends AppCompatActivity implements View.OnClickListener, ItemClickListener, NavigationView.OnNavigationItemSelectedListener {
     private ActivityHomeBinding binding;
-    private boolean isLogin = false;
     private HomeViewModel homeViewModel;
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -79,7 +76,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         binding.cvAvatar.setOnClickListener(this);
         binding.imageView.setOnClickListener(this);
         binding.navView.setCheckedItem(R.id.mnHome);
-        openFragment(HomeFragment.class);
+        binding.bottomNav.setOnNavigationItemSelectedListener(this);
+        openFragment(HomeFragment.class, "Home");
     }
 
     private void initDrawerLayout() {
@@ -117,18 +115,15 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private void checkLogin(Account account) {
         if (!homeViewModel.getNetworkState().getValue()) {
             binding.imgAvatar.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.com_facebook_profile_picture_blank_square));
-            isLogin = false;
             return;
         }
         if (account != null && account.isLogin()) {
-            isLogin = true;
             binding.imgAvatar.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_launcher_foreground));
         } else {
             LoadingDialog.showLoadingDialog(this);
 
             new Handler(Looper.getMainLooper()).postDelayed(() -> {
                 LoadingDialog.dismissDialog();
-                isLogin = false;
                 binding.imgAvatar.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.com_facebook_profile_picture_blank_square));
             }, 1500);
         }
@@ -205,7 +200,19 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 .create().show();
     }
 
-    private void openFragment(Class fragmentClass) {
+    private void showAboutDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.about))
+                .setMessage(getString(R.string.developer))
+                .setIcon(R.drawable.ic_baseline_info_24)
+                .setPositiveButton("OK", ((dialog, which) -> {
+                    dialog.dismiss();
+                }))
+                .setCancelable(false)
+                .create().show();
+    }
+
+    private void openFragment(Class fragmentClass, CharSequence title) {
         Fragment fragment = null;
 
         try {
@@ -216,6 +223,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         FragmentManager fm = getSupportFragmentManager();
         fm.beginTransaction().replace(R.id.framelayout, fragment).commit();
+        binding.txtTitle.setText(title);
     }
 
     @Override
@@ -229,25 +237,34 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        Class fragmentClass;
+        Class fragmentClass = null;
         switch (item.getItemId()) {
             case R.id.mnRank:
                 fragmentClass = RankFragment.class;
                 break;
             case R.id.mnCourse:
-                fragmentClass = RankFragment.class;
+                fragmentClass = CourseFragment.class;
                 break;
             case R.id.mnVocab:
                 fragmentClass = RankFragment.class;
+                break;
+            case R.id.mnAbout:
+                showAboutDialog();
+                break;
+            case R.id.mnShare:
+                Toast.makeText(this, getString(R.string.share_message), Toast.LENGTH_SHORT).show();
                 break;
             default:
                 fragmentClass = HomeFragment.class;
         }
 
-        openFragment(fragmentClass);
+        if (fragmentClass != null)
+            openFragment(fragmentClass, item.getTitle());
 
         binding.navView.setCheckedItem(item);
+        binding.bottomNav.setOnNavigationItemSelectedListener(null);
         binding.bottomNav.setSelectedItemId(item.getItemId());
+        binding.bottomNav.setOnNavigationItemSelectedListener(this);
         binding.drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }

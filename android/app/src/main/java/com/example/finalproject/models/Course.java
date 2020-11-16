@@ -58,10 +58,10 @@ public class Course {
     }
 
     static final Course[] courses = {
-            new Course(0, "Toeic 750", "On thi 750 tro xuong", 4),
-            new Course(0, "Toeic 550", "On thi 550 tro xuong", 3),
-            new Course(0, "Toeic 850", "On thi 850 tro xuong", 3),
-            new Course(0, "Toeic 990", "On thi 990 tro xuong", 5),
-            new Course(0, "Toeic 650", "On thi 650 tro xuong", 3)
+            new Course(0, "Toeic 750", "Mục tiêu khóa này là 750 điểm", 4),
+            new Course(0, "Toeic 550", "Mục tiêu khóa này là 550 điểm", 3),
+            new Course(0, "Toeic 850", "Mục tiêu khóa này là 850 điểm", 2),
+            new Course(0, "Toeic 990", "Mục tiêu khóa này là 990 điểm", 1),
+            new Course(0, "Toeic 650", "Mục tiêu khóa này là 650 điểm", 3)
     };
 }

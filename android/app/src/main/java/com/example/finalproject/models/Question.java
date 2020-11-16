@@ -15,9 +15,12 @@ public class Question {
     private String answer;
     private long courseID;
     private long categoryID;
+    private int part;
+    private String audioFile;
 
-    public Question(long id, String description, String questionA, String questionB, String questionC, String questionD,
-                    String answer, long courseID, long categoryID) {
+    public Question(long id, String description, String questionA, String questionB,
+                    String questionC, String questionD, String answer, long courseID,
+                    long categoryID, int part, String audioFile) {
         this.id = id;
         this.description = description;
         this.questionA = questionA;
@@ -27,6 +30,8 @@ public class Question {
         this.answer = answer;
         this.courseID = courseID;
         this.categoryID = categoryID;
+        this.part = part;
+        this.audioFile = audioFile;
     }
 
     public long getId() {
@@ -101,16 +106,32 @@ public class Question {
         this.categoryID = categoryID;
     }
 
-    static final Question[] questions = {
+    public int getPart() {
+        return part;
+    }
+
+    public void setPart(int part) {
+        this.part = part;
+    }
+
+    public String getAudioFile() {
+        return audioFile;
+    }
+
+    public void setAudioFile(String audioFile) {
+        this.audioFile = audioFile;
+    }
+
+    static final Question[] READING_QUESTIONS = {
             new Question(0, "The assets of Marble Faun Publishing Company ___ last quarter when one of their main local distributors went out of business."
-            , "suffer", "suffers", "suffering", "suffered", "suffered", 1, 5),
+            , "suffer", "suffers", "suffering", "suffered", "suffered", 1, 5, 5, ""),
             new Question(0, "Indie film director Luke Steele will be in London for the premiere of ___ new movie."
-            , "him", "his", "himself", "he", "his", 1, 5),
+            , "him", "his", "himself", "he", "his", 1, 5, 5, ""),
             new Question(0, "Laboratory employees are expected to wear a name tag and carry identification at ___ times."
-            , "full", "complete", "all", "total", "all", 1, 2),
+            , "full", "complete", "all", "total", "all", 1, 2, 5, ""),
             new Question(0, "The latest training ___ contains tips on teaching a second language to international students:"
-            , "method", "guide", "staff", "role", "guide", 1, 2),
+            , "method", "guide", "staff", "role", "guide", 1, 2, 5, ""),
             new Question(0, "Once you have your resume with references and ___ , please submit it to the Human Resources Department on the 3rd floor."
-            , "qualified", "qualifications", "qualify", "qualifying", "qualifications", 1, 5)
+            , "qualified", "qualifications", "qualify", "qualifying", "qualifications", 1, 5, 5, "")
     };
 }
