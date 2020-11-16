@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragment.HomeFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/txtHello"
+            style="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
+            android:fontFamily="@font/avenir_lt_pro_black"
+            android:text="Hey Guys,"
+            android:textColor="@color/title"
+            android:textSize="28sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/txt1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/avenir_lt_pro_light"
+            android:text="@string/find"
+            android:textColor="@color/description"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="@id/txtHello"
+            app:layout_constraintTop_toBottomOf="@id/txtHello" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvCourse"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="@id/txtLayoutSearch"
+            app:layout_constraintStart_toStartOf="@id/courses"
+            app:layout_constraintTop_toBottomOf="@+id/courses" />
+
+        <TextView
+            android:id="@+id/courses"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/avenir_lt_pro_black"
+            android:text="@string/courses"
+            android:textColor="@color/title"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="@id/txt1"
+            app:layout_constraintTop_toBottomOf="@id/txtLayoutSearch" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/txtLayoutSearch"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:outlineProvider="none"
+            app:hintEnabled="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/txt1"
+            app:layout_constraintTop_toBottomOf="@id/txt1"
+            app:startIconDrawable="@drawable/search"
+            app:startIconTint="@color/icon">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/search_field"
+                android:hint="@string/search"
+                android:inputType="text"
+                android:maxLines="1"
+                android:scrollHorizontally="true"
+                android:textColor="#A0A5BD" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/vocabulary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/avenir_lt_pro_black"
+            android:text="@string/vocabulary"
+            android:textColor="@color/title"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="@id/courses"
+            app:layout_constraintTop_toBottomOf="@id/rvCourse" />
+
+        <TextView
+            android:id="@+id/txtSeall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:background="?selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:fontFamily="@font/avenir_lt_pro_light"
+            android:text="@string/see_all"
+            android:textColor="@color/see_all"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBaseline_toBaselineOf="@id/vocabulary"
+            app:layout_constraintEnd_toEndOf="@+id/rvCourse" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvVocab"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/rvCourse"
+            app:layout_constraintStart_toStartOf="@id/rvCourse"
+            app:layout_constraintTop_toBottomOf="@+id/vocabulary" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>
