@@ -15,6 +15,7 @@ import androidx.appcompat.widget.AppCompatImageView;
 public class LoadingIndicator extends AppCompatImageView {
     private final int PURPLE = 17170457;
     private int[] colors = new int[] {Color.BLUE, Color.GREEN, Color.YELLOW, Color.RED};
+    private int[] colors2 = new int[] {0xFF0D1333, 0xFF61688B, 0xFFA0A5BD};
     private Paint paint;
     private int stroke = 10;
 
@@ -41,7 +42,7 @@ public class LoadingIndicator extends AppCompatImageView {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        Shader shader = new SweepGradient(getWidth() / 2, getHeight() / 2, colors, null);
+        Shader shader = new SweepGradient(getWidth() / 2, getHeight() / 2, colors2, null);
         paint.setShader(shader);
         canvas.drawCircle(getWidth() / 2, getHeight() / 2, getWidth() / 2 - stroke, paint);
     }
