@@ -137,8 +137,7 @@ public class HomeActivity extends AppCompatActivity
             popupMenu.setOnMenuItemClickListener(item -> {
                 switch (item.getItemId()) {
                     case R.id.mnInfo:
-//                        getInfo(acc);
-                        startActivity(new Intent(HomeActivity.this, UserActivity.class));
+                        getInfo(acc);
                         break;
                     case R.id.mnLogout:
                         showLogoutDialog();
@@ -167,19 +166,22 @@ public class HomeActivity extends AppCompatActivity
         homeViewModel.getAccount().postValue(account);
     }
 
+    public void navigateToUserInfo() {
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            startActivity(new Intent(HomeActivity.this, UserActivity.class));
+            LoadingDialog.dismissDialog();
+        }, 1000);
+    }
+
     private void getInfo(Account acc) {
-        if (homeViewModel.getNetworkState().getValue()) {
-            if (homeViewModel.getServerState().getValue()) {
-                User user = homeViewModel.getUser().getValue();
-                if (user == null)
-                    UserAPI.loadUserInfo(this, acc);
-                else
-                    showUserInfo(user);
-            } else {
-                Toast.makeText(this, getString(R.string.server), Toast.LENGTH_SHORT).show();
+        if (isServerAndNetworkAvailable()){
+            User user = homeViewModel.getUser().getValue();
+            if (user == null)
+                UserAPI.loadUserInfo(this, acc);
+            else {
+                showUserInfo(user);
+                startActivity(new Intent(HomeActivity.this, UserActivity.class));
             }
-        } else {
-            Toast.makeText(this, getString(R.string.connection), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -226,6 +228,22 @@ public class HomeActivity extends AppCompatActivity
         binding.txtTitle.setText(title);
     }
 
+    public boolean isServerAndNetworkAvailable(){
+        if (homeViewModel.getNetworkState().getValue()) {
+            if (homeViewModel.getServerState().getValue()) {
+                return true;
+            } else {
+                Toast.makeText(this, getString(R.string.server), Toast.LENGTH_SHORT).show();
+                homeViewModel.getServerState().postValue(false);
+                return false;
+            }
+        } else {
+            Toast.makeText(this, getString(R.string.connection), Toast.LENGTH_SHORT).show();
+            homeViewModel.getNetworkState().postValue(false);
+            return false;
+        }
+    }
+
     @Override
     public void onItemClick(Object object, int position) {
         if (object instanceof CourseAdapter) {
@@ -240,22 +258,32 @@ public class HomeActivity extends AppCompatActivity
         Class fragmentClass = null;
         switch (item.getItemId()) {
             case R.id.mnRank:
-                fragmentClass = RankFragment.class;
+                if (binding.bottomNav.getSelectedItemId() != R.id.mnRank)
+                    fragmentClass = RankFragment.class;
                 break;
             case R.id.mnCourse:
-                fragmentClass = CourseFragment.class;
+                if (binding.bottomNav.getSelectedItemId() != R.id.mnCourse)
+                    fragmentClass = CourseFragment.class;
                 break;
             case R.id.mnVocab:
-                fragmentClass = RankFragment.class;
+                if (binding.bottomNav.getSelectedItemId() != R.id.mnVocab)
+                    fragmentClass = RankFragment.class;
                 break;
             case R.id.mnAbout:
-                showAboutDialog();
+                if (binding.bottomNav.getSelectedItemId() != R.id.mnAbout)
+                    showAboutDialog();
                 break;
             case R.id.mnShare:
-                Toast.makeText(this, getString(R.string.share_message), Toast.LENGTH_SHORT).show();
+                if (binding.bottomNav.getSelectedItemId() != R.id.mnShare)
+                    Toast.makeText(this, getString(R.string.share_message), Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.mnRate:
+                if (binding.bottomNav.getSelectedItemId() != R.id.mnRate)
+                    Toast.makeText(this, getString(R.string.share_message), Toast.LENGTH_SHORT).show();
                 break;
             default:
-                fragmentClass = HomeFragment.class;
+                if (binding.bottomNav.getSelectedItemId() != R.id.mnHome)
+                    fragmentClass = HomeFragment.class;
         }
 
         if (fragmentClass != null)
