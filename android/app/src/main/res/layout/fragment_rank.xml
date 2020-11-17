@@ -8,7 +8,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="234dp">
+        android:layout_height="181dp">
 
         <View
             android:layout_width="match_parent"
@@ -30,24 +30,24 @@
             android:layout_marginTop="40dp"
             android:background="@drawable/ic_ranking_lead" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="144dp"
-            android:text="RANKING"
-            android:textColor="@color/content"
-            android:textSize="46sp"
-            android:fontFamily="@font/avenir_lt_pro_light"
-            android:textStyle="bold"/>
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="278dp"
+        android:layout_marginTop="200dp"
         android:layout_marginLeft="26dp"
         >
+        <TextView
+            android:id="@+id/txtContent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/avenir_lt_pro_light"
+            android:textSize="20sp"
+            android:visibility="gone"
+            android:textColor="@color/content"
+            android:textAlignment="center"
+            android:text="@string/connection"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rank_user"
@@ -55,8 +55,9 @@
             android:layout_height="match_parent"
             app:layoutManager="GridLayoutManager"
             app:spanCount="3"
-            tools:listitem="@layout/rank_user"
-            />
+            tools:listitem="@layout/rank_user" />
 
     </RelativeLayout>
+
+
 </FrameLayout>
