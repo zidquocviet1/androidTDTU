@@ -61,8 +61,9 @@ public class UserAPI {
 
                             String id = user.getString("id");
                             String type = user.getString("type");
+                            String fullName = user.getString("fullName");
 
-                            Account.saveAccountInfo(new Account(id, "", "", type, true), context);
+                            Account.saveAccountInfo(new Account(id, "", "", type, true, fullName), context);
                             new Handler(Looper.getMainLooper()).postDelayed(() -> {
                                 LoadingDialog.dismissDialog();
                                 context.navigateHome();
@@ -101,6 +102,7 @@ public class UserAPI {
         params.put("username", account.getUsername());
         params.put("password", account.getPassword());
         params.put("type", account.getType());
+        params.put("fullName", account.getFullName());
 
         JSONObject postParams = new JSONObject(params);
 
@@ -156,10 +158,11 @@ public class UserAPI {
                             String email = data.getString("email");
                             int score = data.getInt("score");
                             String accountID = data.getString("accountId");
+                            int avatar = data.getInt("avatar");
 
                             Date finalDate = date;
 
-                            User user = new User(id, name, gender, finalDate, address, email, score, accountID);
+                            User user = new User(id, name, gender, finalDate, address, email, score, accountID, avatar);
                             home.getHomeViewModel().getUser().postValue(user);
                             home.navigateToUserInfo();
                         } else {
@@ -186,6 +189,51 @@ public class UserAPI {
         queue.add(request);
     }
 
+    public static void getUserInfoBackground(Context context, Account acc) {
+        HomeActivity home = (HomeActivity) context;
+
+        RequestQueue queue = Volley.newRequestQueue(context.getApplicationContext());
+        StringRequest request = new StringRequest(Request.Method.GET,
+                BASE_URL + "user?id=" + acc.getId(),
+                response -> {
+                    try {
+                        JSONObject object = new JSONObject(response);
+                        if (object.getBoolean("status")) {
+                            JSONObject data = object.getJSONObject("data");
+
+                            int id = data.getInt("id");
+                            String name = data.getString("name");
+                            boolean gender = data.getBoolean("gender");
+                            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+                            Date date = null;
+                            try {
+                                date = format.parse(data.getString("birthday"));
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            String address = data.getString("address");
+                            String email = data.getString("email");
+                            int score = data.getInt("score");
+                            String accountID = data.getString("accountId");
+                            int avatar = data.getInt("avatar");
+
+                            Date finalDate = date;
+
+                            User user = new User(id, name, gender, finalDate, address, email, score, accountID, avatar);
+                            home.getHomeViewModel().getUser().postValue(user);
+                        } else {
+                            home.getHomeViewModel().getUser().postValue(null);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                },
+                error -> {
+                    home.getHomeViewModel().getServerState().postValue(false);
+                });
+        queue.add(request);
+    }
+
     public static void getUserByScore(Context context) {
         LoadingDialog.showLoadingDialog(context);
         HomeActivity home = (HomeActivity) context;
@@ -204,12 +252,13 @@ public class UserAPI {
                             builder.setDateFormat("yyyy-MM-dd");
 
                             Gson gson = builder.create();
-                            Type listWordType = new TypeToken<List<User>>(){ }.getType();
+                            Type listWordType = new TypeToken<List<User>>() {
+                            }.getType();
                             List<User> users = gson.fromJson(array.toString(), listWordType);
 
-                            home.getHomeViewModel().getUsers().postValue(users);
                             new Handler(Looper.getMainLooper()).postDelayed(() -> {
                                 LoadingDialog.dismissDialog();
+                                home.getHomeViewModel().getUsers().postValue(users);
                             }, 1000);
                         }
                     } catch (JSONException e) {
@@ -221,7 +270,7 @@ public class UserAPI {
                         LoadingDialog.dismissDialog();
                         Toast.makeText(context, context.getText(R.string.server_error), Toast.LENGTH_SHORT).show();
                         home.getHomeViewModel().getServerState().postValue(false);
-                    }, 1500);
+                    }, 1000);
                 });
 
         queue.add(request);
