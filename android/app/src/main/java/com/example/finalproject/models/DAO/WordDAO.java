@@ -3,6 +3,7 @@ package com.example.finalproject.models.DAO;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import com.example.finalproject.models.Word;
 
@@ -18,4 +19,10 @@ public interface WordDAO {
 
     @Query("select * from word order by random() limit 30")
     List<Word> getTop30();
+
+    @Query("select * from word")
+    List<Word> getAll();
+
+    @Update
+    void updateWord(Word word);
 }

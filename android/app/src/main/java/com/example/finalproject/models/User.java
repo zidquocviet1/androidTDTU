@@ -1,8 +1,11 @@
 package com.example.finalproject.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.Date;
 
-public class User {
+public class User implements Parcelable {
     private int id;
     private String name;
     private boolean gender;
@@ -10,9 +13,11 @@ public class User {
     private String address;
     private String email;
     private int score;
-    private String accountID;
+    private String accountId;
+    private int avatar;
 
-    public User(int id, String name, boolean gender, Date birthday, String address, String email, int score, String accountID) {
+    public User(int id, String name, boolean gender, Date birthday,
+                String address, String email, int score, String accountId, int avatar) {
         this.id = id;
         this.name = name;
         this.gender = gender;
@@ -20,8 +25,32 @@ public class User {
         this.address = address;
         this.email = email;
         this.score = score;
-        this.accountID = accountID;
+        this.accountId = accountId;
+        this.avatar = avatar;
     }
+
+    protected User(Parcel in) {
+        id = in.readInt();
+        name = in.readString();
+        gender = in.readByte() != 0;
+        address = in.readString();
+        email = in.readString();
+        score = in.readInt();
+        accountId = in.readString();
+        avatar = in.readInt();
+    }
+
+    public static final Creator<User> CREATOR = new Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 
     public int getId() {
         return id;
@@ -79,11 +108,36 @@ public class User {
         this.score = score;
     }
 
-    public String getAccountID() {
-        return accountID;
+    public String getAccountId() {
+        return accountId;
     }
 
-    public void setAccountID(String accountID) {
-        this.accountID = accountID;
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
+    }
+
+    public int getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(int avatar) {
+        this.avatar = avatar;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(name);
+        dest.writeByte((byte) (gender ? 1 : 0));
+        dest.writeString(address);
+        dest.writeString(email);
+        dest.writeInt(score);
+        dest.writeString(accountId);
+        dest.writeInt(avatar);
     }
 }

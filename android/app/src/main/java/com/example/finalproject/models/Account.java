@@ -25,13 +25,15 @@ public class Account {
     private String type;
     @NonNull
     private boolean isLogin;
+    private String fullName;
 
-    public Account(String id, String username, String password, String type, boolean isLogin) {
+    public Account(String id, String username, String password, String type, boolean isLogin, String fullName) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.type = type;
         this.isLogin = isLogin;
+        this.fullName = fullName;
     }
 
     public String getId() {
@@ -74,9 +76,17 @@ public class Account {
         isLogin = login;
     }
 
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
     public static void saveAccountInfo(FirebaseUser user, Context context) {
-        Account newAccount = new Account(user.getUid(), user.getEmail(), "", "facebook", true);
-        AccountDAO dao = MyDatabase.getInstance(context).userDAO();
+        Account newAccount = new Account(user.getUid(), user.getEmail(), "", "facebook", true, user.getDisplayName());
+        AccountDAO dao = MyDatabase.getInstance(context).accDAO();
 
         if (dao.getAllAccount().size() != 0)
             dao.deleteAll();
@@ -84,8 +94,8 @@ public class Account {
     }
 
     public static void saveAccountInfo(Account account, Context context) {
-        Account newAccount = new Account(account.getId(), account.getUsername(), account.getPassword(), account.getType(), true);
-        AccountDAO dao = MyDatabase.getInstance(context).userDAO();
+        Account newAccount = new Account(account.getId(), account.getUsername(), account.getPassword(), account.getType(), true, account.getFullName());
+        AccountDAO dao = MyDatabase.getInstance(context).accDAO();
 
         if (dao.getAllAccount().size() != 0)
             dao.deleteAll();

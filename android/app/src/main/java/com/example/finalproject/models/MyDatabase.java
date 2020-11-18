@@ -80,7 +80,7 @@ public abstract class MyDatabase extends RoomDatabase {
         }
     }
 
-    public abstract AccountDAO userDAO();
+    public abstract AccountDAO accDAO();
 
     public abstract CourseDAO courseDAO();
 

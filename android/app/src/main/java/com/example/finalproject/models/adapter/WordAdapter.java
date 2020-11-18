@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.finalproject.R;
 import com.example.finalproject.models.ItemClickListener;
+import com.example.finalproject.models.MyDatabase;
 import com.example.finalproject.models.Word;
 
 import java.util.List;
@@ -33,12 +35,14 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordVH>{
     }
     public static class WordVH extends RecyclerView.ViewHolder{
         private TextView txtName, txtDes, txtPro;
+        private CheckBox chkWasLearnt;
 
         public WordVH(@NonNull View itemView) {
             super(itemView);
             txtName = itemView.findViewById(R.id.txtName);
             txtDes = itemView.findViewById(R.id.txtDes);
             txtPro = itemView.findViewById(R.id.txtPro);
+            chkWasLearnt = itemView.findViewById(R.id.chkWasLearnt);
         }
     }
     @NonNull
@@ -54,10 +58,15 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordVH>{
         holder.txtName.setText(word.getName());
         holder.txtDes.setText(word.getDescription());
         holder.txtPro.setText(word.getPronounce());
+        holder.chkWasLearnt.setChecked(word.isWasLearnt());
 
         holder.itemView.setOnClickListener((view) -> {
             if (listener != null)
                 listener.onItemClick(this, position);
+        });
+        holder.chkWasLearnt.setOnClickListener(v -> {
+            word.setWasLearnt(holder.chkWasLearnt.isChecked());
+            MyDatabase.getInstance(context).wordDAO().updateWord(word);
         });
     }
 

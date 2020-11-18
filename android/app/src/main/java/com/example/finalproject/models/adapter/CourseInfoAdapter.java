@@ -54,6 +54,7 @@ public class CourseInfoAdapter extends RecyclerView.Adapter<CourseInfoAdapter.Vi
         holder.mItem = mValues.get(position);
         holder.txtName.setText(mValues.get(position).getName());
         holder.txtDescription.setText(mValues.get(position).getDescription());
+        holder.txtRatio.setText(mValues.get(position).getRating()+"/"+5);
         holder.rbStar.setRating(mValues.get(position).getRating());
     }
 
@@ -66,6 +67,7 @@ public class CourseInfoAdapter extends RecyclerView.Adapter<CourseInfoAdapter.Vi
         public final View mView;
         public final TextView txtDescription;
         public final TextView txtName;
+        public final TextView txtRatio;
         public final RatingBar rbStar;
         public final ImageView imageView;
         public Course mItem;
@@ -77,6 +79,7 @@ public class CourseInfoAdapter extends RecyclerView.Adapter<CourseInfoAdapter.Vi
             txtDescription = view.findViewById(R.id.txtDescription);
             rbStar = view.findViewById(R.id.rbStar);
             imageView = view.findViewById(R.id.imageView);
+            txtRatio = view.findViewById(R.id.txtRatio);
         }
     }
 }
