@@ -41,4 +41,6 @@
     <string name="about">About</string>
     <string name="share_message">Thank you for your sharing.</string>
     <string name="rate_message">Thank you for your rating us.</string>
+    <string name="score">Score: %1$d</string>
+    <string name="full_name">Full Name</string>
 </resources>

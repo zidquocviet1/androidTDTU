@@ -51,4 +51,6 @@
     <string name="rate_message">Cảm ơn vì bạn đã đánh giá chúng tôi.</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="score">Điểm: %1$d</string>
+    <string name="full_name">Họ và tên</string>
 </resources>

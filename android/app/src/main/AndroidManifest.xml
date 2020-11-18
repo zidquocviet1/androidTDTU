@@ -13,9 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/NoActionBar"
         android:usesCleartextTraffic="true">
-
-        <activity android:name=".ExamActivity"/>
+        <activity android:name=".ExamActivity" />
         <activity android:name=".UserActivity" />
+
         <meta-data
             android:name="com.google.android.wearable.standalone"
             android:value="true" />
@@ -51,7 +51,8 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="@string/fb_login_protocol_scheme"
+                <data
+                    android:scheme="@string/fb_login_protocol_scheme"
                     tools:ignore="ManifestResource" />
             </intent-filter>
         </activity>

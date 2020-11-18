@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragment.RankFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
+        android:gravity="center_horizontal"
+        android:fitsSystemWindows="true"
         android:layout_height="181dp">
 
         <View
@@ -20,44 +22,43 @@
         <View
             android:layout_width="36dp"
             android:layout_height="36dp"
+            android:layout_marginTop="20dp"
             android:layout_centerHorizontal="true"
             android:background="@drawable/ic_baseline_star_24" />
 
         <View
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="60dp"
             android:background="@drawable/ic_ranking_lead" />
 
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="200dp"
-        android:layout_marginLeft="26dp"
-        >
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:layout_marginTop="200dp">
+
         <TextView
             android:id="@+id/txtContent"
-            android:layout_width="wrap_content"
+            android:visibility="gone"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/avenir_lt_pro_light"
-            android:textSize="20sp"
-            android:visibility="gone"
-            android:textColor="@color/content"
+            android:text="@string/connection"
             android:textAlignment="center"
-            android:text="@string/connection"/>
+            android:textColor="@color/content"
+            android:textSize="20sp"/>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rank_user"
+            android:id="@+id/rvRankUser"
+            android:padding="8dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layoutManager="GridLayoutManager"
             app:spanCount="3"
             tools:listitem="@layout/rank_user" />
-
     </RelativeLayout>
-
-
 </FrameLayout>
