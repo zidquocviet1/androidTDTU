@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +38,7 @@ public class HomeFragment extends Fragment implements ItemClickListener, View.On
     private List<Course> courses;
     private List<Word> words;
     private HomeActivity context;
+    private List<Word> vocabulary = new ArrayList<>();
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -87,10 +87,12 @@ public class HomeFragment extends Fragment implements ItemClickListener, View.On
         binding = FragmentHomeBinding.inflate(inflater, container, false);
 
         context = (HomeActivity) getActivity();
+        binding.txtSeall.setClickable(false);
+        binding.txtSeall.setOnClickListener(this);
+
         observeViewModel(context);
         initRecyclerView();
 
-        binding.txtSeall.setOnClickListener(this);
         View view = binding.getRoot();
         return view;
     }
@@ -111,19 +113,31 @@ public class HomeFragment extends Fragment implements ItemClickListener, View.On
 
     @Override
     public void onClick(View v) {
+        // load all word into vocabulary activity
+        // the current problem is the room database is loading so slow with the large data
+        if (v.getId() == R.id.txtSeall){
 
+        }
     }
 
     private void observeViewModel(HomeActivity activity) {
         activity.getHomeViewModel().getCourses().observe(this, courses -> {
             courseAdapter.setData(courses);
         });
-        activity.getHomeViewModel().getWords().observe(this, words -> {
+        activity.getHomeViewModel().get30Words().observe(this, words -> {
             wordsAdapter.setData(words);
         });
-        activity.getHomeViewModel().getAccount().observe(this, account -> {
-            if (account != null && account.isLogin())
-                binding.txtHello.setText(getString(R.string.hello, account.getUsername()));
+        activity.getHomeViewModel().getWords().observe(this, words -> {
+            if (words != null){
+                vocabulary.addAll(words);
+                binding.txtSeall.setClickable(true);
+            }
+        });
+        activity.getHomeViewModel().getUser().observe(this, user -> {
+            if (user != null)
+                binding.txtHello.setText(getString(R.string.hello, user.getName()));
+            else
+                binding.txtHello.setText(getString(R.string.hello, "Guys"));
         });
     }
 

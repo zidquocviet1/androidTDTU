@@ -4,6 +4,8 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,9 +18,12 @@ import com.example.finalproject.api.UserAPI;
 import com.example.finalproject.databinding.FragmentHomeBinding;
 import com.example.finalproject.databinding.FragmentRankBinding;
 import com.example.finalproject.models.User;
+import com.example.finalproject.models.adapter.CourseInfoAdapter;
+import com.example.finalproject.models.adapter.UserAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,6 +43,7 @@ public class RankFragment extends Fragment {
     private List<User> users;
     private FragmentRankBinding binding;
     private HomeActivity context;
+    private UserAdapter userAdapter;
 
     public RankFragment() {
         // Required empty public constructor
@@ -80,7 +86,7 @@ public class RankFragment extends Fragment {
 
         View view = binding.getRoot();
         users = new ArrayList<>();
-//        initRecyclerView();
+        initRecyclerView();
 
         observeViewModel();
         loadLeaderBoard();
@@ -93,34 +99,42 @@ public class RankFragment extends Fragment {
             if (context.isServerAndNetworkAvailable()) {
                 UserAPI.getUserByScore(context);
             }
-//            else if (!context.getHomeViewModel().getNetworkState().getValue()) {
-//                binding.txtContent.setText(getString(R.string.connection));
-//                binding.txtContent.setVisibility(View.VISIBLE);
-//            } else if (!context.getHomeViewModel().getServerState().getValue()) {
-//                binding.txtContent.setText(getString(R.string.server_error));
-//                binding.txtContent.setVisibility(View.VISIBLE);
-//            }
         }
     }
+    private void initRecyclerView() {
+        users = new ArrayList<>();
 
+        userAdapter = new UserAdapter(context, users);
+
+        binding.rvRankUser.setAdapter(userAdapter);
+        binding.rvRankUser.setHasFixedSize(true);
+    }
     private void observeViewModel() {
         context.getHomeViewModel().getUsers().observe(this, users -> {
-            if (users != null)
-                this.users.addAll(users);
+            if (users != null) {
+                users = users.stream().filter(u -> u.getScore() > 0).collect(Collectors.toList());
+                userAdapter.setData(users);
+            }
         });
         context.getHomeViewModel().getNetworkState().observe(this, aBoolean -> {
             if (!aBoolean) {
                 binding.txtContent.setText(getString(R.string.connection));
                 binding.txtContent.setVisibility(View.VISIBLE);
-            } else
+                binding.rvRankUser.setVisibility(View.GONE);
+            } else {
                 binding.txtContent.setVisibility(View.GONE);
+                binding.rvRankUser.setVisibility(View.VISIBLE);
+            }
         });
         context.getHomeViewModel().getServerState().observe(this, aBoolean -> {
             if (!aBoolean) {
                 binding.txtContent.setText(getString(R.string.server_error));
                 binding.txtContent.setVisibility(View.VISIBLE);
-            } else
+                binding.rvRankUser.setVisibility(View.GONE);
+            } else {
                 binding.txtContent.setVisibility(View.GONE);
+                binding.rvRankUser.setVisibility(View.VISIBLE);
+            }
         });
     }
 }
