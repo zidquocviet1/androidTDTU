@@ -29,11 +29,12 @@ public class RegisterActivity extends AppCompatActivity implements TextWatcher {
             String username = binding.txtLayoutUsername.getEditText().getText().toString();
             String password = binding.txtLayoutPassword.getEditText().getText().toString();
             String confirmPassword = binding.txtLayoutConfirm.getEditText().getText().toString();
+            String fullName = binding.txtLayoutName.getEditText().getText().toString();
 
             if (!isValid(username, password, confirmPassword)) return;
             if (confirmPassword.equals(password)){
                 String id = UUID.randomUUID().toString();
-                Account account = new Account(id, username, password, "default", false);
+                Account account = new Account(id, username, password, "default", false, fullName);
                 account.encryptPassword();
 
                 UserAPI.register(this, account);

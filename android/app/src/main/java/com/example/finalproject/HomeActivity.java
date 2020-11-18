@@ -29,11 +29,13 @@ import com.example.finalproject.databinding.ActivityHomeBinding;
 import com.example.finalproject.fragment.CourseFragment;
 import com.example.finalproject.fragment.HomeFragment;
 import com.example.finalproject.fragment.RankFragment;
+import com.example.finalproject.fragment.VocabularyFragment;
 import com.example.finalproject.models.Account;
 import com.example.finalproject.models.adapter.CourseAdapter;
 import com.example.finalproject.models.ItemClickListener;
 import com.example.finalproject.models.MyDatabase;
 import com.example.finalproject.models.User;
+import com.example.finalproject.models.adapter.UserAdapter;
 import com.example.finalproject.models.adapter.WordAdapter;
 import com.example.finalproject.view.LoadingDialog;
 import com.example.finalproject.viewmodel.HomeViewModel;
@@ -69,7 +71,7 @@ public class HomeActivity extends AppCompatActivity
 
         registerReceiver(receiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
-        Account account = MyDatabase.getInstance(this).userDAO().getFirstAccount();
+        Account account = MyDatabase.getInstance(this).accDAO().getFirstAccount();
         if (account != null)
             homeViewModel.getAccount().postValue(account);
 
@@ -78,6 +80,18 @@ public class HomeActivity extends AppCompatActivity
         binding.navView.setCheckedItem(R.id.mnHome);
         binding.bottomNav.setOnNavigationItemSelectedListener(this);
         openFragment(HomeFragment.class, "Home");
+    }
+
+    @Override
+    protected void onStart() {
+        new Thread(() -> {
+            Account acc = MyDatabase.getInstance(this).accDAO().getFirstAccount();
+            if (acc != null)
+                UserAPI.getUserInfoBackground(this, acc);
+            if (homeViewModel.getWords().getValue() == null)
+                homeViewModel.getWords().postValue(MyDatabase.getInstance(this).wordDAO().getAll());
+        }).start();
+        super.onStart();
     }
 
     private void initDrawerLayout() {
@@ -105,7 +119,7 @@ public class HomeActivity extends AppCompatActivity
         });
 
         homeViewModel.getCourses().postValue(MyDatabase.getInstance(this).courseDAO().getAllCourse());
-        homeViewModel.getWords().postValue(MyDatabase.getInstance(this).wordDAO().getTop30());
+        homeViewModel.get30Words().postValue(MyDatabase.getInstance(this).wordDAO().getTop30());
     }
 
     public HomeViewModel getHomeViewModel() {
@@ -117,19 +131,18 @@ public class HomeActivity extends AppCompatActivity
             binding.imgAvatar.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.com_facebook_profile_picture_blank_square));
             return;
         }
-        if (account != null && account.isLogin()) {
-            binding.imgAvatar.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_launcher_foreground));
-        } else {
+        if (account != null && !account.isLogin()) {
             LoadingDialog.showLoadingDialog(this);
 
             new Handler(Looper.getMainLooper()).postDelayed(() -> {
                 LoadingDialog.dismissDialog();
                 binding.imgAvatar.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.com_facebook_profile_picture_blank_square));
+                homeViewModel.getUser().postValue(null);
             }, 1500);
         }
     }
 
-    private void showPopUp(Account acc, boolean isLogin) {
+    private void showPopUp(User user, boolean isLogin) {
         PopupMenu popupMenu = new PopupMenu(this, binding.cvAvatar);
 
         if (isLogin) {
@@ -137,7 +150,9 @@ public class HomeActivity extends AppCompatActivity
             popupMenu.setOnMenuItemClickListener(item -> {
                 switch (item.getItemId()) {
                     case R.id.mnInfo:
-                        getInfo(acc);
+                        Intent intent = new Intent(HomeActivity.this, UserActivity.class);
+                        intent.putExtra("user", user);
+                        startActivity(intent);
                         break;
                     case R.id.mnLogout:
                         showLogoutDialog();
@@ -160,9 +175,9 @@ public class HomeActivity extends AppCompatActivity
     }
 
     private void logout() {
-        Account account = MyDatabase.getInstance(this).userDAO().getFirstAccount();
+        Account account = MyDatabase.getInstance(this).accDAO().getFirstAccount();
         account.setLogin(false);
-        MyDatabase.getInstance(this).userDAO().updateAccount(account);
+        MyDatabase.getInstance(this).accDAO().updateAccount(account);
         homeViewModel.getAccount().postValue(account);
     }
 
@@ -173,20 +188,10 @@ public class HomeActivity extends AppCompatActivity
         }, 1000);
     }
 
-    private void getInfo(Account acc) {
-        if (isServerAndNetworkAvailable()){
-            User user = homeViewModel.getUser().getValue();
-            if (user == null)
-                UserAPI.loadUserInfo(this, acc);
-            else {
-                showUserInfo(user);
-                startActivity(new Intent(HomeActivity.this, UserActivity.class));
-            }
-        }
-    }
-
     public void showUserInfo(User user) {
-        Log.e("TAG", user.getName() + " " + user.getAccountID());
+        Log.e("TAG", user.getName() + " " + user.getAccountId());
+        int i = UserAdapter.images[user.getAvatar()];
+        binding.imgAvatar.setImageDrawable(ContextCompat.getDrawable(this, i));
     }
 
     private void showLogoutDialog() {
@@ -228,7 +233,7 @@ public class HomeActivity extends AppCompatActivity
         binding.txtTitle.setText(title);
     }
 
-    public boolean isServerAndNetworkAvailable(){
+    public boolean isServerAndNetworkAvailable() {
         if (homeViewModel.getNetworkState().getValue()) {
             if (homeViewModel.getServerState().getValue()) {
                 return true;
@@ -267,7 +272,7 @@ public class HomeActivity extends AppCompatActivity
                 break;
             case R.id.mnVocab:
                 if (binding.bottomNav.getSelectedItemId() != R.id.mnVocab)
-                    fragmentClass = RankFragment.class;
+                    fragmentClass = VocabularyFragment.class;
                 break;
             case R.id.mnAbout:
                 if (binding.bottomNav.getSelectedItemId() != R.id.mnAbout)
@@ -316,11 +321,11 @@ public class HomeActivity extends AppCompatActivity
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.cvAvatar:
-                Account acc = homeViewModel.getAccount().getValue();
-                if (acc != null && acc.isLogin()) {
-                    showPopUp(acc, true);
+                User user = homeViewModel.getUser().getValue();
+                if (user != null) {
+                    showPopUp(user, true);
                 } else {
-                    showPopUp(acc, false);
+                    showPopUp(user, false);
                 }
                 break;
             case R.id.txtSeall:

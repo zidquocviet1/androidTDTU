@@ -81,7 +81,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void handleLogoutFacebook() {
-        Account account = MyDatabase.getInstance(this).userDAO().getFirstAccount();
+        Account account = MyDatabase.getInstance(this).accDAO().getFirstAccount();
         if (account != null && account.getType().equals("facebook") && !account.isLogin())
             LoginManager.getInstance().logOut();
     }
@@ -111,8 +111,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     public void navigateHome() {
         this.finish();
-        Intent intent = new Intent(this, HomeActivity.class);
-        startActivity(intent);
     }
 
     private void setupLoginFacebook() {
@@ -165,7 +163,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     }
                     binding.layoutUsername.setErrorEnabled(false);
                     binding.layoutPassword.setErrorEnabled(false);
-                    Account account = new Account("abc", username, password, "default", false);
+                    Account account = new Account("abc", username, password, "default", false, "");
                     account.encryptPassword();
 
                     UserAPI.handleLogin(this, account);
