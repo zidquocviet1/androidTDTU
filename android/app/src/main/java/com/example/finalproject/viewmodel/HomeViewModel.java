@@ -1,5 +1,7 @@
 package com.example.finalproject.viewmodel;
 
+import android.util.Log;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -17,9 +19,11 @@ public class HomeViewModel extends ViewModel {
     private MutableLiveData<User> userInfo;
     private MutableLiveData<List<Course>> courses;
     private MutableLiveData<List<Word>> words;
+    private MutableLiveData<List<Word>> top30Words;
     private MutableLiveData<List<User>> users;
 
     public HomeViewModel() {
+        Log.e("TAG", "Init home view model");
         serverState = new MutableLiveData<>();
         networkState = new MutableLiveData<>();
         loginAccount = new MutableLiveData<>();
@@ -27,6 +31,7 @@ public class HomeViewModel extends ViewModel {
         courses = new MutableLiveData<>();
         words = new MutableLiveData<>();
         users = new MutableLiveData<>();
+        top30Words = new MutableLiveData<>();
 
         serverState.setValue(true);
         networkState.setValue(true);
@@ -56,6 +61,10 @@ public class HomeViewModel extends ViewModel {
 
     public MutableLiveData<List<Word>> getWords() {
         return words;
+    }
+
+    public MutableLiveData<List<Word>> get30Words() {
+        return top30Words;
     }
 
     public MutableLiveData<List<User>> getUsers() {
