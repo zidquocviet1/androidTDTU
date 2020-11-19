@@ -37,6 +37,9 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseVH> 
         notifyItemRangeInserted(0, data.size() -1);
     }
 
+    public Course getItem(int position){
+        return data.get(position);
+    }
     public void setOnItemClickListener(ItemClickListener listener){
         this.listener = listener;
     }

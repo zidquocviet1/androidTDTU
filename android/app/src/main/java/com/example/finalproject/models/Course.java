@@ -1,12 +1,15 @@
 package com.example.finalproject.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "course")
-public class Course {
+public class Course implements Parcelable {
     @PrimaryKey(autoGenerate = true)
     private long id;
     @NonNull
@@ -22,6 +25,25 @@ public class Course {
         this.description = description;
         this.rating = rating;
     }
+
+    protected Course(Parcel in) {
+        id = in.readLong();
+        name = in.readString();
+        description = in.readString();
+        rating = in.readFloat();
+    }
+
+    public static final Creator<Course> CREATOR = new Creator<Course>() {
+        @Override
+        public Course createFromParcel(Parcel in) {
+            return new Course(in);
+        }
+
+        @Override
+        public Course[] newArray(int size) {
+            return new Course[size];
+        }
+    };
 
     public long getId() {
         return id;
@@ -64,4 +86,17 @@ public class Course {
             new Course(0, "Toeic 990", "Mục tiêu khóa này là 990 điểm", 1),
             new Course(0, "Toeic 650", "Mục tiêu khóa này là 650 điểm", 3)
     };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(id);
+        dest.writeString(name);
+        dest.writeString(description);
+        dest.writeFloat(rating);
+    }
 }

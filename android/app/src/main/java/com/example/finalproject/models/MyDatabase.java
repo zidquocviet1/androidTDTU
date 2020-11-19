@@ -22,13 +22,7 @@ public abstract class MyDatabase extends RoomDatabase {
     public static synchronized MyDatabase getInstance(Context context) {
         if (instance == null) {
             instance = create(context);
-            InputStream is = null;
-            try {
-                is = context.getAssets().open("vocab_json.json");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            instance.populateInitialData(is);
+            instance.populateInitialData(context);
         }
         return instance;
     }
@@ -44,7 +38,7 @@ public abstract class MyDatabase extends RoomDatabase {
                 .build();
     }
 
-    private void populateInitialData(InputStream in) {
+    private void populateInitialData(Context context) {
         if (courseDAO().count() == 0) {
             runInTransaction(() -> {
                 for (Course c : Course.courses) {
@@ -61,21 +55,38 @@ public abstract class MyDatabase extends RoomDatabase {
         }
         if (questionDAO().count() == 0) {
             runInTransaction(() -> {
-                for (Question q : Question.READING_QUESTIONS) {
-                    questionDAO().insert(q);
+                try {
+                    InputStream is = context.getAssets().open("question.json");
+                    String jsonFileString = Utils.getJsonFromAssets(is);
+
+                    Gson gson = new Gson();
+                    Type listQuestionType = new TypeToken<List<Question>>(){ }.getType();
+                    List<Question> questions = gson.fromJson(jsonFileString, listQuestionType);
+
+                    questions.forEach(q -> {
+                        q.setAudioFile("course_"+q.getCourseID()+"/"+q.getAudioFile());
+                        questionDAO().insertAll(q);
+                    });
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             });
         }
 
         if (wordDAO().count() == 0) {
             runInTransaction(() -> {
-                String jsonFileString = Utils.getJsonFromAssets(in);
+                try {
+                    InputStream is = context.getAssets().open("vocab_json.json");
+                    String jsonFileString = Utils.getJsonFromAssets(is);
 
-                Gson gson = new Gson();
-                Type listWordType = new TypeToken<List<Word>>(){ }.getType();
-                List<Word> words = gson.fromJson(jsonFileString, listWordType);
+                    Gson gson = new Gson();
+                    Type listWordType = new TypeToken<List<Word>>(){ }.getType();
+                    List<Word> words = gson.fromJson(jsonFileString, listWordType);
 
-                words.forEach(w -> wordDAO().addWord(w));
+                    words.forEach(w -> wordDAO().addWord(w));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             });
         }
     }

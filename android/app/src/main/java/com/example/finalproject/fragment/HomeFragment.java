@@ -106,7 +106,9 @@ public class HomeFragment extends Fragment implements ItemClickListener, View.On
     @Override
     public void onItemClick(Object object, int position) {
         if (object instanceof CourseAdapter) {
-            startActivity(new Intent(context, ExamActivity.class));
+            Intent intent = new Intent(context, ExamActivity.class);
+            intent.putExtra("course", courseAdapter.getItem(position));
+            startActivity(intent);
         } else if (object instanceof WordAdapter) {
         }
     }

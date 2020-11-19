@@ -61,6 +61,9 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_marginLeft="6dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?selectableItemBackground"
             android:layout_marginTop="8dp"
             android:background="@drawable/ic_back" />
 
