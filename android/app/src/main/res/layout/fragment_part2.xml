@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragment.Part2Fragment">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="345dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/question"
+                android:layout_width="345dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/avenir_lt_pro_light"
+                android:lineSpacingExtra="8sp"
+                android:text="Question 11:"
+                android:textColor="@color/black"
+                android:textSize="22sp" />
+            <!--answer-->
+            <TextView
+                android:layout_width="305dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="32dp"
+                android:background="@drawable/answer_1"
+                android:fontFamily="@font/avenir_lt_pro_light"
+                android:gravity="center_vertical"
+                android:text="A"
+                android:textAlignment="center"
+                android:textSize="22sp"
+                tools:ignore="RtlCompat" />
+
+            <TextView
+                android:layout_width="305dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/answer_selected"
+                android:fontFamily="@font/avenir_lt_pro_light"
+                android:gravity="center_vertical"
+                android:text="B"
+                android:textAlignment="center"
+                android:textSize="22sp"
+                tools:ignore="RtlCompat" />
+
+            <TextView
+                android:layout_width="305dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/answer_1"
+                android:fontFamily="@font/avenir_lt_pro_light"
+                android:gravity="center_vertical"
+                android:text="C"
+                android:textAlignment="center"
+                android:textSize="22sp"
+                tools:ignore="RtlCompat" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnClick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="32dp"
+            android:text="click"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>

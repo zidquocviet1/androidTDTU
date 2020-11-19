@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragment.Part1Fragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="345dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="120dp">
+
+            <LinearLayout
+                android:layout_width="345dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <!--Question-->
+                <ImageView
+                    android:id="@+id/image_question"
+                    android:layout_width="345dp"
+                    android:layout_height="200dp"/>
+                <!--answer-->
+                <TextView
+                    android:layout_width="305dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="32dp"
+                    android:background="@drawable/answer_1"
+                    android:fontFamily="@font/avenir_lt_pro_light"
+                    android:gravity="center_vertical"
+                    android:text="A"
+                    android:textAlignment="center"
+                    android:textSize="22sp"
+                    tools:ignore="RtlCompat" />
+
+                <TextView
+                    android:layout_width="305dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="6dp"
+                    android:background="@drawable/answer_selected"
+                    android:fontFamily="@font/avenir_lt_pro_light"
+                    android:gravity="center_vertical"
+                    android:text="B"
+                    android:textAlignment="center"
+                    android:textSize="22sp"
+                    tools:ignore="RtlCompat" />
+
+                <TextView
+                    android:layout_width="305dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="6dp"
+                    android:background="@drawable/answer_1"
+                    android:fontFamily="@font/avenir_lt_pro_light"
+                    android:gravity="center_vertical"
+                    android:text="C"
+                    android:textAlignment="center"
+                    android:textSize="22sp"
+                    tools:ignore="RtlCompat" />
+
+                <TextView
+                    android:layout_width="305dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="6dp"
+                    android:background="@drawable/answer_1"
+                    android:fontFamily="@font/avenir_lt_pro_light"
+                    android:gravity="center_vertical"
+                    android:text="D"
+                    android:textAlignment="center"
+                    android:textSize="22sp"
+                    tools:ignore="RtlCompat" />
+            </LinearLayout>
+        </ScrollView>
+
+        <Button
+            android:id="@+id/btnClick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/scrollView"
+            android:layout_alignStart="@id/scrollView"
+            android:layout_alignEnd="@id/scrollView"
+            android:text="click"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="60dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>
