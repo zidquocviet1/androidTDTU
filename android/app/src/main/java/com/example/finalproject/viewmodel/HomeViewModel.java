@@ -21,6 +21,7 @@ public class HomeViewModel extends ViewModel {
     private MutableLiveData<List<Word>> words;
     private MutableLiveData<List<Word>> top30Words;
     private MutableLiveData<List<User>> users;
+    private MutableLiveData<List<Course>> comments;
 
     public HomeViewModel() {
         Log.e("TAG", "Init home view model");
@@ -32,6 +33,7 @@ public class HomeViewModel extends ViewModel {
         words = new MutableLiveData<>();
         users = new MutableLiveData<>();
         top30Words = new MutableLiveData<>();
+        comments = new MutableLiveData<>();
 
         serverState.setValue(true);
         networkState.setValue(true);
@@ -69,5 +71,9 @@ public class HomeViewModel extends ViewModel {
 
     public MutableLiveData<List<User>> getUsers() {
         return users;
+    }
+
+    public MutableLiveData<List<Course>> getComments() {
+        return comments;
     }
 }

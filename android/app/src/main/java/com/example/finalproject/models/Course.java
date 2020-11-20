@@ -6,7 +6,11 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
+
+import java.util.ArrayList;
 
 @Entity(tableName = "course")
 public class Course implements Parcelable {
@@ -18,6 +22,8 @@ public class Course implements Parcelable {
     private String description;
     @ColumnInfo(defaultValue = "5")
     private float rating;
+    @TypeConverters(ArrayListConverter.class)
+    private ArrayList<Comment> comment;
 
     public Course(long id, @NonNull String name, @NonNull String description, float rating) {
         this.id = id;
@@ -25,6 +31,16 @@ public class Course implements Parcelable {
         this.description = description;
         this.rating = rating;
     }
+
+    @Ignore
+    public Course(long id, @NonNull String name, @NonNull String description, float rating, ArrayList<Comment> comment) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.rating = rating;
+        this.comment = comment;
+    }
+
 
     protected Course(Parcel in) {
         id = in.readLong();
@@ -77,6 +93,14 @@ public class Course implements Parcelable {
 
     public void setRating(float rating) {
         this.rating = rating;
+    }
+
+    public ArrayList<Comment> getComment() {
+        return comment;
+    }
+
+    public void setComment(ArrayList<Comment> comment) {
+        this.comment = comment;
     }
 
     static final Course[] courses = {

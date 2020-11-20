@@ -13,11 +13,14 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.finalproject.CommentActivity;
 import com.example.finalproject.HomeActivity;
 import com.example.finalproject.LoginActivity;
 import com.example.finalproject.R;
 import com.example.finalproject.RegisterActivity;
 import com.example.finalproject.models.Account;
+import com.example.finalproject.models.Comment;
+import com.example.finalproject.models.Course;
 import com.example.finalproject.models.User;
 import com.example.finalproject.models.Word;
 import com.example.finalproject.view.LoadingDialog;
@@ -273,6 +276,112 @@ public class UserAPI {
                     }, 1000);
                 });
 
+        queue.add(request);
+    }
+
+    public static void getComment(Context context) {
+        HomeActivity home = (HomeActivity) context;
+
+        RequestQueue queue = Volley.newRequestQueue(context.getApplicationContext());
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
+                BASE_URL + "courses", null,
+                response -> {
+                    try {
+                        if (response.getBoolean("status")) {
+                            JSONArray array = response.getJSONArray("data");
+                            List<Course> comments = new ArrayList<>();
+
+                            for (int i = 0; i < array.length(); i++) {
+                                JSONObject object = array.getJSONObject(i);
+
+                                int id = object.getInt("id");
+                                String name = object.getString("name");
+                                String des = object.getString("description");
+                                int rating = object.getInt("rating");
+
+                                ArrayList<Comment> listComment = new ArrayList<>();
+                                JSONArray commentArray = object.getJSONArray("comment");
+                                for (int j = 0; j < commentArray.length(); j++) {
+                                    JSONObject cmtObject = commentArray.getJSONObject(j);
+
+                                    int commentID = cmtObject.getInt("id");
+                                    String description = cmtObject.getString("description");
+                                    int cmtRate = cmtObject.getInt("rating");
+                                    int cmtCourseID = cmtObject.getInt("courseId");
+                                    String userId = cmtObject.getString("userId");
+
+                                    listComment.add(new Comment(commentID, description, cmtRate,
+                                            cmtCourseID, userId, null, null));
+                                }
+
+                                comments.add(new Course(id, name, des, rating, listComment));
+                            }
+                            home.getHomeViewModel().getComments().postValue(comments);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        home.getHomeViewModel().getComments().postValue(null);
+                    }
+                },
+                error -> {
+                    home.getHomeViewModel().getComments().postValue(null);
+                });
+        queue.add(request);
+    }
+
+    public static void checkConnection(Context context) {
+        HomeActivity home = (HomeActivity) context;
+
+        RequestQueue queue = Volley.newRequestQueue(context.getApplicationContext());
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
+                BASE_URL + "account", null,
+                response -> {
+                    home.getHomeViewModel().getServerState().postValue(true);
+                },
+                error -> {
+                    home.getHomeViewModel().getServerState().postValue(false);
+                });
+        queue.add(request);
+    }
+
+    public static void getCommentByCourseID(Context context, long courseId) {
+        CommentActivity home = (CommentActivity) context;
+
+        RequestQueue queue = Volley.newRequestQueue(context.getApplicationContext());
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
+                BASE_URL + "comments?id="+courseId, null,
+                response -> {
+                    try {
+                        if (response.getBoolean("status")) {
+                            JSONArray array = response.getJSONArray("data");
+                            List<Comment> comments = new ArrayList<>();
+
+                            for (int i = 0; i < array.length(); i++){
+                                JSONObject object = array.getJSONObject(i);
+
+                                int id = object.getInt("id");
+                                String des = object.getString("description");
+                                int rating = object.getInt("rating");
+                                String userId = object.getString("userId");
+
+                                JSONObject userObject = object.getJSONObject("user");
+
+                                String fullName = userObject.getString("fullName");
+
+                                comments.add(new Comment(id, des, rating,
+                                        courseId, userId, null, new User(0, fullName,
+                                        false, null, null, null, -1, null, -1)));
+                            }
+                            home.getVM().getComments().postValue(comments);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                },
+                error -> {
+                });
         queue.add(request);
     }
 }

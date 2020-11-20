@@ -56,4 +56,5 @@
     <string name="mode">Select Test Mode</string>
     <string name="counting_time">Counting time</string>
     <string name="without_counting_time">Without counting time</string>
+    <string name="comment">Comments: %1$d</string>
 </resources>

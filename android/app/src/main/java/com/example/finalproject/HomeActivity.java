@@ -90,6 +90,8 @@ public class HomeActivity extends AppCompatActivity
                 UserAPI.getUserInfoBackground(this, acc);
             if (homeViewModel.getWords().getValue() == null)
                 homeViewModel.getWords().postValue(MyDatabase.getInstance(this).wordDAO().getAll());
+            UserAPI.getComment(this);
+            UserAPI.checkConnection(this);
         }).start();
         super.onStart();
     }
