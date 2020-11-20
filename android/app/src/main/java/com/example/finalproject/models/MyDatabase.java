@@ -10,12 +10,15 @@ import com.example.finalproject.Utils;
 import com.example.finalproject.models.DAO.*;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.util.List;
 
-@Database(entities = {Account.class, Question.class, Course.class, Category.class, Word.class}, version = 1)
+@Database(entities = {Account.class, Question.class, Course.class,
+        Category.class, Word.class, Progress.class}, version = 1)
+
 public abstract class MyDatabase extends RoomDatabase {
     private static MyDatabase instance;
 
@@ -60,11 +63,12 @@ public abstract class MyDatabase extends RoomDatabase {
                     String jsonFileString = Utils.getJsonFromAssets(is);
 
                     Gson gson = new Gson();
-                    Type listQuestionType = new TypeToken<List<Question>>(){ }.getType();
+                    Type listQuestionType = new TypeToken<List<Question>>() {
+                    }.getType();
                     List<Question> questions = gson.fromJson(jsonFileString, listQuestionType);
 
                     questions.forEach(q -> {
-                        q.setAudioFile("course_"+q.getCourseID()+"/"+q.getAudioFile());
+                        q.setAudioFile("course_" + q.getCourseID() + "/" + q.getAudioFile());
                         questionDAO().insertAll(q);
                     });
                 } catch (IOException e) {
@@ -80,7 +84,8 @@ public abstract class MyDatabase extends RoomDatabase {
                     String jsonFileString = Utils.getJsonFromAssets(is);
 
                     Gson gson = new Gson();
-                    Type listWordType = new TypeToken<List<Word>>(){ }.getType();
+                    Type listWordType = new TypeToken<List<Word>>() {
+                    }.getType();
                     List<Word> words = gson.fromJson(jsonFileString, listWordType);
 
                     words.forEach(w -> wordDAO().addWord(w));
@@ -100,4 +105,6 @@ public abstract class MyDatabase extends RoomDatabase {
     public abstract CategoryDAO categoryDAO();
 
     public abstract WordDAO wordDAO();
+
+    public abstract ProgressDAO progressDAO();
 }

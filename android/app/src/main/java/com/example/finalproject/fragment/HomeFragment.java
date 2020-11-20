@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,9 +24,12 @@ import com.example.finalproject.models.adapter.CourseAdapter;
 import com.example.finalproject.models.ItemClickListener;
 import com.example.finalproject.models.Word;
 import com.example.finalproject.models.adapter.WordAdapter;
+import com.example.finalproject.view.LoadingDialog;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.net.ssl.HandshakeCompletedListener;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -108,7 +113,12 @@ public class HomeFragment extends Fragment implements ItemClickListener, View.On
         if (object instanceof CourseAdapter) {
             Intent intent = new Intent(context, ExamActivity.class);
             intent.putExtra("course", courseAdapter.getItem(position));
-            startActivity(intent);
+            LoadingDialog.showLoadingDialog(context);
+
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                LoadingDialog.dismissDialog();
+                startActivity(intent);
+            },1000);
         } else if (object instanceof WordAdapter) {
         }
     }
@@ -118,7 +128,7 @@ public class HomeFragment extends Fragment implements ItemClickListener, View.On
         // load all word into vocabulary activity
         // the current problem is the room database is loading so slow with the large data
         if (v.getId() == R.id.txtSeall){
-
+            context.openFragment(VocabularyFragment.class, "Vocabulary");
         }
     }
 

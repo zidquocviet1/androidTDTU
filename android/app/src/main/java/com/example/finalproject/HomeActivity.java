@@ -219,7 +219,7 @@ public class HomeActivity extends AppCompatActivity
                 .create().show();
     }
 
-    private void openFragment(Class fragmentClass, CharSequence title) {
+    public void openFragment(Class fragmentClass, CharSequence title) {
         Fragment fragment = null;
 
         try {

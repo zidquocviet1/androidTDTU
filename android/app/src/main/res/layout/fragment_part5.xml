@@ -7,98 +7,97 @@
     tools:context=".fragment.Part5Fragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:padding="8dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <ScrollView
             android:id="@+id/scrollView"
-            android:layout_width="345dp"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_centerHorizontal="true"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="120dp">
+            android:layout_marginTop="10dp">
 
             <LinearLayout
-                android:layout_width="345dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
                 <!--Question-->
                 <TextView
                     android:id="@+id/question"
-                    android:layout_width="345dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/avenir_lt_pro_light"
                     android:lineSpacingExtra="8sp"
                     android:text="Question 11:"
+                    android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textSize="22sp" />
                 <!--answer-->
                 <TextView
-                    android:layout_width="305dp"
-                    android:layout_height="50dp"
+                    android:id="@+id/txtA"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="6dp"
                     android:background="@drawable/answer_1"
                     android:fontFamily="@font/avenir_lt_pro_light"
                     android:gravity="center_vertical"
                     android:text="A"
                     android:textAlignment="center"
-                    android:textSize="22sp"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
                     tools:ignore="RtlCompat" />
 
                 <TextView
-                    android:layout_width="305dp"
-                    android:layout_height="50dp"
+                    android:id="@+id/txtB"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="6dp"
-                    android:background="@drawable/answer_selected"
+                    android:layout_marginBottom="6dp"
+                    android:background="@drawable/answer_1"
                     android:fontFamily="@font/avenir_lt_pro_light"
                     android:gravity="center_vertical"
                     android:text="B"
                     android:textAlignment="center"
-                    android:textSize="22sp"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
                     tools:ignore="RtlCompat" />
 
                 <TextView
-                    android:layout_width="305dp"
-                    android:layout_height="50dp"
+                    android:id="@+id/txtC"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="6dp"
+                    android:layout_marginBottom="6dp"
                     android:background="@drawable/answer_1"
                     android:fontFamily="@font/avenir_lt_pro_light"
                     android:gravity="center_vertical"
                     android:text="C"
                     android:textAlignment="center"
-                    android:textSize="22sp"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
                     tools:ignore="RtlCompat" />
 
                 <TextView
-                    android:layout_width="305dp"
-                    android:layout_height="50dp"
+                    android:id="@+id/txtD"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="6dp"
+                    android:layout_marginBottom="6dp"
                     android:background="@drawable/answer_1"
                     android:fontFamily="@font/avenir_lt_pro_light"
                     android:gravity="center_vertical"
                     android:text="D"
                     android:textAlignment="center"
-                    android:textSize="22sp"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
                     tools:ignore="RtlCompat" />
             </LinearLayout>
         </ScrollView>
-
-        <Button
-            android:id="@+id/btnClick"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="8dp"
-            android:text="click"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/scrollView" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </FrameLayout>

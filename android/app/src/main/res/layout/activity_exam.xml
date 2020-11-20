@@ -1,186 +1,150 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@color/white">
     <!--header-->
-    <RelativeLayout
-        android:id="@+id/header"
-        android:layout_width="345dp"
-        android:layout_height="41dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="11dp">
 
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/quiz_detail"
-            android:layout_width="154dp"
-            android:layout_height="41dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="96dp">
-
-            <TextView
-                android:id="@+id/molecular_b"
-                android:layout_width="153dp"
-                android:layout_height="21dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="1dp"
-                android:layout_marginTop="1dp"
-                android:fontFamily="@font/avenir_lt_pro_black"
-                android:gravity="center_horizontal|bottom"
-                android:lineHeight="21sp"
-                android:text="Toeic 750+"
-                android:textColor="@color/black"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/question_id"
-                android:layout_width="82dp"
-                android:layout_height="15dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="36dp"
-                android:layout_marginTop="26dp"
-                android:alpha="0.5"
-                android:fontFamily="@font/avenir_lt_pro_light"
-                android:gravity="center_horizontal|bottom"
-                android:lineHeight="15sp"
-                android:text="Question 1"
-                android:textColor="@color/black"
-                android:textSize="13sp" />
-        </RelativeLayout>
-
-        <ImageView
-            android:id="@+id/back"
-            android:layout_width="19.39dp"
-            android:layout_height="17.78dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="6dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:foreground="?selectableItemBackground"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/ic_back" />
-
-    </RelativeLayout>
-    <!--Scroll-->
-    <ScrollView
-        android:id="@+id/scrollView"
-        android:layout_width="345dp"
+    <TextView
+        android:id="@+id/txtTitle"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="102dp">
+        android:layout_marginEnd="128dp"
+        android:layout_marginRight="128dp"
+        android:layout_marginBottom="4dp"
+        android:fontFamily="@font/avenir_lt_pro_black"
+        android:gravity="center_horizontal|bottom"
+        android:lineHeight="21sp"
+        android:text="Toeic 750+"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/question_id"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/back"
+        app:layout_constraintTop_toTopOf="@id/back" />
 
-        <LinearLayout
-            android:layout_width="345dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <!--Question-->
-            <TextView
-                android:id="@+id/question"
-                android:layout_width="345dp"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/avenir_lt_pro_light"
-                android:lineSpacingExtra="8sp"
-                android:text="Which of the following enzymes convert glucose into glucose-6-p during glycolsis?"
-                android:textColor="@color/black"
-                android:textSize="22sp" />
-            <!--answer-->
-            <TextView
-                android:layout_width="305dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="50dp"
-                android:background="@drawable/answer_1"
-                android:fontFamily="@font/avenir_lt_pro_light"
-                android:gravity="center_vertical"
-                android:text="A"
-                android:textAlignment="center"
-                android:textSize="22sp"
-                tools:ignore="RtlCompat" />
-
-            <TextView
-                android:layout_width="305dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="6dp"
-                android:background="@drawable/answer_selected"
-                android:fontFamily="@font/avenir_lt_pro_light"
-                android:gravity="center_vertical"
-                android:text="A"
-                android:textAlignment="center"
-                android:textSize="22sp"
-                tools:ignore="RtlCompat" />
-
-            <TextView
-                android:layout_width="305dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="6dp"
-                android:background="@drawable/answer_1"
-                android:fontFamily="@font/avenir_lt_pro_light"
-                android:gravity="center_vertical"
-                android:text="A"
-                android:textAlignment="center"
-                android:textSize="22sp"
-                tools:ignore="RtlCompat" />
-
-            <TextView
-                android:layout_width="305dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="6dp"
-                android:background="@drawable/answer_1"
-                android:fontFamily="@font/avenir_lt_pro_light"
-                android:gravity="center_vertical"
-                android:text="A"
-                android:textAlignment="center"
-                android:textSize="22sp"
-                tools:ignore="RtlCompat" />
-        </LinearLayout>
-    </ScrollView>
-    <Button
+    <TextView
+        android:id="@+id/question_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@id/scrollView"
-        android:layout_alignStart="@id/scrollView"
-        android:layout_below="@id/scrollView"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="50dp"
+        android:alpha="0.5"
+        android:fontFamily="@font/avenir_lt_pro_light"
+        android:gravity="center_horizontal|bottom"
+        android:lineHeight="15sp"
+        android:text="Question 1"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/back" />
+
+
+    <ImageView
+        android:id="@+id/back"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="26dp"
+        android:layout_marginEnd="72dp"
+        android:background="@drawable/ic_back"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?selectableItemBackground"
+        app:layout_constraintBottom_toTopOf="@+id/question_id"
+        app:layout_constraintEnd_toStartOf="@+id/txtTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtDisplayTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:layout_marginBottom="50dp"
+        android:alpha="0.5"
+        android:fontFamily="@font/avenir_lt_pro_black"
+        android:gravity="center_horizontal|bottom"
+        android:lineHeight="15sp"
+        android:text="02:00:00"
+        android:textColor="@color/title"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@id/pbTime"
+        app:layout_constraintStart_toStartOf="@id/pbTime"
+        app:layout_constraintTop_toBottomOf="@+id/question_id" />
+
+    <ProgressBar
+        android:id="@+id/pbTime"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:max="7200000"
+        android:progress="7200000"
+        android:layout_marginStart="6dp"
+        android:layout_marginEnd="6dp"
+        app:layout_constraintEnd_toEndOf="@id/framelayout"
+        app:layout_constraintStart_toStartOf="@id/framelayout"
+        app:layout_constraintTop_toBottomOf="@id/txtDisplayTime" />
+
+    <!--Scroll-->
+
+
+    <!--Question-->
+    <FrameLayout
+        android:id="@+id/framelayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pbTime"
+        app:layout_constraintBottom_toTopOf="@id/btnClick"
+        android:layout_marginBottom="20dp"
         android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"/>
+
+    <Button
         android:id="@+id/btnClick"
-        android:text="click"/>
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="33dp"
+        android:layout_marginLeft="33dp"
+        android:layout_marginEnd="33dp"
+        android:layout_marginRight="33dp"
+        android:layout_marginBottom="50dp"
+        android:text="@string/confirm"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/footer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
     <!--footer-->
     <RelativeLayout
         android:id="@+id/footer"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="87dp"
-
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:alpha="0.5"
-        android:background="@drawable/footer_question">
+        android:background="@drawable/footer_question"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <ImageView
             android:id="@+id/prev"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="16dp"
+            android:background="@drawable/ic_previous_question"
             android:src="@drawable/ic_previous_question" />
 
         <ImageView
             android:id="@+id/next"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="16dp"
             android:src="@drawable/ic_next_question" />
-
     </RelativeLayout>
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

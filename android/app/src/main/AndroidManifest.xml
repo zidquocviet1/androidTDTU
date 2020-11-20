@@ -13,7 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ExamActivity" />
+        <activity android:name=".ExamActivity"
+            android:screenOrientation="portrait"/>
         <activity android:name=".UserActivity" />
 
         <meta-data
@@ -26,7 +27,8 @@
         <activity
             android:name=".HomeActivity"
             android:theme="@style/NoActionBar"
-            android:windowSoftInputMode="adjustNothing">
+            android:windowSoftInputMode="adjustNothing"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

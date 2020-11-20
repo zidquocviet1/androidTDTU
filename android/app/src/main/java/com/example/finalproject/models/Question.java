@@ -1,10 +1,13 @@
 package com.example.finalproject.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "question")
-public class Question {
+public class Question implements Parcelable {
     @PrimaryKey(autoGenerate = true)
     private long id;
     private String description;
@@ -35,6 +38,33 @@ public class Question {
         this.part = part;
         this.audioFile = audioFile;
     }
+
+    protected Question(Parcel in) {
+        id = in.readLong();
+        description = in.readString();
+        question = in.readString();
+        questionA = in.readString();
+        questionB = in.readString();
+        questionC = in.readString();
+        questionD = in.readString();
+        answer = in.readString();
+        courseID = in.readLong();
+        categoryID = in.readLong();
+        part = in.readInt();
+        audioFile = in.readString();
+    }
+
+    public static final Creator<Question> CREATOR = new Creator<Question>() {
+        @Override
+        public Question createFromParcel(Parcel in) {
+            return new Question(in);
+        }
+
+        @Override
+        public Question[] newArray(int size) {
+            return new Question[size];
+        }
+    };
 
     public long getId() {
         return id;
@@ -144,4 +174,25 @@ public class Question {
             new Question(0, "","Once you have your resume with references and ___ , please submit it to the Human Resources Department on the 3rd floor."
             , "qualified", "qualifications", "qualify", "qualifying", "qualifications", 1, 5, 5, "")
     };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(id);
+        dest.writeString(description);
+        dest.writeString(question);
+        dest.writeString(questionA);
+        dest.writeString(questionB);
+        dest.writeString(questionC);
+        dest.writeString(questionD);
+        dest.writeString(answer);
+        dest.writeLong(courseID);
+        dest.writeLong(categoryID);
+        dest.writeInt(part);
+        dest.writeString(audioFile);
+    }
 }

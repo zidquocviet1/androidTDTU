@@ -1,21 +1,34 @@
 package com.example.finalproject.fragment;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
 
+import com.example.finalproject.ExamActivity;
 import com.example.finalproject.R;
+import com.example.finalproject.databinding.FragmentPart3Binding;
+import com.example.finalproject.databinding.FragmentPart7Binding;
+import com.example.finalproject.models.Question;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link Part7Fragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Part7Fragment extends Fragment {
+public class Part7Fragment extends Fragment implements View.OnClickListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -25,6 +38,11 @@ public class Part7Fragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private FragmentPart7Binding binding;
+    private ExamActivity context;
+    private List<Boolean> checkState;
+    private List<String> listSelected;
+    private ArrayList<Question> questions = new ArrayList<>();
 
     public Part7Fragment() {
         // Required empty public constructor
@@ -39,11 +57,11 @@ public class Part7Fragment extends Fragment {
      * @return A new instance of fragment Part7Fragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static Part7Fragment newInstance(String param1, String param2) {
+    public static Part7Fragment newInstance(ArrayList<Question> param1, int param2) {
         Part7Fragment fragment = new Part7Fragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putParcelableArrayList(ARG_PARAM1, param1);
+        args.putInt(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -60,7 +78,367 @@ public class Part7Fragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_part6, container, false);
+        binding = FragmentPart7Binding.inflate(inflater, container, false);
+        context = (ExamActivity) getActivity();
+
+        questions.addAll(getArguments().getParcelableArrayList(ARG_PARAM1));
+        setDefaultUI();
+        showQuestion(questions, getArguments().getInt(ARG_PARAM2));
+
+        binding.txtA.setOnClickListener(this);
+        binding.txtB.setOnClickListener(this);
+        binding.txtC.setOnClickListener(this);
+        binding.txtD.setOnClickListener(this);
+        binding.txtQues2A.setOnClickListener(this);
+        binding.txtQues2B.setOnClickListener(this);
+        binding.txtQues2C.setOnClickListener(this);
+        binding.txtQues2D.setOnClickListener(this);
+        binding.txtQues3A.setOnClickListener(this);
+        binding.txtQues3B.setOnClickListener(this);
+        binding.txtQues3C.setOnClickListener(this);
+        binding.txtQues3D.setOnClickListener(this);
+        binding.txtQues4A.setOnClickListener(this);
+        binding.txtQues4B.setOnClickListener(this);
+        binding.txtQues4C.setOnClickListener(this);
+        binding.txtQues4D.setOnClickListener(this);
+        binding.txtQues5A.setOnClickListener(this);
+        binding.txtQues5B.setOnClickListener(this);
+        binding.txtQues5C.setOnClickListener(this);
+        binding.txtQues5D.setOnClickListener(this);
+
+        listSelected = new ArrayList<>();
+        questions.forEach(q -> listSelected.add(""));
+
+        View view = binding.getRoot();
+        return view;
+    }
+
+    public void setDefaultUI() {
+        checkState = new ArrayList<>();
+        questions.forEach(q -> checkState.add(false));
+
+        binding.txtA.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+        binding.txtB.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+        binding.txtC.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+        binding.txtD.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+        binding.txtQues2A.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+        binding.txtQues2B.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+        binding.txtQues2C.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+        binding.txtQues2D.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+        binding.txtQues3A.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+        binding.txtQues3B.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+        binding.txtQues3C.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+        binding.txtQues3D.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+        binding.txtQues4A.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+        binding.txtQues4B.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+        binding.txtQues4C.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+        binding.txtQues4D.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+
+        context.changeButtonState(false);
+
+        if (questions.size() == 5){
+            binding.lnlayout5.setVisibility(View.VISIBLE);
+
+            binding.txtQues5A.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+            binding.txtQues5B.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+            binding.txtQues5C.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+            binding.txtQues5D.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+        }
+    }
+
+    public void showQuestion(ArrayList<Question> question, int numQuestion) {
+        binding.scrollView.fullScroll(ScrollView.FOCUS_UP);
+        try {
+            InputStream is = context.getAssets().open(question.get(0).getDescription());
+            Drawable drawable = Drawable.createFromStream(is, null);
+            binding.imageQuestion.setImageDrawable(drawable);
+            binding.imageQuestion.setVisibility(View.VISIBLE);
+            binding.description.setVisibility(View.GONE);
+        } catch (IOException e) {
+            e.printStackTrace();
+            binding.description.setText(question.get(0).getDescription());
+            binding.imageQuestion.setVisibility(View.GONE);
+            binding.description.setVisibility(View.VISIBLE);
+        }
+
+        binding.question1.setText(getString(R.string.number_question, numQuestion) +": "+question.get(0).getQuestion());
+        binding.txtA.setText(question.get(0).getQuestionA());
+        binding.txtB.setText(question.get(0).getQuestionB());
+        binding.txtC.setText(question.get(0).getQuestionC());
+        binding.txtD.setText(question.get(0).getQuestionD());
+
+        binding.question2.setText(getString(R.string.number_question, numQuestion+1) +": "+question.get(1).getQuestion());
+        binding.txtQues2A.setText(question.get(1).getQuestionA());
+        binding.txtQues2B.setText(question.get(1).getQuestionB());
+        binding.txtQues2C.setText(question.get(1).getQuestionC());
+        binding.txtQues2D.setText(question.get(1).getQuestionD());
+
+        binding.question3.setText(getString(R.string.number_question, numQuestion+2) +": "+question.get(2).getQuestion());
+        binding.txtQues3A.setText(question.get(2).getQuestionA());
+        binding.txtQues3B.setText(question.get(2).getQuestionB());
+        binding.txtQues3C.setText(question.get(2).getQuestionC());
+        binding.txtQues3D.setText(question.get(2).getQuestionD());
+
+        binding.question4.setText(getString(R.string.number_question, numQuestion+3) +": "+question.get(3).getQuestion());
+        binding.txtQues4A.setText(question.get(3).getQuestionA());
+        binding.txtQues4B.setText(question.get(3).getQuestionB());
+        binding.txtQues4C.setText(question.get(3).getQuestionC());
+        binding.txtQues4D.setText(question.get(3).getQuestionD());
+
+        if (questions.size() == 5) {
+            binding.lnlayout5.setVisibility(View.VISIBLE);
+            binding.question5.setText(getString(R.string.number_question, numQuestion+4) +": "+question.get(4).getQuestion());
+            binding.txtQues5A.setText(question.get(4).getQuestionA());
+            binding.txtQues5B.setText(question.get(4).getQuestionB());
+            binding.txtQues5C.setText(question.get(4).getQuestionC());
+            binding.txtQues5D.setText(question.get(4).getQuestionD());
+        }else
+            binding.lnlayout5.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.txtA:
+                binding.txtA.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_selected));
+                binding.txtB.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+                binding.txtC.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+                binding.txtD.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+                checkState.set(0, true);
+                listSelected.set(0, binding.txtA.getText().toString());
+                if (checkState.stream().noneMatch(c -> !c)){
+                    context.changeButtonState(true);
+                }
+                context.setTripleSelected(listSelected);
+                break;
+            case R.id.txtB:
+                binding.txtB.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_selected));
+                binding.txtA.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+                binding.txtC.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+                binding.txtD.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+                checkState.set(0, true);
+                listSelected.set(0, binding.txtB.getText().toString());
+                if (checkState.stream().noneMatch(c -> !c)){
+                    context.changeButtonState(true);
+                }
+                context.setTripleSelected(listSelected);
+                break;
+            case R.id.txtC:
+                binding.txtC.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_selected));
+                binding.txtB.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+                binding.txtA.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+                binding.txtD.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+                checkState.set(0, true);
+                listSelected.set(0, binding.txtC.getText().toString());
+                if (checkState.stream().noneMatch(c -> !c)){
+                    context.changeButtonState(true);
+                }
+                context.setTripleSelected(listSelected);
+                break;
+            case R.id.txtD:
+                binding.txtD.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_selected));
+                binding.txtB.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+                binding.txtC.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+                binding.txtA.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+                checkState.set(0, true);
+                listSelected.set(0, binding.txtD.getText().toString());
+                if (checkState.stream().noneMatch(c -> !c)){
+                    context.changeButtonState(true);
+                }
+                context.setTripleSelected(listSelected);
+                break;
+            case R.id.txtQues2A:
+                binding.txtQues2A.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_selected));
+                binding.txtQues2B.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+                binding.txtQues2C.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+                binding.txtQues2D.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+                checkState.set(1, true);
+                listSelected.set(1, binding.txtQues2A.getText().toString());
+                if (checkState.stream().noneMatch(c -> !c)){
+                    context.changeButtonState(true);
+                }
+                context.setTripleSelected(listSelected);
+                break;
+            case R.id.txtQues2B:
+                binding.txtQues2B.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_selected));
+                binding.txtQues2A.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+                binding.txtQues2C.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+                binding.txtQues2D.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+                checkState.set(1, true);
+                listSelected.set(1, binding.txtQues2B.getText().toString());
+                if (checkState.stream().noneMatch(c -> !c)){
+                    context.changeButtonState(true);
+                }
+                context.setTripleSelected(listSelected);
+                break;
+            case R.id.txtQues2C:
+                binding.txtQues2C.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_selected));
+                binding.txtQues2B.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+                binding.txtQues2A.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+                binding.txtQues2D.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+                checkState.set(1, true);
+                listSelected.set(1, binding.txtQues2C.getText().toString());
+                if (checkState.stream().noneMatch(c -> !c)){
+                    context.changeButtonState(true);
+                }
+                context.setTripleSelected(listSelected);
+                break;
+            case R.id.txtQues2D:
+                binding.txtQues2D.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_selected));
+                binding.txtQues2B.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+                binding.txtQues2C.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+                binding.txtQues2A.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+                checkState.set(1, true);
+                listSelected.set(1, binding.txtQues2D.getText().toString());
+                if (checkState.stream().noneMatch(c -> !c)){
+                    context.changeButtonState(true);
+                }
+                context.setTripleSelected(listSelected);
+                break;
+            case R.id.txtQues3A:
+                binding.txtQues3A.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_selected));
+                binding.txtQues3B.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+                binding.txtQues3C.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+                binding.txtQues3D.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+                checkState.set(2, true);
+                listSelected.set(2, binding.txtQues3A.getText().toString());
+                if (checkState.stream().noneMatch(c -> !c)){
+                    context.changeButtonState(true);
+                }
+                context.setTripleSelected(listSelected);
+                break;
+            case R.id.txtQues3B:
+                binding.txtQues3B.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_selected));
+                binding.txtQues3A.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+                binding.txtQues3C.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+                binding.txtQues3D.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+                checkState.set(2, true);
+                listSelected.set(2, binding.txtQues3B.getText().toString());
+                if (checkState.stream().noneMatch(c -> !c)){
+                    context.changeButtonState(true);
+                }
+                context.setTripleSelected(listSelected);
+                break;
+            case R.id.txtQues3C:
+                binding.txtQues3C.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_selected));
+                binding.txtQues3B.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+                binding.txtQues3A.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+                binding.txtQues3D.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+                checkState.set(2, true);
+                listSelected.set(2, binding.txtQues3C.getText().toString());
+                if (checkState.stream().noneMatch(c -> !c)){
+                    context.changeButtonState(true);
+                }
+                context.setTripleSelected(listSelected);
+                break;
+            case R.id.txtQues3D:
+                binding.txtQues3D.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_selected));
+                binding.txtQues3B.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+                binding.txtQues3C.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+                binding.txtQues3A.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+                checkState.set(2, true);
+                listSelected.set(2, binding.txtQues3D.getText().toString());
+                if (checkState.stream().noneMatch(c -> !c)){
+                    context.changeButtonState(true);
+                }
+                context.setTripleSelected(listSelected);
+                break;
+            case R.id.txtQues4A:
+                binding.txtQues4A.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_selected));
+                binding.txtQues4B.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+                binding.txtQues4C.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+                binding.txtQues4D.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+                checkState.set(3, true);
+                listSelected.set(3, binding.txtQues4A.getText().toString());
+                if (checkState.stream().noneMatch(c -> !c)){
+                    context.changeButtonState(true);
+                }
+                context.setTripleSelected(listSelected);
+                break;
+            case R.id.txtQues4B:
+                binding.txtQues4B.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_selected));
+                binding.txtQues4A.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+                binding.txtQues4C.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+                binding.txtQues4D.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+                checkState.set(3, true);
+                listSelected.set(3, binding.txtQues4B.getText().toString());
+                if (checkState.stream().noneMatch(c -> !c)){
+                    context.changeButtonState(true);
+                }
+                context.setTripleSelected(listSelected);
+                break;
+            case R.id.txtQues4C:
+                binding.txtQues4C.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_selected));
+                binding.txtQues4B.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+                binding.txtQues4A.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+                binding.txtQues4D.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+                checkState.set(3, true);
+                listSelected.set(3, binding.txtQues4C.getText().toString());
+                if (checkState.stream().noneMatch(c -> !c)){
+                    context.changeButtonState(true);
+                }
+                context.setTripleSelected(listSelected);
+                break;
+            case R.id.txtQues4D:
+                binding.txtQues4D.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_selected));
+                binding.txtQues4B.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+                binding.txtQues4C.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+                binding.txtQues4A.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+                checkState.set(3, true);
+                listSelected.set(3, binding.txtQues4D.getText().toString());
+                if (checkState.stream().noneMatch(c -> !c)){
+                    context.changeButtonState(true);
+                }
+                context.setTripleSelected(listSelected);
+                break;
+            case R.id.txtQues5A:
+                binding.txtQues5A.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_selected));
+                binding.txtQues5B.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+                binding.txtQues5C.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+                binding.txtQues5D.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+                checkState.set(4, true);
+                listSelected.set(4, binding.txtQues5A.getText().toString());
+                if (checkState.stream().noneMatch(c -> !c)){
+                    context.changeButtonState(true);
+                }
+                context.setTripleSelected(listSelected);
+                break;
+            case R.id.txtQues5B:
+                binding.txtQues5B.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_selected));
+                binding.txtQues5A.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+                binding.txtQues5C.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+                binding.txtQues5D.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+                checkState.set(4, true);
+                listSelected.set(4, binding.txtQues5B.getText().toString());
+                if (checkState.stream().noneMatch(c -> !c)){
+                    context.changeButtonState(true);
+                }
+                context.setTripleSelected(listSelected);
+                break;
+            case R.id.txtQues5C:
+                binding.txtQues5C.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_selected));
+                binding.txtQues5B.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+                binding.txtQues5A.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+                binding.txtQues5D.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+                checkState.set(4, true);
+                listSelected.set(4, binding.txtQues5C.getText().toString());
+                if (checkState.stream().noneMatch(c -> !c)){
+                    context.changeButtonState(true);
+                }
+                context.setTripleSelected(listSelected);
+                break;
+            case R.id.txtQues5D:
+                binding.txtQues5D.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_selected));
+                binding.txtQues5B.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+                binding.txtQues5C.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+                binding.txtQues5A.setBackground(ContextCompat.getDrawable(context, R.drawable.answer_1));
+                checkState.set(4, true);
+                listSelected.set(4, binding.txtQues5D.getText().toString());
+                if (checkState.stream().noneMatch(c -> !c)){
+                    context.changeButtonState(true);
+                }
+                context.setTripleSelected(listSelected);
+                break;
+        }
     }
 }

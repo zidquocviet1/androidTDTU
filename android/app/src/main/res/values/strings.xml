@@ -49,8 +49,19 @@
         Trương Văn Long - 51800897</string>
     <string name="share_message">Cảm ơn vì bạn đã chia sẻ.</string>
     <string name="rate_message">Cảm ơn vì bạn đã đánh giá chúng tôi.</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="score">Điểm: %1$d</string>
     <string name="full_name">Họ và tên</string>
+    <string name="confirm">Xác nhận</string>
+    <string name="number_question">Câu hỏi %1$d</string>
+    <string name="progress_dialog_title">Tiếp Tục Thi?</string>
+    <string name="progress_dialog_message">Khóa thi chưa hoàn thành. Bạn có muốn tiếp tục thi không?</string>
+    <string name="yes">Có</string>
+    <string name="no">Không</string>
+    <string name="cancel">Hủy bỏ</string>
+    <string name="exit_testing_title">DỪNG THI?</string>
+    <string name="exit_testing_message">Khóa thi chưa hoàn thành. Bạn có chắc chắn muốn dừng thi?</string>
+    <string name="course_notfound">Khóa thi không tồn tại. Vui lòng thử lại sau!</string>
+    <string name="mode">Chọn Chế Độ Thi</string>
+    <string name="counting_time">Tính giờ</string>
+    <string name="without_counting_time">Không tính giờ</string>
 </resources>

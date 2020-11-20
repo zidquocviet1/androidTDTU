@@ -43,4 +43,17 @@
     <string name="rate_message">Thank you for your rating us.</string>
     <string name="score">Score: %1$d</string>
     <string name="full_name">Full Name</string>
+    <string name="confirm">Confirm</string>
+    <string name="number_question">Question %1$d</string>
+    <string name="progress_dialog_title">CONTINUE TESTING?</string>
+    <string name="progress_dialog_message">This course hasn\'t done. Would you like to continue?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="cancel">Cancel</string>
+    <string name="exit_testing_title">STOP TESTING?</string>
+    <string name="exit_testing_message">This course hasn\'t done. Would you like to exit anyway?</string>
+    <string name="course_notfound">The course not exists. Please try again!</string>
+    <string name="mode">Select Test Mode</string>
+    <string name="counting_time">Counting time</string>
+    <string name="without_counting_time">Without counting time</string>
 </resources>
