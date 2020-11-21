@@ -1,4 +1,4 @@
-package com.example.finalproject.models;
+package com.example.finalproject.models.converter;
 
 import androidx.room.TypeConverter;
 import androidx.room.TypeConverters;

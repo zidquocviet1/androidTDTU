@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -37,6 +38,7 @@ public class CourseFragment extends Fragment implements ItemClickListener {
     private List<Course> courseList;
     private List<Course> comments;
     private HomeActivity context;
+    private boolean isServer;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -73,9 +75,11 @@ public class CourseFragment extends Fragment implements ItemClickListener {
         context = (HomeActivity) getActivity();
         comments = new ArrayList<>();
         initRecyclerView();
-        observeViewModel(context);
+
         courseInfoAdapter.setListener(this);
         courseInfoAdapter.setData(MyDatabase.getInstance(context).courseDAO().getAllCourse());
+
+        observeViewModel(context);
         return view;
     }
 
@@ -85,6 +89,9 @@ public class CourseFragment extends Fragment implements ItemClickListener {
                 comments.addAll(courses);
                 showNumberComment();
             }
+        });
+        activity.getHomeViewModel().getServerState().observe(this, aBoolean -> {
+            isServer = aBoolean;
         });
     }
 
@@ -113,7 +120,6 @@ public class CourseFragment extends Fragment implements ItemClickListener {
     @Override
     public void onItemClick(Object object, int position) {
         User user = context.getHomeViewModel().getUser().getValue();
-        boolean isServer = context.getHomeViewModel().getServerState().getValue();
         boolean isNetwork = context.getHomeViewModel().getNetworkState().getValue();
 
         Intent intent = new Intent(context, CommentActivity.class);

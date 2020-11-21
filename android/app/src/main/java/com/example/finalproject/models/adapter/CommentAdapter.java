@@ -16,6 +16,7 @@ import com.example.finalproject.models.Comment;
 import com.example.finalproject.models.Course;
 
 import java.util.List;
+import java.util.Random;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentVH>{
     private Context context;
@@ -32,6 +33,11 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         notifyDataSetChanged();
     }
 
+    public void addItem(Comment comment){
+        this.data.add(comment);
+        notifyItemInserted(data.indexOf(comment));
+        notifyItemRangeChanged(0, data.size() - 1);
+    }
     public static class CommentVH extends RecyclerView.ViewHolder{
         private TextView txtName, txtContent;
         private ImageView imgAvatar;
@@ -52,9 +58,15 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
 
     @Override
     public void onBindViewHolder(@NonNull CommentAdapter.CommentVH holder, int position) {
-        holder.txtName.setText(data.get(position).getUser().getName());
+        int index = new Random().nextInt(5);
+        String fullName = data.get(position).getUser().getName();
+
+        fullName = fullName == null || fullName.equals("") || fullName.equals("null")
+                ? "Guest": data.get(position).getUser().getName();
+
+        holder.txtName.setText(fullName);
         holder.txtContent.setText(data.get(position).getDescription());
-        holder.imgAvatar.setImageDrawable(ContextCompat.getDrawable(context, UserAdapter.images[0]));
+        holder.imgAvatar.setImageDrawable(ContextCompat.getDrawable(context, UserAdapter.images[index]));
     }
 
     @Override

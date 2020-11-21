@@ -104,6 +104,7 @@
             android:textColor="@color/see_all"
             android:textSize="14sp"
             android:textStyle="bold"
+            android:layout_marginEnd="16dp"
             app:layout_constraintStart_toEndOf="@id/txtComment"
             app:layout_constraintBaseline_toBaselineOf="@id/txtComment"
             app:layout_constraintEnd_toEndOf="parent" />

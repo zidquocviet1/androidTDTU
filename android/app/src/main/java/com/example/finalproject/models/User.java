@@ -3,12 +3,21 @@ package com.example.finalproject.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
+
+import com.example.finalproject.models.converter.DateConverter;
+
 import java.util.Date;
 
+@Entity
 public class User implements Parcelable {
+    @PrimaryKey(autoGenerate = true)
     private int id;
     private String name;
     private boolean gender;
+    @TypeConverters(DateConverter.class)
     private Date birthday;
     private String address;
     private String email;

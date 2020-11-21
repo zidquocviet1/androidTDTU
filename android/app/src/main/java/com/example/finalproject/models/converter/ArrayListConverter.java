@@ -1,7 +1,8 @@
-package com.example.finalproject.models;
+package com.example.finalproject.models.converter;
 
 import androidx.room.TypeConverter;
 
+import com.example.finalproject.models.Comment;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 

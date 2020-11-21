@@ -80,16 +80,20 @@ public class HomeActivity extends AppCompatActivity
         binding.navView.setCheckedItem(R.id.mnHome);
         binding.bottomNav.setOnNavigationItemSelectedListener(this);
         openFragment(HomeFragment.class, "Home");
+
+        new Thread(() -> {
+            Account acc = MyDatabase.getInstance(this).accDAO().getFirstAccount();
+            if (acc != null)
+                ToeicAPI.getUserInfoBackground(this, acc);
+        }).start();
     }
 
     @Override
     protected void onStart() {
         new Thread(() -> {
-            Account acc = MyDatabase.getInstance(this).accDAO().getFirstAccount();
-            if (acc != null)
-                ToeicAPI.getUserInfoBackground(this, acc);
             if (homeViewModel.getWords().getValue() == null)
                 homeViewModel.getWords().postValue(MyDatabase.getInstance(this).wordDAO().getAll());
+
             ToeicAPI.getComment(this);
             ToeicAPI.checkConnection(this);
         }).start();

@@ -4,7 +4,8 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
-import java.util.HashMap;
+import com.example.finalproject.models.converter.HashMapConverter;
+
 import java.util.Map;
 
 @Entity

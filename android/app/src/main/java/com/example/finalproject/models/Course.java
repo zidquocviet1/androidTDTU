@@ -10,6 +10,8 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
+import com.example.finalproject.models.converter.ArrayListConverter;
+
 import java.util.ArrayList;
 
 @Entity(tableName = "course")
