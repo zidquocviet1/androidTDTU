@@ -1,5 +1,6 @@
 package com.example.finalproject.fragment;
 
+import android.app.SearchManager;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,14 +8,20 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.SearchView;
 
 import com.example.finalproject.HomeActivity;
+import com.example.finalproject.R;
 import com.example.finalproject.databinding.FragmentVocabularyBinding;
 import com.example.finalproject.models.Word;
 import com.example.finalproject.models.adapter.WordAdapter;
+import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,8 +88,26 @@ public class VocabularyFragment extends Fragment {
         observeViewModel(context);
 
         View view = binding.getRoot();
+        TextInputEditText search = (TextInputEditText) view.findViewById(R.id.input);
+        search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                wordAdapter.getFilter().filter(charSequence);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
         return view;
     }
+
 
     private void initRecyclerView() {
         words = new ArrayList<>();

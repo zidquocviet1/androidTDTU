@@ -27,6 +27,7 @@
             app:startIconTint="@color/icon">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/search_field"
@@ -34,7 +35,8 @@
                 android:inputType="text"
                 android:maxLines="1"
                 android:scrollHorizontally="true"
-                android:textColor="#A0A5BD" />
+                android:textColor="#A0A5BD"
+                app:actionViewClass="android.support.v7.widget.SearchView"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.recyclerview.widget.RecyclerView
