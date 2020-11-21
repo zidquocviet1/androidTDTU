@@ -3,22 +3,16 @@ package com.example.finalproject.fragment;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.finalproject.HomeActivity;
 import com.example.finalproject.R;
-import com.example.finalproject.api.UserAPI;
-import com.example.finalproject.databinding.FragmentHomeBinding;
+import com.example.finalproject.api.ToeicAPI;
 import com.example.finalproject.databinding.FragmentRankBinding;
 import com.example.finalproject.models.User;
-import com.example.finalproject.models.adapter.CourseInfoAdapter;
 import com.example.finalproject.models.adapter.UserAdapter;
 
 import java.util.ArrayList;
@@ -97,7 +91,7 @@ public class RankFragment extends Fragment {
     private void loadLeaderBoard() {
         if (context.getHomeViewModel().getUsers().getValue() == null) {
             if (context.isServerAndNetworkAvailable()) {
-                UserAPI.getUserByScore(context);
+                ToeicAPI.getUserByScore(context);
             }
         }
     }

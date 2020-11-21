@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 
 import com.example.finalproject.CommentActivity;
 import com.example.finalproject.HomeActivity;
-import com.example.finalproject.api.UserAPI;
 import com.example.finalproject.databinding.FragmentCourseBinding;
 import com.example.finalproject.models.Course;
 import com.example.finalproject.models.ItemClickListener;

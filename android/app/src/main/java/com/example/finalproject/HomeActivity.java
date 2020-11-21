@@ -24,7 +24,7 @@ import android.view.View;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
-import com.example.finalproject.api.UserAPI;
+import com.example.finalproject.api.ToeicAPI;
 import com.example.finalproject.databinding.ActivityHomeBinding;
 import com.example.finalproject.fragment.CourseFragment;
 import com.example.finalproject.fragment.HomeFragment;
@@ -87,11 +87,11 @@ public class HomeActivity extends AppCompatActivity
         new Thread(() -> {
             Account acc = MyDatabase.getInstance(this).accDAO().getFirstAccount();
             if (acc != null)
-                UserAPI.getUserInfoBackground(this, acc);
+                ToeicAPI.getUserInfoBackground(this, acc);
             if (homeViewModel.getWords().getValue() == null)
                 homeViewModel.getWords().postValue(MyDatabase.getInstance(this).wordDAO().getAll());
-            UserAPI.getComment(this);
-            UserAPI.checkConnection(this);
+            ToeicAPI.getComment(this);
+            ToeicAPI.checkConnection(this);
         }).start();
         super.onStart();
     }

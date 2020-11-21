@@ -45,7 +45,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public class UserAPI {
+public class ToeicAPI {
     private static final String IP = "192.168.42.65";
     private static final String BASE_URL = "http://" + IP + ":5000/api/toeic/";
 

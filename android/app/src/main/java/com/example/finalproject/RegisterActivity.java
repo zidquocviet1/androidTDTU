@@ -9,7 +9,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.Toast;
 
-import com.example.finalproject.api.UserAPI;
+import com.example.finalproject.api.ToeicAPI;
 import com.example.finalproject.databinding.ActivityRegisterBinding;
 import com.example.finalproject.models.Account;
 import com.example.finalproject.view.LoadingDialog;
@@ -37,7 +37,7 @@ public class RegisterActivity extends AppCompatActivity implements TextWatcher {
                 Account account = new Account(id, username, password, "default", false, fullName);
                 account.encryptPassword();
 
-                UserAPI.register(this, account);
+                ToeicAPI.register(this, account);
             }else{
                 Toast.makeText(this, getText(R.string.re_password), Toast.LENGTH_SHORT).show();
                 binding.txtLayoutConfirm.getEditText().requestFocus();

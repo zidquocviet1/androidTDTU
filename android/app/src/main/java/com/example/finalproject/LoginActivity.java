@@ -13,7 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.finalproject.api.UserAPI;
+import com.example.finalproject.api.ToeicAPI;
 import com.example.finalproject.databinding.ActivityLoginBinding;
 import com.example.finalproject.models.Account;
 import com.example.finalproject.models.MyDatabase;
@@ -166,7 +166,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     Account account = new Account("abc", username, password, "default", false, "");
                     account.encryptPassword();
 
-                    UserAPI.handleLogin(this, account);
+                    ToeicAPI.handleLogin(this, account);
                 }
                 break;
             case R.id.txtSignup:
