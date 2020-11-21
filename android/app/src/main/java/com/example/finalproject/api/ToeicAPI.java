@@ -22,6 +22,7 @@ import com.example.finalproject.models.Account;
 import com.example.finalproject.models.Comment;
 import com.example.finalproject.models.Course;
 import com.example.finalproject.models.MyDatabase;
+import com.example.finalproject.models.Record;
 import com.example.finalproject.models.User;
 import com.example.finalproject.models.Word;
 import com.example.finalproject.view.LoadingDialog;
@@ -45,6 +46,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Random;
 
 public class ToeicAPI {
     private static final String IP = "192.168.42.65";
@@ -67,7 +69,8 @@ public class ToeicAPI {
                             String type = user.getString("type");
                             String fullName = user.getString("fullName");
 
-                            Account.saveAccountInfo(new Account(id, "", "", type, true, fullName), context);
+                            Account acc = new Account(id, "", "", type, true, fullName);
+                            Account.saveAccountInfo(acc, context);
                             new Handler(Looper.getMainLooper()).postDelayed(() -> {
                                 LoadingDialog.dismissDialog();
                                 context.navigateHome();
@@ -236,6 +239,7 @@ public class ToeicAPI {
 
     public static void getUserInfoBackground(Context context, Account acc) {
         HomeActivity home = (HomeActivity) context;
+        LoadingDialog.showLoadingDialog(context);
 
         RequestQueue queue = Volley.newRequestQueue(context.getApplicationContext());
         StringRequest request = new StringRequest(Request.Method.GET,
@@ -265,16 +269,28 @@ public class ToeicAPI {
                             Date finalDate = date;
 
                             User user = new User(id, name, gender, finalDate, address, email, score, accountID, avatar);
-                            home.getHomeViewModel().getUser().postValue(user);
+                            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                                home.getHomeViewModel().getUser().postValue(user);
+                                home.getHomeViewModel().getServerState().postValue(true);
+                                LoadingDialog.dismissDialog();
+                            }, 1500);
                         } else {
-                            home.getHomeViewModel().getUser().postValue(null);
+                            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                                home.getHomeViewModel().getUser().postValue(null);
+                                home.getHomeViewModel().getServerState().postValue(true);
+                                LoadingDialog.dismissDialog();
+                            }, 1500);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 },
                 error -> {
-                    home.getHomeViewModel().getServerState().postValue(false);
+                    new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                        home.getHomeViewModel().getUser().postValue(null);
+                        home.getHomeViewModel().getServerState().postValue(false);
+                        LoadingDialog.dismissDialog();
+                    }, 500);
                 });
         queue.add(request);
     }
@@ -390,6 +406,7 @@ public class ToeicAPI {
 
     public static void getCommentByCourseID(Context context, long courseId) {
         CommentActivity home = (CommentActivity) context;
+        LoadingDialog.showLoadingDialog(context);
 
         RequestQueue queue = Volley.newRequestQueue(context.getApplicationContext());
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
@@ -416,15 +433,23 @@ public class ToeicAPI {
                                         courseId, userId, null, new User(0, fullName,
                                         false, null, null, null, -1, null, -1)));
                             }
-                            home.getVM().getComments().postValue(comments);
-                            home.checkNetworkAndServer(true);
+                            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                                LoadingDialog.dismissDialog();
+                                home.getVM().getComments().postValue(comments);
+                                home.checkNetworkAndServer(true);
+                                home.setUpUI();
+                            },1500);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 },
                 error -> {
-                    home.checkNetworkAndServer(false);
+                    new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                        LoadingDialog.dismissDialog();
+                        home.checkNetworkAndServer(false);
+                        home.setUpUI();
+                    },1000);
                 });
         queue.add(request);
     }
@@ -485,6 +510,79 @@ public class ToeicAPI {
                     }, 1500);
                 });
 
+        queue.add(request);
+    }
+
+    public static void updateRecord(Context context, Record record){
+        RequestQueue queue = Volley.newRequestQueue(context.getApplicationContext());
+
+        Map<String, String> params = new HashMap<>();
+        params.put("courseId", record.getCourseId()+"");
+        params.put("accountId", record.getAccountId());
+        params.put("score", record.getScore()+"");
+
+        JSONObject postParams = new JSONObject(params);
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.PUT,
+                BASE_URL + "updateRecord", postParams,
+                response -> {
+                    try {
+                        if (response.getBoolean("status")) {
+                        } else {
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                },
+                error -> {
+                });
+
+        queue.add(request);
+    }
+
+    public static void getRankByCourse(Context context, long courseId) {
+        LoadingDialog.showLoadingDialog(context);
+        HomeActivity home = (HomeActivity) context;
+
+        RequestQueue queue = Volley.newRequestQueue(context.getApplicationContext());
+        StringRequest request = new StringRequest(Request.Method.GET,
+                BASE_URL + "getRankByCourse?courseId=" + courseId,
+                response -> {
+                    try {
+                        JSONObject object = new JSONObject(response);
+                        if (object.getBoolean("status")) {
+                            JSONArray array = object.getJSONArray("data");
+                            List<User> users = new ArrayList<>();
+
+                            for (int i = 0; i < array.length(); i++){
+                                JSONObject data = array.getJSONObject(i);
+
+                                int id = data.getInt("id");
+                                String accountId = data.getString("accountId");
+                                int score = data.getInt("score");
+
+                                JSONObject accObject = data.getJSONObject("account");
+                                String fullName = accObject.getString("fullName");
+
+                                users.add(new User(id, fullName, false, null,
+                                        "", "", score, accountId, new Random().nextInt(5)));
+                            }
+
+                            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                                LoadingDialog.dismissDialog();
+                                home.getHomeViewModel().getUsers().postValue(users);
+                            }, 1000);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                },
+                error -> {
+                    new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                        LoadingDialog.dismissDialog();
+                        home.getHomeViewModel().getUsers().postValue(null);
+                    }, 1000);
+                });
         queue.add(request);
     }
 }

@@ -32,7 +32,11 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserVH>{
         this.data = data;
     }
     public void setData(List<User> data){
-        this.data = data;
+        if (!this.data.isEmpty())
+            this.data.clear();
+
+        notifyDataSetChanged();
+        this.data.addAll(data);
         notifyItemRangeInserted(0, data.size() -1);
     }
     public void setOnItemClickListener(ItemClickListener listener){

@@ -16,12 +16,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.finalproject.api.ToeicAPI;
 import com.example.finalproject.databinding.ActivityExamBinding;
 import com.example.finalproject.fragment.*;
 import com.example.finalproject.models.Course;
 import com.example.finalproject.models.MyDatabase;
 import com.example.finalproject.models.Progress;
 import com.example.finalproject.models.Question;
+import com.example.finalproject.models.Record;
+import com.example.finalproject.models.User;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -51,6 +54,7 @@ public class ExamActivity extends AppCompatActivity implements MediaPlayer.OnPre
     private long courseID = -1;
     private int currentPart = 1;
     private int currentAudio;
+    private int score = 0;
     private boolean isCounting;
 
     @Override
@@ -85,6 +89,16 @@ public class ExamActivity extends AppCompatActivity implements MediaPlayer.OnPre
         } else {
             Toast.makeText(this, getString(R.string.course_notfound), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    protected void onStart() {
+        new Thread(() -> {
+            List<Record> records = MyDatabase.getInstance(this).recordDAO().getAll();
+            records.forEach(r -> ToeicAPI.updateRecord(this, r));
+        }).start();
+
+        super.onStart();
     }
 
     @Override
@@ -213,6 +227,20 @@ public class ExamActivity extends AppCompatActivity implements MediaPlayer.OnPre
     }
 
     private void saveProgress() {
+        int correctAnswer = getCorrectAnswer();
+//        int score;
+
+        if (correctAnswer > 198)
+//            score = 990;
+            this.score = 990;
+        else if (correctAnswer == 0)
+//            score = 0;
+            this.score = 0;
+        else
+//            score = correctAnswer * 5;
+            this.score = correctAnswer * 5;
+
+        User user = MyDatabase.getInstance(this).userDAO().getFirstUser();
         Progress progress = MyDatabase.getInstance(this).progressDAO().getByCourseId(courseID);
 
         if (progress == null) {
@@ -223,6 +251,17 @@ public class ExamActivity extends AppCompatActivity implements MediaPlayer.OnPre
             progress.setCounting(isCounting);
 
             MyDatabase.getInstance(this).progressDAO().update(progress);
+        }
+
+        if (user != null){
+            Record record = MyDatabase.getInstance(this).recordDAO().getByCourseIdAndAccountId(courseID, user.getAccountId());
+            if (record == null){
+                MyDatabase.getInstance(this).recordDAO().addRecord(new Record(0, courseID, user.getAccountId(), score));
+            }else{
+                score = Math.max(score, record.getScore());
+                record.setScore(score);
+                MyDatabase.getInstance(this).recordDAO().updateRecord(record);
+            }
         }
     }
 
@@ -404,7 +443,6 @@ public class ExamActivity extends AppCompatActivity implements MediaPlayer.OnPre
 
     private void showResultDialog() {
         binding.btnClick.setEnabled(false);
-        saveProgress();
 
         if (mediaPlayer != null) {
             mediaPlayer.stop();
@@ -415,14 +453,7 @@ public class ExamActivity extends AppCompatActivity implements MediaPlayer.OnPre
             timer = null;
         }
         int correctAnswer = getCorrectAnswer();
-        int score;
-
-        if (correctAnswer > 198)
-            score = 990;
-        else if (correctAnswer == 0)
-            score = 0;
-        else
-            score = correctAnswer * 5;
+        saveProgress();
 
         Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.result_test_dialog);
@@ -451,6 +482,7 @@ public class ExamActivity extends AppCompatActivity implements MediaPlayer.OnPre
             time = 2 * 60 * 60 * 1000;
             currentQuest = 0;
             currentPart = 1;
+            score = 0;
             answer = new HashMap<>();
             tripleSelected = new ArrayList<>();
 

@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -21,6 +22,7 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
@@ -71,33 +73,37 @@ public class HomeActivity extends AppCompatActivity
 
         registerReceiver(receiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
-        Account account = MyDatabase.getInstance(this).accDAO().getFirstAccount();
-        if (account != null)
-            homeViewModel.getAccount().postValue(account);
-
         binding.cvAvatar.setOnClickListener(this);
         binding.imageView.setOnClickListener(this);
         binding.navView.setCheckedItem(R.id.mnHome);
         binding.bottomNav.setOnNavigationItemSelectedListener(this);
         openFragment(HomeFragment.class, "Home");
 
-        new Thread(() -> {
-            Account acc = MyDatabase.getInstance(this).accDAO().getFirstAccount();
-            if (acc != null)
-                ToeicAPI.getUserInfoBackground(this, acc);
-        }).start();
+        if (homeViewModel.getWords().getValue() == null)
+            homeViewModel.getWords().postValue(MyDatabase.getInstance(this).wordDAO().getAll());
+
+        Account acc = MyDatabase.getInstance(this).accDAO().getFirstAccount();
+        if (acc != null && acc.isLogin()) {
+            ToeicAPI.getUserInfoBackground(this, acc);
+        }
+
+        ToeicAPI.getComment(this);
     }
 
     @Override
     protected void onStart() {
-        new Thread(() -> {
-            if (homeViewModel.getWords().getValue() == null)
-                homeViewModel.getWords().postValue(MyDatabase.getInstance(this).wordDAO().getAll());
 
-            ToeicAPI.getComment(this);
-            ToeicAPI.checkConnection(this);
-        }).start();
         super.onStart();
+    }
+
+    @Override
+    protected void onRestart() {
+        Account acc = MyDatabase.getInstance(this).accDAO().getFirstAccount();
+        if (acc != null && acc.isLogin())
+            ToeicAPI.getUserInfoBackground(this, acc);
+
+        Log.e("TAG", "login xong qua day");
+        super.onRestart();
     }
 
     private void initDrawerLayout() {
@@ -195,9 +201,10 @@ public class HomeActivity extends AppCompatActivity
     }
 
     public void showUserInfo(User user) {
-        Log.e("TAG", user.getName() + " " + user.getAccountId());
         int i = UserAdapter.images[user.getAvatar()];
         binding.imgAvatar.setImageDrawable(ContextCompat.getDrawable(this, i));
+
+        MyDatabase.getInstance(this).userDAO().addUser(user);
     }
 
     private void showLogoutDialog() {
@@ -223,6 +230,22 @@ public class HomeActivity extends AppCompatActivity
                 }))
                 .setCancelable(false)
                 .create().show();
+    }
+
+    private void showRateDialog() {
+        Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.rateus);
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+
+        Button btnClose = dialog.findViewById(R.id.btnClose);
+        btnClose.setOnClickListener(v -> {
+            dialog.dismiss();
+            Toast.makeText(this, getString(R.string.share_message), Toast.LENGTH_SHORT).show();
+            binding.navView.setCheckedItem(binding.bottomNav.getSelectedItemId());
+        });
+
+        dialog.show();
     }
 
     public void openFragment(Class fragmentClass, CharSequence title) {
@@ -289,8 +312,9 @@ public class HomeActivity extends AppCompatActivity
                     Toast.makeText(this, getString(R.string.share_message), Toast.LENGTH_SHORT).show();
                 break;
             case R.id.mnRate:
-                if (binding.bottomNav.getSelectedItemId() != R.id.mnRate)
-                    Toast.makeText(this, getString(R.string.share_message), Toast.LENGTH_SHORT).show();
+                if (binding.bottomNav.getSelectedItemId() != R.id.mnRate) {
+                    showRateDialog();
+                }
                 break;
             default:
                 if (binding.bottomNav.getSelectedItemId() != R.id.mnHome)

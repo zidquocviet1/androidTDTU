@@ -44,8 +44,6 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
         binding = ActivityCommentBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        LoadingDialog.showLoadingDialog(this);
-
         user = getIntent().getParcelableExtra("user");
         course = getIntent().getParcelableExtra("course");
         isNetwork = getIntent().getBooleanExtra("network", true);
@@ -55,11 +53,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
         initRecyclerView();
         initViewModel();
 
-        new Handler(Looper.getMainLooper()).postDelayed(() -> {
-            LoadingDialog.dismissDialog();
-            setUpUI(user);
-            ToeicAPI.getCommentByCourseID(this, course.getId());
-        }, 3000);
+        ToeicAPI.getCommentByCourseID(this, course.getId());
 
         binding.btnPost.setOnClickListener(this);
         binding.back.setOnClickListener(this);
@@ -83,7 +77,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
-    private void setUpUI(User user) {
+    public void setUpUI() {
         if (user != null) {
             binding.imageUser.setImageDrawable(ContextCompat.getDrawable(this, UserAdapter.images[user.getAvatar()]));
             binding.txtNameUser.setText(user.getName());

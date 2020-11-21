@@ -125,4 +125,9 @@ public class Course implements Parcelable {
         dest.writeString(description);
         dest.writeFloat(rating);
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

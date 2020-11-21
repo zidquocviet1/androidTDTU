@@ -4,8 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/content">
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/textView4"
@@ -28,7 +27,7 @@
         android:fontFamily="@font/avenir_lt_pro_light"
         android:gravity="center_horizontal"
         android:text="Please leave a review. We'd love to hear how you're enjoying this app"
-        android:textSize="24sp"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -49,9 +48,11 @@
         app:layout_constraintVertical_bias="0.056" />
 
     <Button
+        android:id="@+id/btnClose"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Close"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"

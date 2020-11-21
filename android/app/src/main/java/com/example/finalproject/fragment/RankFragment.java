@@ -7,11 +7,14 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 
 import com.example.finalproject.HomeActivity;
 import com.example.finalproject.R;
 import com.example.finalproject.api.ToeicAPI;
 import com.example.finalproject.databinding.FragmentRankBinding;
+import com.example.finalproject.models.Course;
 import com.example.finalproject.models.User;
 import com.example.finalproject.models.adapter.UserAdapter;
 
@@ -24,7 +27,7 @@ import java.util.stream.Collectors;
  * Use the {@link RankFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class RankFragment extends Fragment {
+public class RankFragment extends Fragment implements View.OnClickListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -35,6 +38,7 @@ public class RankFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     private List<User> users;
+    private List<Course> courseList;
     private FragmentRankBinding binding;
     private HomeActivity context;
     private UserAdapter userAdapter;
@@ -80,7 +84,13 @@ public class RankFragment extends Fragment {
 
         View view = binding.getRoot();
         users = new ArrayList<>();
+        courseList = new ArrayList<>();
         initRecyclerView();
+
+        binding.spCourse.setEnabled(false);
+        binding.txtAll.setTextColor(context.getColor(R.color.title));
+        binding.txtAll.setOnClickListener(this);
+        binding.chkFilter.setOnClickListener(this);
 
         observeViewModel();
         loadLeaderBoard();
@@ -89,10 +99,8 @@ public class RankFragment extends Fragment {
     }
 
     private void loadLeaderBoard() {
-        if (context.getHomeViewModel().getUsers().getValue() == null) {
-            if (context.isServerAndNetworkAvailable()) {
-                ToeicAPI.getUserByScore(context);
-            }
+        if (context.isServerAndNetworkAvailable()) {
+            ToeicAPI.getUserByScore(context);
         }
     }
     private void initRecyclerView() {
@@ -108,6 +116,11 @@ public class RankFragment extends Fragment {
             if (users != null) {
                 users = users.stream().filter(u -> u.getScore() > 0).collect(Collectors.toList());
                 userAdapter.setData(users);
+            }
+        });
+        context.getHomeViewModel().getCourses().observe(this, courses -> {
+            if (courses != null){
+                courseList.addAll(courses);
             }
         });
         context.getHomeViewModel().getNetworkState().observe(this, aBoolean -> {
@@ -130,5 +143,50 @@ public class RankFragment extends Fragment {
                 binding.rvRankUser.setVisibility(View.VISIBLE);
             }
         });
+    }
+    private void openSpinner(){
+        ArrayAdapter<Course> arrayAdapter = new ArrayAdapter<Course>(context,
+                android.R.layout.simple_spinner_item, courseList);
+
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.spCourse.setAdapter(arrayAdapter);
+        binding.spCourse.setSelection(-1);
+        binding.spCourse.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                long courseId = arrayAdapter.getItem(position).getId();
+                if (context.isServerAndNetworkAvailable()) {
+                    ToeicAPI.getRankByCourse(context, courseId);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.txtAll:
+                binding.chkFilter.setChecked(false);
+                binding.spCourse.setEnabled(false);
+                binding.txtAll.setTextColor(context.getColor(R.color.title));
+                loadLeaderBoard();
+                break;
+            case R.id.chkFilter:
+                if (binding.chkFilter.isChecked()){
+                    binding.spCourse.setEnabled(true);
+                    binding.txtAll.setTextColor(context.getColor(R.color.content));
+                    openSpinner();
+                }else{
+                    binding.spCourse.setEnabled(false);
+                    binding.txtAll.setTextColor(context.getColor(R.color.title));
+                    loadLeaderBoard();
+                }
+                break;
+        }
     }
 }
