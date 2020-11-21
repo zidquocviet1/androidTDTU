@@ -8,29 +8,27 @@
     <!--header-->
     <ImageView
         android:id="@+id/back"
-        android:layout_width="19.39dp"
-        android:layout_height="17.78dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:background="@drawable/ic_back"
         android:clickable="true"
         android:focusable="true"
         android:foreground="?selectableItemBackground"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="12dp"
-        android:layout_marginLeft="12dp"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="15dp" />
+        app:layout_constraintTop_toTopOf="@id/textView"
+        app:layout_constraintBottom_toBottomOf="@id/textView"
+        android:layout_marginLeft="20dp"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="153dp"
-        android:layout_height="21dp"
-        android:layout_marginTop="12dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
         android:fontFamily="@font/avenir_lt_pro_black"
         android:gravity="center_horizontal|bottom"
-        android:lineHeight="21sp"
-        android:text="Toeic 750+"
+        android:text="@string/comment_title"
         android:textColor="@color/black"
-        android:textSize="18sp"
+        android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -40,8 +38,6 @@
         android:id="@+id/rvCommentList"
         android:layout_width="match_parent"
         android:layout_height="502dp"
-        android:layout_marginTop="8dp"
-        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/lnlayout1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
@@ -93,7 +89,7 @@
             android:layout_weight="2.7"
             android:orientation="vertical">
             <EditText
-                android:id="@+id/edit_comment"
+                android:id="@+id/edtContent"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
                 android:hint="Write here..."

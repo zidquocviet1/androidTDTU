@@ -21,6 +21,7 @@ import com.example.finalproject.RegisterActivity;
 import com.example.finalproject.models.Account;
 import com.example.finalproject.models.Comment;
 import com.example.finalproject.models.Course;
+import com.example.finalproject.models.MyDatabase;
 import com.example.finalproject.models.User;
 import com.example.finalproject.models.Word;
 import com.example.finalproject.view.LoadingDialog;
@@ -119,6 +120,47 @@ public class ToeicAPI {
                             activity.navigate();
                         } else {
                             activity.onRegisterFail();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                },
+                error -> {
+                    new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                        LoadingDialog.dismissDialog();
+                        Toast.makeText(context, context.getText(R.string.server_error), Toast.LENGTH_SHORT).show();
+                    }, 1500);
+                });
+
+        queue.add(request);
+    }
+
+    public static void updateUser(@NotNull Context context, User user) {
+        LoadingDialog.showLoadingDialog(context);
+        RequestQueue queue = Volley.newRequestQueue(context.getApplicationContext());
+
+        Map<String, String> params = new HashMap<>();
+        params.put("id", user.getId()+"");
+        params.put("name", user.getName());
+        params.put("gender", user.isGender()+"");
+        params.put("birthday", user.getBirthday()+"");
+        params.put("address", user.getAddress());
+        params.put("email", user.getEmail());
+        params.put("score", user.getScore()+"");
+        params.put("avatar", user.getAvatar()+"");
+
+        JSONObject postParams = new JSONObject(params);
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
+                BASE_URL + "user", postParams,
+                response -> {
+                    try {
+                        RegisterActivity activity = (RegisterActivity) context;
+
+                        if (response.getBoolean("status")) {
+                            MyDatabase.getInstance(context).userDAO().addUser(user);
+                        } else {
+
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -375,13 +417,74 @@ public class ToeicAPI {
                                         false, null, null, null, -1, null, -1)));
                             }
                             home.getVM().getComments().postValue(comments);
+                            home.checkNetworkAndServer(true);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 },
                 error -> {
+                    home.checkNetworkAndServer(false);
                 });
+        queue.add(request);
+    }
+
+    public static void postComment(Context context, Comment comment, String accountId, long courseId){
+        LoadingDialog.showLoadingDialog(context);
+        RequestQueue queue = Volley.newRequestQueue(context.getApplicationContext());
+        CommentActivity home = (CommentActivity) context;
+
+        Map<String, String> params = new HashMap<>();
+        params.put("description", comment.getDescription());
+        params.put("rating", comment.getRating()+"");
+        params.put("courseId", courseId+"");
+        params.put("userId", accountId);
+
+        JSONObject postParams = new JSONObject(params);
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
+                BASE_URL + "addComment", postParams,
+                response -> {
+                    try {
+                        if (response.getBoolean("status")) {
+                            JSONObject object = response.getJSONObject("data");
+
+                            int id = object.getInt("id");
+                            String des = object.getString("description");
+                            int rating = object.getInt("rating");
+                            String userId = object.getString("userId");
+
+                            JSONObject userObject = object.getJSONObject("user");
+
+                            String fullName = userObject.getString("fullName");
+
+                            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                                LoadingDialog.dismissDialog();
+                                home.getCommentAdapter().addItem(new Comment(id, des, rating,
+                                        courseId, userId, null, new User(0, fullName,
+                                        false, null, null, null, -1, accountId, -1)));
+                            }, 1000);
+                        } else {
+                            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                                LoadingDialog.dismissDialog();
+                                try {
+                                    Toast.makeText(context, response.getString("message"), Toast.LENGTH_SHORT).show();
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }, 1500);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                },
+                error -> {
+                    new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                        LoadingDialog.dismissDialog();
+                        Toast.makeText(context, context.getText(R.string.server_error), Toast.LENGTH_SHORT).show();
+                    }, 1500);
+                });
+
         queue.add(request);
     }
 }

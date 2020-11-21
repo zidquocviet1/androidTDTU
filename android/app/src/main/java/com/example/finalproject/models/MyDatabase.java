@@ -17,7 +17,7 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 @Database(entities = {Account.class, Question.class, Course.class,
-        Category.class, Word.class, Progress.class}, version = 1)
+        Category.class, Word.class, Progress.class, User.class}, version = 1)
 
 public abstract class MyDatabase extends RoomDatabase {
     private static MyDatabase instance;
@@ -107,4 +107,6 @@ public abstract class MyDatabase extends RoomDatabase {
     public abstract WordDAO wordDAO();
 
     public abstract ProgressDAO progressDAO();
+
+    public abstract UserDAO userDAO();
 }

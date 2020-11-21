@@ -486,7 +486,10 @@ public class ExamActivity extends AppCompatActivity implements MediaPlayer.OnPre
                     isCounting = false;
                     startTesting();
                 }))
-                .setCancelable(false)
+                .setOnCancelListener(dialog -> {
+                    dialog.dismiss();
+                    finish();
+                })
                 .create().show();
     }
 

@@ -65,4 +65,5 @@
     <string name="counting_time">Tính giờ</string>
     <string name="without_counting_time">Không tính giờ</string>
     <string name="comment">Bình luận: %1$d</string>
+    <string name="comment_title">Bình Luận</string>
 </resources>
