@@ -11,6 +11,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.finalproject.CommentActivity;
@@ -47,6 +48,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class ToeicAPI {
     private static final String IP = "192.168.42.65";
@@ -73,14 +77,14 @@ public class ToeicAPI {
                             Account.saveAccountInfo(acc, context);
                             new Handler(Looper.getMainLooper()).postDelayed(() -> {
                                 LoadingDialog.dismissDialog();
-                                context.navigateHome();
-                            }, 2000);
+                                context.navigateHome(acc);
+                            }, 1000);
                         } else {
                             new Handler(Looper.getMainLooper()).postDelayed(() -> {
                                 LoadingDialog.dismissDialog();
                                 Toast.makeText(context, context.getText(R.string.login_error), Toast.LENGTH_SHORT).show();
                                 context.getBinding().layoutUsername.getEditText().requestFocus();
-                            }, 2000);
+                            }, 1000);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -242,6 +246,69 @@ public class ToeicAPI {
         LoadingDialog.showLoadingDialog(context);
 
         RequestQueue queue = Volley.newRequestQueue(context.getApplicationContext());
+//        RequestFuture<String> future = RequestFuture.newFuture();
+//        StringRequest stringRequest = new StringRequest(Request.Method.GET, BASE_URL + "user?id=" + acc.getId(),
+//                future, future);
+//        queue.add(stringRequest);
+//
+//        try {
+//            String response = future.get(5, TimeUnit.SECONDS);
+//            try {
+//                JSONObject object = new JSONObject(response);
+//                if (object.getBoolean("status")) {
+//                    JSONObject data = object.getJSONObject("data");
+//
+//                    int id = data.getInt("id");
+//                    String name = data.getString("name");
+//                    boolean gender = data.getBoolean("gender");
+//                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+//                    Date date = null;
+//                    try {
+//                        date = format.parse(data.getString("birthday"));
+//                    } catch (ParseException e) {
+//                        e.printStackTrace();
+//                    }
+//                    String address = data.getString("address");
+//                    String email = data.getString("email");
+//                    int score = data.getInt("score");
+//                    String accountID = data.getString("accountId");
+//                    int avatar = data.getInt("avatar");
+//
+//                    Date finalDate = date;
+//
+//                    User user = new User(id, name, gender, finalDate, address, email, score, accountID, avatar);
+//                    new Handler(Looper.getMainLooper()).postDelayed(() -> {
+//                        home.getHomeViewModel().getUser().postValue(user);
+//                        home.getHomeViewModel().getServerState().postValue(true);
+//                        LoadingDialog.dismissDialog();
+//                    }, 1000);
+//                } else {
+//                    new Handler(Looper.getMainLooper()).postDelayed(() -> {
+//                        home.getHomeViewModel().getUser().postValue(null);
+//                        home.getHomeViewModel().getServerState().postValue(true);
+//                        try {
+//                            Toast.makeText(home, object.getString("message"), Toast.LENGTH_SHORT).show();
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+//                        LoadingDialog.dismissDialog();
+//                    }, 1000);
+//                }
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//        } catch (InterruptedException e) {
+//            // exception handling
+//        } catch (ExecutionException e) {
+//            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+//                        home.getHomeViewModel().getUser().postValue(null);
+//                        home.getHomeViewModel().getServerState().postValue(false);
+//                        Toast.makeText(home, home.getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+//                        LoadingDialog.dismissDialog();
+//                    }, 500);
+//        } catch (TimeoutException e) {
+//            e.printStackTrace();
+//        }
         StringRequest request = new StringRequest(Request.Method.GET,
                 BASE_URL + "user?id=" + acc.getId(),
                 response -> {
@@ -273,13 +340,18 @@ public class ToeicAPI {
                                 home.getHomeViewModel().getUser().postValue(user);
                                 home.getHomeViewModel().getServerState().postValue(true);
                                 LoadingDialog.dismissDialog();
-                            }, 1500);
+                            }, 1000);
                         } else {
                             new Handler(Looper.getMainLooper()).postDelayed(() -> {
                                 home.getHomeViewModel().getUser().postValue(null);
                                 home.getHomeViewModel().getServerState().postValue(true);
+                                try {
+                                    Toast.makeText(home, object.getString("message"), Toast.LENGTH_SHORT).show();
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
                                 LoadingDialog.dismissDialog();
-                            }, 1500);
+                            }, 1000);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -289,6 +361,7 @@ public class ToeicAPI {
                     new Handler(Looper.getMainLooper()).postDelayed(() -> {
                         home.getHomeViewModel().getUser().postValue(null);
                         home.getHomeViewModel().getServerState().postValue(false);
+                        Toast.makeText(home, home.getString(R.string.server_error), Toast.LENGTH_SHORT).show();
                         LoadingDialog.dismissDialog();
                     }, 500);
                 });

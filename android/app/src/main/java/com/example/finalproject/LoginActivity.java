@@ -93,7 +93,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     if (task.isSuccessful()) {
                         FirebaseUser user = firebaseAuth.getCurrentUser();
                         Account.saveAccountInfo(user, this);
-                        navigateHome();
+                        navigateHome(null);
                         Log.e("TAG", "Sign in with credential successfully! " + user.getUid());
                     } else {
                         Log.e("TAG", "Sign in with credential failure!" + task.getException());
@@ -109,8 +109,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         return binding;
     }
 
-    public void navigateHome() {
+    public void navigateHome(Account acc) {
+        Intent intent = new Intent();
+        intent.putExtra("account", acc);
+        setResult(RESULT_OK, intent);
         this.finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        navigateHome(null);
     }
 
     private void setupLoginFacebook() {

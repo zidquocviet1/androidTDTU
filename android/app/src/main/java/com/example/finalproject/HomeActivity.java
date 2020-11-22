@@ -1,6 +1,7 @@
 package com.example.finalproject;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -90,22 +91,6 @@ public class HomeActivity extends AppCompatActivity
         ToeicAPI.getComment(this);
     }
 
-    @Override
-    protected void onStart() {
-
-        super.onStart();
-    }
-
-    @Override
-    protected void onRestart() {
-        Account acc = MyDatabase.getInstance(this).accDAO().getFirstAccount();
-        if (acc != null && acc.isLogin())
-            ToeicAPI.getUserInfoBackground(this, acc);
-
-        Log.e("TAG", "login xong qua day");
-        super.onRestart();
-    }
-
     private void initDrawerLayout() {
         binding.navView.bringToFront();
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,
@@ -177,13 +162,24 @@ public class HomeActivity extends AppCompatActivity
             popupMenu.setOnMenuItemClickListener(item -> {
                 switch (item.getItemId()) {
                     case R.id.mnLogin:
-                        startActivity(new Intent(HomeActivity.this, LoginActivity.class));
+                        startActivityForResult(new Intent(HomeActivity.this, LoginActivity.class), 111);
                         break;
                 }
                 return false;
             });
         }
         popupMenu.show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 111){
+            Account acc = data.getParcelableExtra("account");
+            if (resultCode == RESULT_OK && acc != null){
+                ToeicAPI.getUserInfoBackground(this, acc);
+            }
+        }
     }
 
     private void logout() {

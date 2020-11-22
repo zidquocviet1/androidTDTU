@@ -1,6 +1,8 @@
 package com.example.finalproject.models;
 
 import android.content.Context;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
@@ -13,7 +15,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 @Entity(tableName = "account")
-public class Account {
+public class Account implements Parcelable {
     @PrimaryKey
     @NonNull
     private String id;
@@ -35,6 +37,27 @@ public class Account {
         this.isLogin = isLogin;
         this.fullName = fullName;
     }
+
+    protected Account(Parcel in) {
+        id = in.readString();
+        username = in.readString();
+        password = in.readString();
+        type = in.readString();
+        isLogin = in.readByte() != 0;
+        fullName = in.readString();
+    }
+
+    public static final Creator<Account> CREATOR = new Creator<Account>() {
+        @Override
+        public Account createFromParcel(Parcel in) {
+            return new Account(in);
+        }
+
+        @Override
+        public Account[] newArray(int size) {
+            return new Account[size];
+        }
+    };
 
     public String getId() {
         return id;
@@ -119,5 +142,20 @@ public class Account {
             sb.append(Integer.toString((input[i] & 0xff) + 0x100, 16).substring(1));
         }
         return sb.toString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(username);
+        dest.writeString(password);
+        dest.writeString(type);
+        dest.writeByte((byte) (isLogin ? 1 : 0));
+        dest.writeString(fullName);
     }
 }
