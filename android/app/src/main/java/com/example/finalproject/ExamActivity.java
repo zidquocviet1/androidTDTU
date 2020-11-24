@@ -242,6 +242,12 @@ public class ExamActivity extends AppCompatActivity implements MediaPlayer.OnPre
 
         User user = MyDatabase.getInstance(this).userDAO().getFirstUser();
         Progress progress = MyDatabase.getInstance(this).progressDAO().getByCourseId(courseID);
+        Boolean isOnline = NetworkController.isOnline(this);
+
+        if (isOnline) {
+            user.setScore(this.score);
+            MyDatabase.getInstance(this).userDAO().updateUser(user);
+        }
 
         if (progress == null) {
             MyDatabase.getInstance(this).progressDAO().add(new Progress(0, courseID, time, answer, isCounting));
