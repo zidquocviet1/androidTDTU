@@ -110,7 +110,7 @@ public class ExamActivity extends AppCompatActivity implements MediaPlayer.OnPre
     protected void onDestroy() {
         if (mediaPlayer != null && mediaPlayer.isPlaying())
             mediaPlayer.stop();
-        saveProgress();
+        saveProgress(false);
         super.onDestroy();
     }
 
@@ -120,12 +120,9 @@ public class ExamActivity extends AppCompatActivity implements MediaPlayer.OnPre
 
         switch (v.getId()) {
             case R.id.btnClick:
-                if (currentQuest >= questions.size()) {
-                    showResultDialog();
-                    return;
-                }
                 displayQuestion(currentQuest);
 
+                // insert answer and update the current quest number
                 if (currentPart == 3 || currentPart == 4 || currentPart == 7) {
                     tripleSelected.forEach(s -> {
                         answer.put(currentQuest + 1, s);
@@ -135,6 +132,12 @@ public class ExamActivity extends AppCompatActivity implements MediaPlayer.OnPre
                     answer.put(currentQuest + 1, selected);
                     currentQuest++;
                 }
+
+                if (currentQuest >= questions.size()) {
+                    showResultDialog(false);
+                    return;
+                }
+
                 currentPart = questions.get(currentQuest).getPart();
 
                 binding.questionId.setText(getString(R.string.number_question, currentQuest + 1));
@@ -226,20 +229,7 @@ public class ExamActivity extends AppCompatActivity implements MediaPlayer.OnPre
         showExitDialog();
     }
 
-    private void saveProgress() {
-        int correctAnswer = getCorrectAnswer();
-//        int score;
-
-        if (correctAnswer > 198)
-//            score = 990;
-            this.score = 990;
-        else if (correctAnswer == 0)
-//            score = 0;
-            this.score = 0;
-        else
-//            score = correctAnswer * 5;
-            this.score = correctAnswer * 5;
-
+    private void saveProgress(boolean isCompleted) {
         User user = MyDatabase.getInstance(this).userDAO().getFirstUser();
         Progress progress = MyDatabase.getInstance(this).progressDAO().getByCourseId(courseID);
         Boolean isOnline = NetworkController.isOnline(this);
@@ -252,6 +242,8 @@ public class ExamActivity extends AppCompatActivity implements MediaPlayer.OnPre
         if (progress == null) {
             MyDatabase.getInstance(this).progressDAO().add(new Progress(0, courseID, time, answer, isCounting));
         } else {
+            if (isCompleted) return;
+
             progress.setQuestions(answer);
             progress.setRemainTime(time);
             progress.setCounting(isCounting);
@@ -260,6 +252,14 @@ public class ExamActivity extends AppCompatActivity implements MediaPlayer.OnPre
         }
 
         if (user != null){
+            int correctAnswer = getCorrectAnswer();
+            if (correctAnswer > 198)
+                this.score = 990;
+            else if (correctAnswer == 0)
+                this.score = 0;
+            else
+                this.score = correctAnswer * 5;
+
             Record record = MyDatabase.getInstance(this).recordDAO().getByCourseIdAndAccountId(courseID, user.getAccountId());
             if (record == null){
                 MyDatabase.getInstance(this).recordDAO().addRecord(new Record(0, courseID, user.getAccountId(), score));
@@ -285,6 +285,9 @@ public class ExamActivity extends AppCompatActivity implements MediaPlayer.OnPre
 
         if (progress != null && progress.getQuestions().size() < 200) {
             showProgressDialog(progress);
+            return true;
+        }else if (progress != null && progress.getQuestions().size() >= 200){
+            showResultDialog(true);
             return true;
         }
         return false;
@@ -342,7 +345,7 @@ public class ExamActivity extends AppCompatActivity implements MediaPlayer.OnPre
                     } else {
                         binding.pbTime.setProgress(0);
                         binding.txtDisplayTime.setText(convertTime(0));
-                        showResultDialog();
+                        showResultDialog(false);
                     }
                 });
             }
@@ -358,6 +361,14 @@ public class ExamActivity extends AppCompatActivity implements MediaPlayer.OnPre
             if (questions.get(i).getAnswer().equals(recordAnswer.get(i + 1)))
                 correctAnswer++;
         }
+
+        if (correctAnswer > 198)
+            this.score = 990;
+        else if (correctAnswer == 0)
+            this.score = 0;
+        else
+            this.score = correctAnswer * 5;
+
         return correctAnswer;
     }
 
@@ -413,10 +424,10 @@ public class ExamActivity extends AppCompatActivity implements MediaPlayer.OnPre
                         setUIWithoutCountingMode();
 
                     if (time <= 0) return;
-                    displayQuestion(size);
+                    displayQuestion(size-1);
 
                     answer.putAll(progress.getQuestions());
-                    currentPart = questions.get(size).getPart();
+                    currentPart = questions.get(size-1).getPart();
                     currentQuest = size;
                     switch (currentPart) {
                         case 1:
@@ -447,7 +458,7 @@ public class ExamActivity extends AppCompatActivity implements MediaPlayer.OnPre
                 .create().show();
     }
 
-    private void showResultDialog() {
+    private void showResultDialog(boolean isCompleted) {
         binding.btnClick.setEnabled(false);
 
         if (mediaPlayer != null) {
@@ -458,8 +469,8 @@ public class ExamActivity extends AppCompatActivity implements MediaPlayer.OnPre
             timer.cancel();
             timer = null;
         }
+        saveProgress(isCompleted);
         int correctAnswer = getCorrectAnswer();
-        saveProgress();
 
         Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.result_test_dialog);
@@ -503,7 +514,7 @@ public class ExamActivity extends AppCompatActivity implements MediaPlayer.OnPre
                 .setTitle(getString(R.string.exit_testing_title))
                 .setMessage(getString(R.string.exit_testing_message))
                 .setPositiveButton(getString(R.string.yes), ((dialog, which) -> {
-                    saveProgress();
+                    saveProgress(false);
                     this.finish();
                 }))
                 .setNegativeButton(getString(R.string.no), ((dialog, which) -> {

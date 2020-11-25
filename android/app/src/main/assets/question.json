@@ -1,6 +1,6 @@
 ﻿[
   {
-    "description": "q1.PNG",
+    "description": "course_1/q1.PNG",
     "questionA": "A",
     "questionB": "B",
     "questionC": "C",
@@ -12,7 +12,7 @@
     "audioFile": "q1.mp3"
   },
   {
-    "description": "q2.PNG",
+    "description": "course_1/q2.PNG",
     "questionA": "A",
     "questionB": "B",
     "questionC": "C",
@@ -24,7 +24,7 @@
     "audioFile": "q2.mp3"
   },
   {
-    "description": "q3.PNG",
+    "description": "course_1/q3.PNG",
     "questionA": "A",
     "questionB": "B",
     "questionC": "C",
@@ -36,7 +36,7 @@
     "audioFile": "q3.mp3"
   },
   {
-    "description": "q4.PNG",
+    "description": "course_1/q4.PNG",
     "questionA": "A",
     "questionB": "B",
     "questionC": "C",
@@ -48,7 +48,7 @@
     "audioFile": "q4.mp3"
   },
   {
-    "description": "q5.PNG",
+    "description": "course_1/q5.PNG",
     "questionA": "A",
     "questionB": "B",
     "questionC": "C",
@@ -60,7 +60,7 @@
     "audioFile": "q5.mp3"
   },
   {
-    "description": "q6.PNG",
+    "description": "course_1/q6.PNG",
     "questionA": "A",
     "questionB": "B",
     "questionC": "C",
@@ -69,10 +69,10 @@
     "courseID": "1",
     "categoryID": "0",
     "part": "1",
-    "audioFile": "q6.mp3"
+    "audioFile": "course_1/q6.mp3"
   },
   {
-    "description": "q7.PNG",
+    "description": "course_1/q7.PNG",
     "questionA": "A",
     "questionB": "B",
     "questionC": "C",
@@ -84,7 +84,7 @@
     "audioFile": "q7.mp3"
   },
   {
-    "description": "q8.PNG",
+    "description": "course_1/q8.PNG",
     "questionA": "A",
     "questionB": "B",
     "questionC": "C",
@@ -96,7 +96,7 @@
     "audioFile": "q8.mp3"
   },
   {
-    "description": "q9.PNG",
+    "description": "course_1/q9.PNG",
     "questionA": "A",
     "questionB": "B",
     "questionC": "C",
@@ -108,7 +108,7 @@
     "audioFile": "q9.mp3"
   },
   {
-    "description": "q10.PNG",
+    "description": "course_1/q10.PNG",
     "questionA": "A",
     "questionB": "B",
     "questionC": "C",
@@ -1904,7 +1904,7 @@
     "part": "7"
   },
   {
-    "description": "q169-q172.PNG",
+    "description": "course_1/q169-q172.PNG",
     "question": "What is the coupon offering?",
     "questionA": "A chance to win a prize",
     "questionB": "A vacation package",
@@ -1916,7 +1916,7 @@
     "part": "7"
   },
   {
-    "description": "q169-q172.PNG",
+    "description": "course_1/q169-q172.PNG",
     "question": "What is the name of the company that produced this coupon?",
     "questionA": "Win-Win Company",
     "questionB": "Internet Travel, Inc.",
@@ -1928,7 +1928,7 @@
     "part": "7"
   },
   {
-    "description": "q169-q172.PNG",
+    "description": "course_1/q169-q172.PNG",
     "question": "Why is the coupon billed as a \"win-win\" opportunity?",
     "questionA": "It will earn the coupon holder a prize.",
     "questionB": "It costs only $25.",
@@ -1940,7 +1940,7 @@
     "part": "7"
   },
   {
-    "description": "q169-q172.PNG",
+    "description": "course_1/q169-q172.PNG",
     "question": "What does the coupon claim about booking a vacation through Vacations Etc.?",
     "questionA": "It is always cheaper than using the Internet",
     "questionB": "It often costs less than booking online",
@@ -1952,7 +1952,7 @@
     "part": "7"
   },
   {
-    "description": "q173-176.PNG",
+    "description": "course_1/q173-176.PNG",
     "question": "What is being offered?",
     "questionA": "A magazine subscription discount",
     "questionB": "A half-price book",
@@ -1964,7 +1964,7 @@
     "part": "7"
   },
   {
-    "description": "q173-176.PNG",
+    "description": "course_1/q173-176.PNG",
     "question": "How many issues are included in this deal?",
     "questionA": "1",
     "questionB": "10",
@@ -1976,7 +1976,7 @@
     "part": "7"
   },
   {
-    "description": "q173-176.PNG",
+    "description": "course_1/q173-176.PNG",
     "question": "What is the approximate percent saved with this new subscription?",
     "questionA": "15%",
     "questionB": "50%",
@@ -1988,7 +1988,7 @@
     "part": "7"
   },
   {
-    "description": "q173-176.PNG",
+    "description": "course_1/q173-176.PNG",
     "question": "Which of these is NOT listed as a feature of the magazine?",
     "questionA": "Gift ideas",
     "questionB": "Health tips",
@@ -2288,7 +2288,7 @@
     "part": "7"
   },
   {
-    "description": "q1.PNG",
+    "description": "course_2/q1.PNG",
     "questionA": "A",
     "questionB": "B",
     "questionC": "C",
@@ -2300,7 +2300,7 @@
     "audioFile": "q1.mp3"
   },
   {
-    "description": "q2.PNG",
+    "description": "course_2/q2.PNG",
     "questionA": "A",
     "questionB": "B",
     "questionC": "C",
@@ -2312,7 +2312,7 @@
     "audioFile": "q2.mp3"
   },
   {
-    "description": "q3.PNG",
+    "description": "course_2/q3.PNG",
     "questionA": "A",
     "questionB": "B",
     "questionC": "C",
@@ -2324,7 +2324,7 @@
     "audioFile": "q3.mp3"
   },
   {
-    "description": "q4.PNG",
+    "description": "course_2/q4.PNG",
     "questionA": "A",
     "questionB": "B",
     "questionC": "C",
@@ -2336,7 +2336,7 @@
     "audioFile": "q4.mp3"
   },
   {
-    "description": "q5.PNG",
+    "description": "course_2/q5.PNG",
     "questionA": "A",
     "questionB": "B",
     "questionC": "C",
@@ -2348,7 +2348,7 @@
     "audioFile": "q5.mp3"
   },
   {
-    "description": "q6.PNG",
+    "description": "course_2/q6.PNG",
     "questionA": "A",
     "questionB": "B",
     "questionC": "C",
@@ -2360,7 +2360,7 @@
     "audioFile": "q6.mp3"
   },
   {
-    "description": "q7.PNG",
+    "description": "course_2/q7.PNG",
     "questionA": "A",
     "questionB": "B",
     "questionC": "C",
@@ -2372,7 +2372,7 @@
     "audioFile": "q7.mp3"
   },
   {
-    "description": "q8.PNG",
+    "description": "course_2/q8.PNG",
     "questionA": "A",
     "questionB": "B",
     "questionC": "C",
@@ -2384,7 +2384,7 @@
     "audioFile": "q8.mp3"
   },
   {
-    "description": "q9.PNG",
+    "description": "course_2/q9.PNG",
     "questionA": "A",
     "questionB": "B",
     "questionC": "C",
@@ -2396,7 +2396,7 @@
     "audioFile": "q9.mp3"
   },
   {
-    "description": "q10.PNG",
+    "description": "course_2/q10.PNG",
     "questionA": "A",
     "questionB": "B",
     "questionC": "C",
@@ -4192,7 +4192,7 @@
     "part": "7"
   },
   {
-    "description": "q169-q172.PNG",
+    "description": "course_2/q169-q172.PNG",
     "question": "What is the coupon offering?",
     "questionA": "A chance to win a prize",
     "questionB": "A vacation package",
@@ -4204,7 +4204,7 @@
     "part": "7"
   },
   {
-    "description": "q169-q172.PNG",
+    "description": "course_2/q169-q172.PNG",
     "question": "What is the name of the company that produced this coupon?",
     "questionA": "Win-Win Company",
     "questionB": "Internet Travel, Inc.",
@@ -4216,7 +4216,7 @@
     "part": "7"
   },
   {
-    "description": "q169-q172.PNG",
+    "description": "course_2/q169-q172.PNG",
     "question": "Why is the coupon billed as a \"win-win\" opportunity?",
     "questionA": "It will earn the coupon holder a prize.",
     "questionB": "It costs only $25.",
@@ -4228,7 +4228,7 @@
     "part": "7"
   },
   {
-    "description": "q169-q172.PNG",
+    "description": "course_2/q169-q172.PNG",
     "question": "What does the coupon claim about booking a vacation through Vacations Etc.?",
     "questionA": "It is always cheaper than using the Internet",
     "questionB": "It often costs less than booking online",
@@ -4240,7 +4240,7 @@
     "part": "7"
   },
   {
-    "description": "q173-176.PNG",
+    "description": "course_2/q173-176.PNG",
     "question": "What is being offered?",
     "questionA": "A magazine subscription discount",
     "questionB": "A half-price book",
@@ -4252,7 +4252,7 @@
     "part": "7"
   },
   {
-    "description": "q173-176.PNG",
+    "description": "course_2/q173-176.PNG",
     "question": "How many issues are included in this deal?",
     "questionA": "1",
     "questionB": "10",
@@ -4264,7 +4264,7 @@
     "part": "7"
   },
   {
-    "description": "q173-176.PNG",
+    "description": "course_2/q173-176.PNG",
     "question": "What is the approximate percent saved with this new subscription?",
     "questionA": "15%",
     "questionB": "50%",
@@ -4276,7 +4276,7 @@
     "part": "7"
   },
   {
-    "description": "q173-176.PNG",
+    "description": "course_2/q173-176.PNG",
     "question": "Which of these is NOT listed as a feature of the magazine?",
     "questionA": "Gift ideas",
     "questionB": "Health tips",

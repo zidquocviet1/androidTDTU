@@ -85,7 +85,7 @@ public class HomeActivity extends AppCompatActivity
 
         Account acc = MyDatabase.getInstance(this).accDAO().getFirstAccount();
         if (acc != null && acc.isLogin()) {
-            ToeicAPI.getUserInfoBackground(this, acc);
+//            ToeicAPI.getUserInfoBackground(this, acc);
         }
 
         ToeicAPI.getComment(this);

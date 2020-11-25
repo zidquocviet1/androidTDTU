@@ -161,25 +161,25 @@ public class Part7Fragment extends Fragment implements View.OnClickListener {
             binding.description.setVisibility(View.VISIBLE);
         }
 
-        binding.question1.setText(getString(R.string.number_question, numQuestion) +": "+question.get(0).getQuestion());
+        binding.question1.setText(getString(R.string.number_question, numQuestion-1) +": "+question.get(0).getQuestion());
         binding.txtA.setText(question.get(0).getQuestionA());
         binding.txtB.setText(question.get(0).getQuestionB());
         binding.txtC.setText(question.get(0).getQuestionC());
         binding.txtD.setText(question.get(0).getQuestionD());
 
-        binding.question2.setText(getString(R.string.number_question, numQuestion+1) +": "+question.get(1).getQuestion());
+        binding.question2.setText(getString(R.string.number_question, numQuestion) +": "+question.get(1).getQuestion());
         binding.txtQues2A.setText(question.get(1).getQuestionA());
         binding.txtQues2B.setText(question.get(1).getQuestionB());
         binding.txtQues2C.setText(question.get(1).getQuestionC());
         binding.txtQues2D.setText(question.get(1).getQuestionD());
 
-        binding.question3.setText(getString(R.string.number_question, numQuestion+2) +": "+question.get(2).getQuestion());
+        binding.question3.setText(getString(R.string.number_question, numQuestion+1) +": "+question.get(2).getQuestion());
         binding.txtQues3A.setText(question.get(2).getQuestionA());
         binding.txtQues3B.setText(question.get(2).getQuestionB());
         binding.txtQues3C.setText(question.get(2).getQuestionC());
         binding.txtQues3D.setText(question.get(2).getQuestionD());
 
-        binding.question4.setText(getString(R.string.number_question, numQuestion+3) +": "+question.get(3).getQuestion());
+        binding.question4.setText(getString(R.string.number_question, numQuestion+2) +": "+question.get(3).getQuestion());
         binding.txtQues4A.setText(question.get(3).getQuestionA());
         binding.txtQues4B.setText(question.get(3).getQuestionB());
         binding.txtQues4C.setText(question.get(3).getQuestionC());
@@ -187,7 +187,7 @@ public class Part7Fragment extends Fragment implements View.OnClickListener {
 
         if (questions.size() == 5) {
             binding.lnlayout5.setVisibility(View.VISIBLE);
-            binding.question5.setText(getString(R.string.number_question, numQuestion+4) +": "+question.get(4).getQuestion());
+            binding.question5.setText(getString(R.string.number_question, numQuestion+3) +": "+question.get(4).getQuestion());
             binding.txtQues5A.setText(question.get(4).getQuestionA());
             binding.txtQues5B.setText(question.get(4).getQuestionB());
             binding.txtQues5C.setText(question.get(4).getQuestionC());

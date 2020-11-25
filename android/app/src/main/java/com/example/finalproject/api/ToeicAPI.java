@@ -359,11 +359,12 @@ public class ToeicAPI {
                 },
                 error -> {
                     new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                        home.getHomeViewModel().getUser().postValue(null);
-                        home.getHomeViewModel().getServerState().postValue(false);
-                        Toast.makeText(home, home.getString(R.string.server_error), Toast.LENGTH_SHORT).show();
-                        LoadingDialog.dismissDialog();
+
                     }, 500);
+                    home.getHomeViewModel().getUser().postValue(null);
+                    home.getHomeViewModel().getServerState().postValue(false);
+//                    Toast.makeText(home, home.getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+                    LoadingDialog.dismissDialog();
                 });
         queue.add(request);
     }
