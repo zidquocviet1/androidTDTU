@@ -424,10 +424,10 @@ public class ExamActivity extends AppCompatActivity implements MediaPlayer.OnPre
                         setUIWithoutCountingMode();
 
                     if (time <= 0) return;
-                    displayQuestion(size-1);
+                    displayQuestion(size);
 
                     answer.putAll(progress.getQuestions());
-                    currentPart = questions.get(size-1).getPart();
+                    currentPart = questions.get(size).getPart();
                     currentQuest = size;
                     switch (currentPart) {
                         case 1:
